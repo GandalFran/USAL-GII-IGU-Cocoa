@@ -25,7 +25,7 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2018 GandalFran. All rights reserved.</string>
 	<key>NSMainNibFile</key>
-	<string>MainMenu</string>
+	<string>ViewsAndControllers/PlotRepresentationUI/PlotRepresentationUI.xib</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>
