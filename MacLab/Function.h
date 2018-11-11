@@ -12,28 +12,41 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Function : NSObject
+@interface Function : NSObject{
+    int _ID;
+    NSString * _name;
+    Expression * _expression;
+    NSColor * _color;
+    bool _visible;
+}
 
-@property (nonatomic) int _ID;
-@property (nonatomic, copy) NSString * _name;
-@property (nonatomic, copy) Expression * _expression;
-@property (nonatomic, copy) NSColor * _color;
-@property (nonatomic) bool _visible;
+@property (nonatomic) int ID;
+@property (nonatomic, copy) NSString * name;
+@property (nonatomic, copy) Expression * expression;
+@property (nonatomic, copy) NSColor * color;
+@property (nonatomic) bool visible;
 
 
-+(id)initWithID : (int) ID
+-(id)initWithID : (int) ID
            name : (NSString *) name
           color : (NSColor *) color
      Expression : (Expression *) expression
         visible : (bool) visible;
 
-+(id) initWithID : (float) ID
+-(id) initWithID : (int) ID
             name : (NSString *) name
            color : (NSColor *) color
   ExpressionType : (FunctionType) type
-ExpressionAValue : (float) aValue
-ExpressionBValue : (float) bValue
-ExpressionCValue : (float) cValue;
+ExpressionAValue : (double) a
+ExpressionBValue : (double) b
+ExpressionCValue : (double) c;
+
+-(id) initWithID : (int) ID
+            name : (NSString *) name
+           color : (NSColor *) color
+  ExpressionType : (FunctionType) type
+ExpressionAValue : (double) a
+ExpressionBValue : (double) b;
 
 @end
 

@@ -12,20 +12,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef enum{COSINE, SINE, EXPONENTIAL, LINE, PARABOLA, HIPERBOLA} FunctionType;
 
-@interface Expression : NSObject
+@interface Expression : NSObject{
+    FunctionType _type;;
+    double _aValue;
+    double _bValue;
+    double _cValue;
+}
 
-    @property (nonatomic) FunctionType _type;;
-    @property (nonatomic) float _aValue;
-    @property (nonatomic) float _bValue;
-    @property (nonatomic) float _cValue;
+    @property (nonatomic) FunctionType type;;
+    @property (nonatomic) double aValue;
+    @property (nonatomic) double bValue;
+    @property (nonatomic) double cValue;
 
-+(id) initWithFunctionType : (FunctionType) type
-                    aValue : (float) aValue
-                    bValue : (float) bValue
-                    cValue : (float) cValue;
+-(id) initWithFunctionType : (FunctionType) type
+                    aValue : (double) a
+                    bValue : (double) b
+                    cValue : (double) c;
 
--(float) calculateYValueWithXValue : (float) xValue;
-
+-(double) calculateYValueWithXValue : (double) x;
 
 @end
 

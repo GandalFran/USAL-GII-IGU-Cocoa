@@ -11,36 +11,39 @@
 
 @implementation Function
 
-@synthesize _ID, _name, _color, _expression, _visible;
+@synthesize ID=_ID, name=_name, color=_color, expression=_expression, visible=_visible;
 
 -(id)initWithID : (int) ID name : (NSString *) name color : (NSColor *) color Expression : (Expression *) expression visible:(bool)visible{
     self = [super init];
     if (!self)
         return nil;
     
-    [self set_ID: ID];
-    [self set_name : name];
-    [self set_color : color];
-    [self set_expression : expression];
-    [self set_visible : true];
+    [self setID: ID];
+    [self setName : name];
+    [self setColor : color];
+    [self setExpression : expression];
+    [self setVisible : visible];
     
     return self;
 }
 
--(id) initWithID : (int) ID name : (NSString *) name color : (NSColor *) color ExpressionType : (FunctionType) type ExpressionAValue : (float) aValue ExpressionBValue : (float) bValue ExpressionCValue : (float) cValue {
+-(id) initWithID : (int) ID name : (NSString *) name color : (NSColor *) color ExpressionType : (FunctionType) type ExpressionAValue : (double) a ExpressionBValue : (double) b ExpressionCValue : (double) c {
     
     Expression * expressionInstance = nil;
     
-    if(nil == (expressionInstance =  [Expression initWithFunctionType:type aValue:aValue bValue:bValue cValue:cValue] ) )
+    if(nil == (expressionInstance =  [[Expression alloc] initWithFunctionType:type aValue:a bValue:b cValue:c] ) )
         return nil;
         
-    return [self initWithID:ID name:name color:color Expression:expressionInstance visible:true]
+    return [self initWithID:ID name:name color:color Expression:expressionInstance visible:true];
 }
 
+-(id) initWithID : (int) ID name : (NSString *) name color : (NSColor *) color ExpressionType : (FunctionType) type ExpressionAValue : (double) a ExpressionBValue : (double) b{
+    return [self initWithID:ID name:name color:color ExpressionType:type ExpressionAValue:a ExpressionBValue:b];
+}
 
 -(NSString *) description{
     NSString * toString = nil;
-    toString = [[NSString alloc] initWithFormat: @"{(%d), name=%@, color=%@, expression=%@, visbility=%d}",self._ID,self._name, self._color, self._expression, self._visible];
+    toString = [[NSString alloc] initWithFormat: @"Function{ID=%d, name=%@, color=%@, expression=%@, visbility=%d}",self.ID,self.name, self.color, self.expression, self.visible];
     return toString;
 }
 
@@ -50,11 +53,8 @@
     } else if( ![object isKindOfClass:[ Function class] ]){
         return false;
     }else{
-        Function f = object;
-        if(f._ID == self._ID)
-            return true;
-        else
-            return false;
+        Function * f = object;
+        return ( [f ID] == self.ID );
     }
 }
 
