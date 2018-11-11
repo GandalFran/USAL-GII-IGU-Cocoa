@@ -18,6 +18,7 @@
 		CD26FE0D219710FC0031B6F0 /* PlotRepresentationUIController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD26FE0C219710FC0031B6F0 /* PlotRepresentationUIController.m */; };
 		CD26FE10219711A10031B6F0 /* AddFunctionUI.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD26FE0F219711A10031B6F0 /* AddFunctionUI.xib */; };
 		CD26FE13219711B40031B6F0 /* AddFunctionUIController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD26FE12219711B40031B6F0 /* AddFunctionUIController.m */; };
+		CD322F982198250E009532AD /* Expression.m in Sources */ = {isa = PBXBuildFile; fileRef = CD322F972198250E009532AD /* Expression.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,8 @@
 		CD26FE0F219711A10031B6F0 /* AddFunctionUI.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddFunctionUI.xib; sourceTree = "<group>"; };
 		CD26FE11219711B40031B6F0 /* AddFunctionUIController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddFunctionUIController.h; sourceTree = "<group>"; };
 		CD26FE12219711B40031B6F0 /* AddFunctionUIController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddFunctionUIController.m; sourceTree = "<group>"; };
+		CD322F962198250E009532AD /* Expression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Expression.h; sourceTree = "<group>"; };
+		CD322F972198250E009532AD /* Expression.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Expression.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +93,8 @@
 			children = (
 				CD26FDFB219710020031B6F0 /* Function.h */,
 				CD26FDFC219710020031B6F0 /* Function.m */,
+				CD322F962198250E009532AD /* Expression.h */,
+				CD322F972198250E009532AD /* Expression.m */,
 			);
 			name = Bean;
 			path = ..;
@@ -223,6 +228,7 @@
 				CD10C0032194A1980064ED2E /* AppDelegate.m in Sources */,
 				CD26FE03219710430031B6F0 /* Model.m in Sources */,
 				CD26FE09219710C60031B6F0 /* FunctionListUIController.m in Sources */,
+				CD322F982198250E009532AD /* Expression.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
