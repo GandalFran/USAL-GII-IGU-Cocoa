@@ -6,6 +6,7 @@
 //  Copyright © 2018 GandalFran. All rights reserved.
 //
 
+#import "Function.h"
 #import "Model.h"
 
 @implementation Model{
@@ -27,10 +28,13 @@
     return self;
 }
 
-- (int) addFunction : (Function *) function{
-    if(nil == function) return -1;
+- (int) addFunctionWithName : (NSString *) name color : (NSColor *) color ExpressionType : (FunctionType) type ExpressionAValue : (double) a ExpressionBValue : (double) b ExpressionCValue : (double) c{
     
-    [function setID: [self getCurrentID]];
+    Function * function = [[Function alloc] initWithID:[self getCurrentID] name:name color:color ExpressionType:type ExpressionAValue:a ExpressionBValue:b ExpressionCValue:c ];
+    
+    if(nil == function)
+        return -1;
+
     [model setObject:function forKey:[self getKeyFromID:[function ID]]];
     
     return [function ID];

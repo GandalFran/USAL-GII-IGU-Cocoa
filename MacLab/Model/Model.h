@@ -7,13 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Function.h"
+#import "Expression.h"
+
+@class Function;
+
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Model : NSObject
 
-- (int) addFunction : (Function *) function;
+- (int) addFunctionWithName : (NSString *) name
+                      color : (NSColor *) color
+             ExpressionType : (FunctionType) type
+           ExpressionAValue : (double) a
+           ExpressionBValue : (double) b
+           ExpressionCValue : (double) c;
+
 - (bool) deleteFunction : (Function *) function;
 - (bool) updateFunction : (Function *) function;
 - (Function *) getFunctionWithID : (int) ID;
