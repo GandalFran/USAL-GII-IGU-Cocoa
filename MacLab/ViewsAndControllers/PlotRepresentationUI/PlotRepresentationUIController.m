@@ -7,6 +7,7 @@
 //
 
 #import "PlotRepresentationUIController.h"
+#import "NSPlotView.h"
 
 @implementation PlotRepresentationUIController
 

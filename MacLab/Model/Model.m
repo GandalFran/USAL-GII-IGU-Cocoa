@@ -6,8 +6,8 @@
 //  Copyright © 2018 GandalFran. All rights reserved.
 //
 
-#import "Expression.h"
-#import "Function.h"
+#import "NSFunctionExpression.h"
+#import "NSFunction.h"
 #import "Model.h"
 
 @implementation Model{
@@ -34,7 +34,7 @@
 
 - (int) addFunctionWithName : (NSString *) name color : (NSColor *) color ExpressionType : (FunctionType) type ExpressionAValue : (double) a ExpressionBValue : (double) b ExpressionCValue : (double) c{
     
-    Function * function = [[Function alloc] initWithID:[self getCurrentID] name:name color:color ExpressionType:type ExpressionAValue:a ExpressionBValue:b ExpressionCValue:c ];
+    NSFunction * function = [[NSFunction alloc] initWithID:[self getCurrentID] name:name color:color ExpressionType:type ExpressionAValue:a ExpressionBValue:b ExpressionCValue:c ];
     
     if(nil == function)
         return -1;
@@ -44,7 +44,7 @@
     return [function ID];
 }
 
-- (bool) deleteFunction : (Function *) function{
+- (bool) deleteFunction : (NSFunction *) function{
     if(nil == function) return false;
     
     [model removeObjectForKey:[self getKeyFromID:[function ID]]];
@@ -52,7 +52,7 @@
     return true;
 }
 
-- (bool) updateFunction : (Function *) function{
+- (bool) updateFunction : (NSFunction *) function{
     if(nil == function) return false;
     if([function ID] < 0) return false;
     if([[model allKeys] containsObject:[self getKeyFromID:[function ID]]]) return false;
@@ -62,7 +62,7 @@
     return true;
 }
 
-- (Function *) getFunctionWithID : (int) ID{
+- (NSFunction *) getFunctionWithID : (int) ID{
     if(ID < 0 || [model count] <= ID ) return nil;
     return [model valueForKey:[self getKeyFromID:ID]];
 }

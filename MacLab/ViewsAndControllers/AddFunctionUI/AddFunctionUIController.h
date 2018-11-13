@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AddFunctionUIController : NSObject{
+@interface AddFunctionUIController : NSObject <NSComboBoxDelegate, NSTextFieldDelegate>{
     IBOutlet NSTextField * nameTextField;
     IBOutlet NSTextField * aValueTextField;
     IBOutlet NSTextField * bValueTextField;
@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(IBAction)addFunction:(id)sender;
 -(IBAction)showOrHideCValueTextFiledAndLabel:(id)sender;
+
+- (void) controlTextDidChange:(NSNotification *)obj;
 
 @end
 

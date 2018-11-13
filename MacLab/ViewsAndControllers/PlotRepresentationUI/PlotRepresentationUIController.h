@@ -8,9 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+@class NSPlotView;
+
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PlotRepresentationUIController : NSObject
+@interface PlotRepresentationUIController : NSObject{
+    IBOutlet NSPlotView * plotView;
+}
 
 @end
 

@@ -12,7 +12,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="570" height="202"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="983"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="960"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="570" height="202"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -26,6 +26,9 @@
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
+                        <connections>
+                            <outlet property="delegate" destination="IbI-iv-Glf" id="JMm-3I-hom"/>
+                        </connections>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZcT-P9-wfc">
                         <rect key="frame" x="377" y="168" width="179" height="22"/>
@@ -36,6 +39,9 @@
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
+                        <connections>
+                            <outlet property="delegate" destination="IbI-iv-Glf" id="223-kB-aVb"/>
+                        </connections>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hwQ-vl-gnG">
                         <rect key="frame" x="377" y="127" width="179" height="22"/>
@@ -46,6 +52,9 @@
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
+                        <connections>
+                            <outlet property="delegate" destination="IbI-iv-Glf" id="e1N-3r-5cI"/>
+                        </connections>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IBS-89-bSz">
                         <rect key="frame" x="80" y="168" width="191" height="22"/>
@@ -55,6 +64,9 @@
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
+                        <connections>
+                            <outlet property="delegate" destination="IbI-iv-Glf" id="52z-ea-hy0"/>
+                        </connections>
                     </textField>
                     <comboBox verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RhW-Iu-8SU">
                         <rect key="frame" x="80" y="124" width="194" height="26"/>
@@ -74,6 +86,7 @@
                         </comboBoxCell>
                         <connections>
                             <action selector="showOrHideCValueTextFiledAndLabel:" target="IbI-iv-Glf" id="4nP-p6-JGc"/>
+                            <outlet property="delegate" destination="IbI-iv-Glf" id="U8B-5l-vIE"/>
                         </connections>
                     </comboBox>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="P00-hN-ANX">

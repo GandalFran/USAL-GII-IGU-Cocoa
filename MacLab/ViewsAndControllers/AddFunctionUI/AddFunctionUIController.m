@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "AddFunctionUIController.h"
 #import "Model.h"
-#import "Expression.h"
+#import "NSFunctionExpression.h"
 
 @implementation AddFunctionUIController
 
@@ -31,6 +31,7 @@
         case 3: type = LINE; break;
         case 4: type = PARABOLA; break;
         case 5: type = HIPERBOLA; break;
+        default: type = NONE_TYPE;
     }
     
     [model addFunctionWithName:functionName color:color ExpressionType:type ExpressionAValue:aValue ExpressionBValue:bValue ExpressionCValue:cValue];
@@ -47,8 +48,6 @@
         [cValueTextField setHidden: false];
     }
 }
--(IBAction)setNewRepresentationParameters:(id)sender{
 
-}
 
 @end

@@ -6,10 +6,10 @@
 //  Copyright © 2018 GandalFran. All rights reserved.
 //
 
-#import "Expression.h"
+#import "NSFunctionExpression.h"
 #import <math.h>
 
-@implementation Expression
+@implementation NSFunctionExpression
 @synthesize type=_type, aValue=_aValue, bValue=_bValue, cValue=_cValue;
 
 -(id) initWithFunctionType : (FunctionType) type aValue : (double) a bValue : (double) b cValue : (double) c{
@@ -34,10 +34,10 @@
 -(BOOL) isEqual:(id)object{
     if(NULL == object || nil == object){
         return false;
-    } else if(![object isKindOfClass:[Expression class]]){
+    } else if(![object isKindOfClass:[NSFunctionExpression class]]){
         return false;
     }else{
-        Expression * e = object;
+        NSFunctionExpression * e = object;
         return ( self.type == e.type
                 && self.aValue == e.aValue
                 && self.bValue == e.bValue
