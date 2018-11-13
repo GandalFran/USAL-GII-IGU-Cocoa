@@ -17,6 +17,8 @@
 		CD26FE10219711A10031B6F0 /* AddFunctionUI.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD26FE0F219711A10031B6F0 /* AddFunctionUI.xib */; };
 		CD26FE13219711B40031B6F0 /* AddFunctionUIController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD26FE12219711B40031B6F0 /* AddFunctionUIController.m */; };
 		CD322F982198250E009532AD /* Expression.m in Sources */ = {isa = PBXBuildFile; fileRef = CD322F972198250E009532AD /* Expression.m */; };
+		CDAE1542219AEEB900935252 /* FunctionTableUIController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAE1541219AEEB900935252 /* FunctionTableUIController.m */; };
+		CDAE1544219AEEEB00935252 /* FunctionTableUI.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDAE1543219AEEEB00935252 /* FunctionTableUI.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +41,9 @@
 		CD26FE12219711B40031B6F0 /* AddFunctionUIController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddFunctionUIController.m; sourceTree = "<group>"; };
 		CD322F962198250E009532AD /* Expression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Expression.h; sourceTree = "<group>"; };
 		CD322F972198250E009532AD /* Expression.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Expression.m; sourceTree = "<group>"; };
+		CDAE1540219AEEB900935252 /* FunctionTableUIController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FunctionTableUIController.h; sourceTree = "<group>"; };
+		CDAE1541219AEEB900935252 /* FunctionTableUIController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FunctionTableUIController.m; sourceTree = "<group>"; };
+		CDAE1543219AEEEB00935252 /* FunctionTableUI.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FunctionTableUI.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +103,7 @@
 		CD26FDFE219710210031B6F0 /* ViewsAndControllers */ = {
 			isa = PBXGroup;
 			children = (
+				CDAE153F219AEE3000935252 /* FuncionListUI */,
 				CD26FE0E219711810031B6F0 /* AddFunctionUI */,
 				CD26FE0A219710D20031B6F0 /* PlotRepresentationUI */,
 			);
@@ -132,6 +138,16 @@
 				CD26FE12219711B40031B6F0 /* AddFunctionUIController.m */,
 			);
 			path = AddFunctionUI;
+			sourceTree = "<group>";
+		};
+		CDAE153F219AEE3000935252 /* FuncionListUI */ = {
+			isa = PBXGroup;
+			children = (
+				CDAE1540219AEEB900935252 /* FunctionTableUIController.h */,
+				CDAE1541219AEEB900935252 /* FunctionTableUIController.m */,
+				CDAE1543219AEEEB00935252 /* FunctionTableUI.xib */,
+			);
+			path = FuncionListUI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -194,6 +210,7 @@
 				CD10C0052194A1990064ED2E /* Assets.xcassets in Resources */,
 				CD10C0082194A1990064ED2E /* PlotRepresentationUI.xib in Resources */,
 				CD26FE10219711A10031B6F0 /* AddFunctionUI.xib in Resources */,
+				CDAE1544219AEEEB00935252 /* FunctionTableUI.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,6 +227,7 @@
 				CD26FE13219711B40031B6F0 /* AddFunctionUIController.m in Sources */,
 				CD10C0032194A1980064ED2E /* AppDelegate.m in Sources */,
 				CD26FE03219710430031B6F0 /* Model.m in Sources */,
+				CDAE1542219AEEB900935252 /* FunctionTableUIController.m in Sources */,
 				CD322F982198250E009532AD /* Expression.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

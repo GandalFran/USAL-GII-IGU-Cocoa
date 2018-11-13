@@ -6,6 +6,7 @@
 //  Copyright © 2018 GandalFran. All rights reserved.
 //
 
+#import "Expression.h"
 #import "Function.h"
 #import "Model.h"
 
@@ -13,6 +14,9 @@
     int currentID;
     NSMutableDictionary * model;
 }
+
+@synthesize representationParameters=_representationParameters;
+
 
 -(id) init{
     self = [super init];

@@ -33,7 +33,7 @@
         case 5: type = HIPERBOLA; break;
     }
     
-    [model addFunctionWithName:name color:color ExpressionType:type ExpressionAValue:aValue ExpressionBValue:bValue ExpressionCValue:cValue];
+    [model addFunctionWithName:functionName color:color ExpressionType:type ExpressionAValue:aValue ExpressionBValue:bValue ExpressionCValue:cValue];
 }
 
 -(IBAction)showOrHideCValueTextFiledAndLabel:(id)sender{

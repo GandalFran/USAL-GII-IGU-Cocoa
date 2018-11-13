@@ -6,15 +6,22 @@
 //  Copyright © 2018 GandalFran. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "Expression.h"
+#import <Cocoa/Cocoa.h>
 
 @class Function;
 
-
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Model : NSObject
+typedef struct{
+    double xmin, xmax, ymin, ymax;
+}RepresentationParameters;
+
+@interface Model : NSObject{
+    RepresentationParameters _representationParameters;
+}
+
+@property (nonatomic) RepresentationParameters representationParameters;
 
 - (int) addFunctionWithName : (NSString *) name
                       color : (NSColor *) color
