@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 #import "AddFunctionUIController.h"
 #import "Model.h"
 #import "FunctionExpression.h"
@@ -14,7 +15,7 @@
 
 @implementation AddFunctionUIController
 
-extern NSString * setModelNotificationSelector;
+extern NSString * sendModelToAddFunctionUI;
 
 /*----------------------INITIALIZERS-----------------------*/
 
@@ -24,6 +25,15 @@ extern NSString * setModelNotificationSelector;
     
     if (nil == self)
         return nil;
+    
+    //Register handlers for the notification
+    NSNotificationCenter * notificationCenter = nil;
+    
+    [notificationCenter addObserver:self
+                           selector:@selector(handleSendModel:)
+                               name:sendModelToAddFunctionUI
+                             object:nil];
+    
     
     return self;
 }
@@ -36,13 +46,6 @@ extern NSString * setModelNotificationSelector;
     if(nil == self)
         return nil;
     
-    //Register handlers for the notification
-    NSNotificationCenter * notificationCenter = nil;
-        
-    [notificationCenter addObserver:self
-                           selector:@selector(handleSendModel:)
-                               name:setModelNotificationSelector
-                             object:nil];
     return self;
 }
 
@@ -51,17 +54,25 @@ extern NSString * setModelNotificationSelector;
  */
 -(BOOL) windowShouldClose:(NSWindow *)sender
 {
-    long result;
+    NSAlert * alert = nil;
+    NSModalResponse response;
     
-    result = NSRunAlertPanel(@"Atention",
-                             @"If you close this window, the function data will be losed\nDo you really want?",
-                             @"yes",
-                             @"no",
-                             nil);
-    if(result == NSAlertDefaultReturn)
+    alert = [[NSAlert alloc] init];
+    if(nil == alert)
         return YES;
-    else
+    
+    [alert setMessageText:@"Atention"];
+    [alert setInformativeText:@"If you close this window, the function data will be losed\nDo you really want?"];
+    [alert addButtonWithTitle:@"yes"];
+    [alert addButtonWithTitle:@"no"];
+    [alert setAlertStyle:NSAlertStyleWarning];
+    response = [alert runModal];
+
+    if (NSAlertFirstButtonReturn == response) {
+        return YES;
+    }else{
         return NO;
+    }
 }
 
 /**

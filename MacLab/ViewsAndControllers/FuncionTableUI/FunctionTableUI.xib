@@ -12,7 +12,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="785" height="574"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="960"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="906"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="785" height="574"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -257,7 +257,8 @@
                 </subviews>
             </view>
             <connections>
-                <outlet property="delegate" destination="cWS-iC-kqI" id="2mF-we-30F"/>
+                <outlet property="delegate" destination="cWS-iC-kqI" id="ydG-hp-pWa"/>
+                <outlet property="initialFirstResponder" destination="EiT-Mj-1SZ" id="i7S-Fg-sO3"/>
             </connections>
             <point key="canvasLocation" x="58.5" y="270"/>
         </window>

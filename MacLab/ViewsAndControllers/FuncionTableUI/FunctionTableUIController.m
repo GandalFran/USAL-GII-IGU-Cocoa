@@ -15,7 +15,9 @@
 
 @implementation FunctionTableUIController
 
-extern NSString * setModelNotificationSelector;
+extern NSString * terminateApplication;
+extern NSString * sendModelToAddFunctionUI;
+extern NSString * sendModelToFunctionTableUI;
 
 /*------------------MODEL INITIALIZERS-------------------*/
 
@@ -26,24 +28,29 @@ extern NSString * setModelNotificationSelector;
     if (nil == self)
         return nil;
     
+    
+    NSLog(@"HOLA INICIANDO");
+    //Register handlers for the notification
+    NSNotificationCenter * notificationCenter = nil;
+    
+    [notificationCenter addObserver:self
+                           selector:@selector(handleSendModel:)
+                               name:sendModelToFunctionTableUI
+                             object:nil];
+    
     return self;
 }
 
 
 -(instancetype) initWithWindow:(NSWindow *)window
 {
+    
+    NSLog(@"HOLA EMPEZANDO");
+    
     self = [super initWithWindow:window];
     
     if(nil == self)
         return nil;
-    
-    //Register handlers for the notification
-    NSNotificationCenter * notificationCenter = nil;
-    
-    [notificationCenter addObserver:self
-                           selector:@selector(handleSendModel:)
-                               name:setModelNotificationSelector
-                             object:nil];
     return self;
 }
 
@@ -52,7 +59,12 @@ extern NSString * setModelNotificationSelector;
  */
 -(BOOL) windowShouldClose:(NSWindow *)sender
 {
-    [NSApp stop:self];
+    NSNotificationCenter * notificationCenter = nil;
+    
+    NSLog(@"HOLA TERMINANDO");
+    notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter postNotificationName:terminateApplication object:self];
+    
     return YES;
 }
 
@@ -71,6 +83,8 @@ extern NSString * setModelNotificationSelector;
  */
 -(void) handleSendModel:(NSNotification *)aNotification{
     NSDictionary * aDictionary = nil;
+    
+    NSLog(@"HOLA HE RECIBIDO EL MODELO");
     
     aDictionary = [aNotification userInfo];
     if(nil != aDictionary){
@@ -103,6 +117,8 @@ extern NSString * setModelNotificationSelector;
     NSNotificationCenter * notificationCenter = nil;
     AddFunctionUIController * addFunctionUIController;
     
+    NSLog(@"HOLA ESTOY AQUI");
+    
     addFunctionUIController = [[AddFunctionUIController alloc] init];
     if(nil == addFunctionUIController){
         //Show error
@@ -112,7 +128,7 @@ extern NSString * setModelNotificationSelector;
         notificationCenter = [NSNotificationCenter defaultCenter];
         notificationInfo = [NSDictionary dictionaryWithObject:model forKey:@"model"];
         
-        [notificationCenter postNotificationName:setModelNotificationSelector object:self userInfo:notificationInfo];
+        [notificationCenter postNotificationName:sendModelToAddFunctionUI object:self userInfo:notificationInfo];
     }
 }
 

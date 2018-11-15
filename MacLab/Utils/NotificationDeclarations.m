@@ -8,13 +8,10 @@
 
 #import "NotificationDeclarations.h"
 
-extern NSString * setModelNotificationSelector;
-
 @implementation NotificationDeclarations
 
-    NSString * setModelNotificationSelector = @"setModel";
-
-
-
+    NSString * sendModelToFunctionTableUI = @"sendModelToFunctionTableUI";
+    NSString * sendModelToAddFunctionUI = @"sendModelToAddFunctionUI";
+    NSString * terminateApplication = @"terminateApplication";
 
 @end

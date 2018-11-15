@@ -14,7 +14,8 @@
 
 @implementation PlotRepresentationUIController
 
-extern NSString * setModelNotificationSelector;
+extern NSString * terminateApplication;
+extern NSString * sendModelToFunctionTableUI;
 
 -(id) init {
     self = [super init];
@@ -32,15 +33,35 @@ extern NSString * setModelNotificationSelector;
     functionTableUIController = [[FunctionTableUIController alloc] init];
     
     if(nil == functionTableUIController){
-        //Show error
+        NSAlert * alert = nil;
+        NSModalResponse response;
+        
+        alert = [[NSAlert alloc] init];
+        
+        [alert setMessageText:@"Error"];
+        [alert setInformativeText:@"A problem ocurred during execution. The program will be restrated."];
+        [alert addButtonWithTitle:@"ok"];
+        [alert setAlertStyle:NSAlertStyleCritical];
+        
+        response = [alert runModal];
+        
+        [NSApp terminate:self];
     }else{
         [functionTableUIController showWindow:self];
         
         notificationCenter = [NSNotificationCenter defaultCenter];
         notificationInfo = [NSDictionary dictionaryWithObject:model forKey:@"model"];
         
-        [notificationCenter postNotificationName:setModelNotificationSelector object:self userInfo:notificationInfo];
+        [notificationCenter postNotificationName:sendModelToFunctionTableUI object:self userInfo:notificationInfo];
     }
+    
+    //register the handle for terminate app notification
+    [notificationCenter addObserver:self
+                           selector:@selector(handleTerminateApplication:)
+                               name:terminateApplication
+                             object:nil];
+    
+    
     
     return self;
 }
@@ -50,8 +71,18 @@ extern NSString * setModelNotificationSelector;
  */
 -(BOOL) windowShouldClose:(NSWindow *)sender
 {
-    [NSApp stop:self];
+    [NSApp terminate:self];
     return YES;
+}
+
+/*------------------NOTIFICATION HANDLERS-------------------*/
+
+/**
+ *  @brief handler to recieve the model
+ */
+-(void) handleTerminateApplication:(NSNotification *)aNotification{
+
+    [NSApp terminate:self];
 }
 
 

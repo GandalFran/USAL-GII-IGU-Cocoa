@@ -13,12 +13,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PlotRepresentationUIController : NSObject <NSWindowDelegate>{
+@interface PlotRepresentationUIController : NSWindowController <NSWindowDelegate>{
     IBOutlet NSPlotView * plotView;
     
     Model * model;
 }
 
+-(void) handleTerminateApplication:(NSNotification *)aNotification;
 @end
 
 NS_ASSUME_NONNULL_END
