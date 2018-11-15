@@ -54,62 +54,29 @@
 - (bool) removeFunctionWithID : (int) aFunctionID{
     if(0 > aFunctionID || currentID <= aFunctionID) return false;
     
-    int i;
-    bool found = false;
+    int index = [self getIndexWithID: aFunctionID];
+    if(-1 != index)
+        [modelData removeObjectAtIndex:index];
     
-    for(i=0; i<[modelData count]; i++){
-        if([[modelData objectAtIndex:i] ID] == aFunctionID){
-            found = true;
-            break;
-        }
-    }
-    
-    if(found)
-        [modelData removeObjectAtIndex:i];
-    
-    return found;
+    return (-1 != index);
 }
 
 - (bool) updateFunction : (Function *) aFunction{
     if(nil == aFunction || NULL == aFunction) return false;
     if(0 > [aFunction ID] || currentID <= [aFunction ID]) return false;
     
-    int i;
-    bool found = false;
+    int index = [self getIndexWithID: [aFunction ID]];
+    if(-1 != index)
+        [modelData insertObject:aFunction atIndex:index];
     
-    for(i=0; i<[modelData count]; i++){
-        if([[modelData objectAtIndex:i] ID] == [aFunction ID]){
-            found = true;
-            break;
-        }
-    }
-    
-    if(found){
-        [modelData removeObjectAtIndex:i];
-        [modelData addObject:aFunction];
-    }
-    
-    return found;
+    return (-1 != index);
 }
 
 - (Function *) getFunctionWithID : (int) aFunctionID{
     if(0 > aFunctionID || currentID <= aFunctionID) return false;
     
-    int i;
-    bool found = false;
-    
-    for(i=0; i<[modelData count]; i++){
-        if([[modelData objectAtIndex:i] ID] == aFunctionID){
-            found = true;
-            break;
-        }
-    }
-    
-    if(found){
-        return [modelData objectAtIndex:i];
-    }else{
-        return false;
-    }
+    int index = [self getIndexWithID: aFunctionID];
+    return (-1 == index)? nil : [[modelData objectAtIndex:index] copy];
 }
 
 - (bool) removeAllFunctions{
@@ -127,6 +94,22 @@
 
 - (int) getCurrentID{
     return currentID++;
+}
+
+- (int) getIndexWithID: (int) aFunctionID
+{
+    int i;
+    bool found;
+    
+    found = false;
+    for(i=0; i<[modelData count]; i++){
+        if([[modelData objectAtIndex:i] ID] == aFunctionID){
+            found = true;
+            break;
+        }
+    }
+    
+    return found? i : -1;
 }
 
 @end

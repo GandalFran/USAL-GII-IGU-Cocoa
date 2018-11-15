@@ -69,6 +69,24 @@ ExpressionAValue : (double) aValue
     }
 }
 
+- (id) copy
+{
+    Function * f = nil;
+    
+    f = [[Function alloc] init];
+    
+    [f setID: self.ID];
+    [f setName : [self.name copy] ];
+    [f setColor : [self.color copy] ];
+    [f setVisible : self.visible];
+    [f setType : self.type];
+    [f setAValue : self.aValue];
+    [f setBValue : self.bValue];
+    [f setCValue : self.cValue];
+    
+    return f;
+}
+
 /*---------------------Bussines logic-------------------*/
 
 -(double) calculateYValueWithXValue : (double) x

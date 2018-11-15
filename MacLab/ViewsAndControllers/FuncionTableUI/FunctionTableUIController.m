@@ -124,35 +124,7 @@ extern NSString * sendModelToFunctionTableUI;
 
 //TEMPORARY -- test model
 -(IBAction)resetZoom:(id)sender{
-    
-    Function * f = nil;
-    NSString * name = @"test";
-    NSColor * colors = [NSColor colorWithCalibratedRed:0.0 green:0.0 blue:0.0 alpha:1.0];
-    
-    f = [[Function alloc] initWithName:name color:colors ExpressionType:typeArc ExpressionAValue:1.0 ExpressionBValue:2.0 ExpressionCValue:3.0 ];
-    
-    int ID = [model addFunction:f];
-    NSLog(@"\nID=%d",ID);
-    
-    f = nil;
-    f = [model getFunctionWithID: ID];
-    NSLog(@"\n%@",f);
-    f = [model getFunctionWithID: 20];
-    NSLog(@"\n%@",f);
-    f = [model getFunctionWithID: -10];
-    NSLog(@"\n%@",f);
-    
-    [model removeFunctionWithID: [f ID]];
-    f = [model getFunctionWithID: ID];
-    NSLog(@"\n%@",f);
-    
-    int i;
-    for(i=0; i<20; i++){
-        name = [[NSString alloc] initWithFormat:@"FUNCTIONNUMBER%d",i];
-        f = [[Function alloc] initWithName:name color:colors ExpressionType:COSINE ExpressionAValue:1.0 ExpressionBValue:2.0 ExpressionCValue:3.0];
-    }
-    
-    NSLog(@"\n%@",model);
+
 }
 
 /*--------------Delegation-------------*/

@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef enum{COSINE, SINE, EXPONENTIAL, LINE, PARABOLA, HIPERBOLA, NONE_TYPE} FunctionType;
 
-@interface Function : NSObject{
+@interface Function : NSObject <NSCopying>{
     int _ID;
     NSString * _name;
     NSColor * _color;
