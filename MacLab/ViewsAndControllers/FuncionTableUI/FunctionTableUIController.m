@@ -8,49 +8,38 @@
 
 #import "Model.h"
 #import "FunctionTableUIController.h"
+#import "PlotRepresentationUIController.h"
 #import "AddFunctionUIController.h"
-#import "NotificationDeclarations.h"
 #import "Function.h"
 
 
 @implementation FunctionTableUIController
 
-extern NSString * terminateApplication;
-extern NSString * sendModelToAddFunctionUI;
-extern NSString * sendModelToFunctionTableUI;
-
-/*------------------MODEL INITIALIZERS-------------------*/
+/*----------------------Initializers--------------------*/
 
 -(id) init
 {
-    self = [super initWithWindowNibName:@"FunctionTableUI"];
-    
-    if (nil == self)
+    if(nil == [super initWithWindowNibName:@"FunctionTableUI"])
         return nil;
-    
-    
-    NSLog(@"HOLA INICIANDO");
-    //Register handlers for the notification
-    NSNotificationCenter * notificationCenter = nil;
-    
-    [notificationCenter addObserver:self
-                           selector:@selector(handleSendModel:)
-                               name:sendModelToFunctionTableUI
-                             object:nil];
-    
     return self;
 }
 
 
 -(instancetype) initWithWindow:(NSWindow *)window
 {
-    
-    NSLog(@"HOLA EMPEZANDO");
-    
     self = [super initWithWindow:window];
     
     if(nil == self)
         return nil;
+
+    //Register handlers for the notifications
+    NSNotificationCenter * notificationCenter = nil;
+
+    notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self
+                           selector:@selector(handleSendModel:)
+                               name:sendModelToFunctionTableUI
+                             object:nil];
     return self;
 }
 
@@ -61,11 +50,14 @@ extern NSString * sendModelToFunctionTableUI;
 {
     NSNotificationCenter * notificationCenter = nil;
     
-    NSLog(@"HOLA TERMINANDO");
     notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter postNotificationName:terminateApplication object:self];
     
     return YES;
+}
+
+-(void) awakeFromNib{
+    
 }
 
 /**
@@ -75,16 +67,18 @@ extern NSString * sendModelToFunctionTableUI;
     [super windowDidLoad];
 }
 
+/*----------------Notifications--------------*/
 
-/*------------------NOTIFICATION HANDLERS-------------------*/
+NSString * sendModelToAddFunctionUI = @"sendModelToAddFunctionUI";
+NSString * terminateApplication = @"terminateApplication";
+extern NSString * sendModelToFunctionTableUI;
 
 /**
- *  @brief handler to recieve the model
+ *  @brief handler for sendModelToFunctionTableUI notification:
+ *              recives the model
  */
 -(void) handleSendModel:(NSNotification *)aNotification{
     NSDictionary * aDictionary = nil;
-    
-    NSLog(@"HOLA HE RECIBIDO EL MODELO");
     
     aDictionary = [aNotification userInfo];
     if(nil != aDictionary){
@@ -92,11 +86,7 @@ extern NSString * sendModelToFunctionTableUI;
     }
 }
 
-/*----------------------TABLE DELEGATE----------------------*/
-
-
-
-/*-------------------------BUTTONS--------------------------*/
+/*--------------Intern actions-------------*/
 
 /*
  * @brief method to take the representation parameters and set it on the model
@@ -115,14 +105,10 @@ extern NSString * sendModelToFunctionTableUI;
 -(IBAction)addFunction:(id)sender{
     NSDictionary * notificationInfo = nil;
     NSNotificationCenter * notificationCenter = nil;
-    AddFunctionUIController * addFunctionUIController;
     
-    NSLog(@"HOLA ESTOY AQUI");
-    
-    addFunctionUIController = [[AddFunctionUIController alloc] init];
-    if(nil == addFunctionUIController){
-        //Show error
-    }else{
+    if(!addFunctionUIController){
+        addFunctionUIController = [[AddFunctionUIController alloc] init];
+        
         [addFunctionUIController showWindow:self];
         
         notificationCenter = [NSNotificationCenter defaultCenter];
@@ -138,30 +124,37 @@ extern NSString * sendModelToFunctionTableUI;
 
 //TEMPORARY -- test model
 -(IBAction)resetZoom:(id)sender{
-    NSString * name = @"test";
-    NSColor * colors = [NSColor colorWithCalibratedRed:0.0 green:0.0 blue:0.0 alpha:1.0];;
     
-    int ID = [model addFunctionWithName:name color:colors ExpressionType:COSINE ExpressionAValue:1.0 ExpressionBValue:2.0 ExpressionCValue:5.0];
+    Function * f = nil;
+    NSString * name = @"test";
+    NSColor * colors = [NSColor colorWithCalibratedRed:0.0 green:0.0 blue:0.0 alpha:1.0];
+    
+    f = [[Function alloc] initWithName:name color:colors ExpressionType:typeArc ExpressionAValue:1.0 ExpressionBValue:2.0 ExpressionCValue:3.0 ];
+    
+    int ID = [model addFunction:f];
     NSLog(@"\nID=%d",ID);
     
-    Function * f = [model getFunctionWithID: ID];
+    f = nil;
+    f = [model getFunctionWithID: ID];
     NSLog(@"\n%@",f);
     f = [model getFunctionWithID: 20];
     NSLog(@"\n%@",f);
     f = [model getFunctionWithID: -10];
     NSLog(@"\n%@",f);
     
-    [model deleteFunction: f];
+    [model removeFunctionWithID: [f ID]];
     f = [model getFunctionWithID: ID];
     NSLog(@"\n%@",f);
     
     int i;
     for(i=0; i<20; i++){
         name = [[NSString alloc] initWithFormat:@"FUNCTIONNUMBER%d",i];
-        [model addFunctionWithName:name color:colors ExpressionType:COSINE ExpressionAValue:1.0 ExpressionBValue:2.0 ExpressionCValue:3.0];
+        f = [[Function alloc] initWithName:name color:colors ExpressionType:COSINE ExpressionAValue:1.0 ExpressionBValue:2.0 ExpressionCValue:3.0];
     }
     
     NSLog(@"\n%@",model);
 }
+
+/*--------------Delegation-------------*/
 
 @end

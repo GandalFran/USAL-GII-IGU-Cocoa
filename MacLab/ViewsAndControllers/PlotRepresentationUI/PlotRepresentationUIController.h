@@ -10,6 +10,7 @@
 
 @class NSPlotView;
 @class Model;
+@class FunctionTableUIController;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
     IBOutlet NSPlotView * plotView;
     
     Model * model;
+    FunctionTableUIController * functionTableUIController;
 }
 
 -(void) handleTerminateApplication:(NSNotification *)aNotification;

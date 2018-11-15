@@ -6,7 +6,6 @@
 //  Copyright © 2018 GandalFran. All rights reserved.
 //
 
-#import "FunctionExpression.h"
 #import <Cocoa/Cocoa.h>
 
 @class Function;
@@ -23,18 +22,13 @@ typedef struct{
 
 @property (nonatomic) RepresentationParameters representationParameters;
 
-- (int) addFunctionWithName : (NSString *) name
-                      color : (NSColor *) color
-             ExpressionType : (FunctionType) type
-           ExpressionAValue : (double) a
-           ExpressionBValue : (double) b
-           ExpressionCValue : (double) c;
-
-- (bool) deleteFunction : (Function *) function;
-- (bool) updateFunction : (Function *) function;
-- (Function *) getFunctionWithID : (int) ID;
+- (int) addFunction: (Function *) aFunction;
+- (bool) removeFunctionWithID : (int) aFunctionID;
+- (bool) updateFunction : (Function *) aFunction;
+- (Function *) getFunctionWithID : (int) aFunctionID;
 - (bool) removeAllFunctions;
 - (NSArray *) allFunctions;
+- (long) count;
 
 @end
 

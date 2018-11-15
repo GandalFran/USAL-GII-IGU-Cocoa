@@ -21,10 +21,10 @@ NS_ASSUME_NONNULL_BEGIN
     IBOutlet NSTextField * ymaxTextField;
     
     Model * model;
+    AddFunctionUIController * addFunctionUIController;
 }
 
 -(IBAction)setNewRepresentationParameters:(id)sender;
-
 -(IBAction)addFunction:(id)sender;
 -(IBAction)deleteAllElements:(id)sender;
 -(IBAction)resetZoom:(id)sender;

@@ -14,8 +14,7 @@
 
 @implementation PlotRepresentationUIController
 
-extern NSString * terminateApplication;
-extern NSString * sendModelToFunctionTableUI;
+/*----------------------Initializers--------------------*/
 
 -(id) init {
     self = [super init];
@@ -23,45 +22,28 @@ extern NSString * sendModelToFunctionTableUI;
     if(nil == self)
         return nil;
     
+    //Instance model
     model =[[Model alloc] init];
     
-    //Create the secondary window and send the model
+    //Instance and throw secondary window
+    functionTableUIController = [[FunctionTableUIController alloc] init];
+    [functionTableUIController showWindow:self];
+    
+    //Send the model
     NSDictionary * notificationInfo = nil;
     NSNotificationCenter * notificationCenter = nil;
-    FunctionTableUIController * functionTableUIController;
     
-    functionTableUIController = [[FunctionTableUIController alloc] init];
-    
-    if(nil == functionTableUIController){
-        NSAlert * alert = nil;
-        NSModalResponse response;
-        
-        alert = [[NSAlert alloc] init];
-        
-        [alert setMessageText:@"Error"];
-        [alert setInformativeText:@"A problem ocurred during execution. The program will be restrated."];
-        [alert addButtonWithTitle:@"ok"];
-        [alert setAlertStyle:NSAlertStyleCritical];
-        
-        response = [alert runModal];
-        
-        [NSApp terminate:self];
-    }else{
-        [functionTableUIController showWindow:self];
-        
-        notificationCenter = [NSNotificationCenter defaultCenter];
-        notificationInfo = [NSDictionary dictionaryWithObject:model forKey:@"model"];
-        
-        [notificationCenter postNotificationName:sendModelToFunctionTableUI object:self userInfo:notificationInfo];
-    }
+    notificationCenter = [NSNotificationCenter defaultCenter];
+    notificationInfo = [NSDictionary dictionaryWithObject:model forKey:@"model"];
+    [notificationCenter postNotificationName:sendModelToFunctionTableUI
+                                          object:self
+                                        userInfo:notificationInfo];
     
     //register the handle for terminate app notification
     [notificationCenter addObserver:self
                            selector:@selector(handleTerminateApplication:)
                                name:terminateApplication
                              object:nil];
-    
-    
     
     return self;
 }
@@ -75,15 +57,20 @@ extern NSString * sendModelToFunctionTableUI;
     return YES;
 }
 
-/*------------------NOTIFICATION HANDLERS-------------------*/
+/*----------------Notifications--------------*/
+
+NSString * sendModelToFunctionTableUI = @"sendModelToFunctionTableUI";
+extern NSString * terminateApplication;
 
 /**
- *  @brief handler to recieve the model
+ *  @brief handler for the terminateApplication notification:
+ *          finishes the application
  */
 -(void) handleTerminateApplication:(NSNotification *)aNotification{
-
     [NSApp terminate:self];
 }
+
+/*--------------Intern actions-------------*/
 
 
 @end

@@ -6,88 +6,127 @@
 //  Copyright © 2018 GandalFran. All rights reserved.
 //
 
-#import "FunctionExpression.h"
 #import "Function.h"
 #import "Model.h"
 
 @implementation Model{
     int currentID;
-    NSMutableDictionary * model;
+    NSMutableArray * modelData;
 }
 
 @synthesize representationParameters=_representationParameters;
 
+/*----------------------Initializers--------------------*/
 
--(id) init{
+-(id) init
+{
     self = [super init];
     if(!self)
         return nil;
     
     currentID = 0;
-    model = [[NSMutableDictionary alloc] init];
+    modelData = [[NSMutableArray alloc] init];
     
-    if(!model)
+    if(!modelData)
         return nil;
     
     return self;
 }
 
-- (int) addFunctionWithName : (NSString *) name color : (NSColor *) color ExpressionType : (FunctionType) type ExpressionAValue : (double) a ExpressionBValue : (double) b ExpressionCValue : (double) c{
-    
-    Function * function = [[Function alloc] initWithID:[self getCurrentID] name:name color:color ExpressionType:type ExpressionAValue:a ExpressionBValue:b ExpressionCValue:c ];
-    
-    if(nil == function)
-        return -1;
+/*-------------------Bean basics-----------------------*/
 
-    [model setObject:function forKey:[self getKeyFromID:[function ID]]];
-    
-    return [function ID];
+-(NSString *) description
+{
+    return [[NSString alloc] initWithFormat: @"Model{currentID=%d, data=%@}",currentID,modelData.description];
 }
 
-- (bool) deleteFunction : (Function *) function{
-    if(nil == function) return false;
+/*---------------------Bussines logic-------------------*/
+
+- (int) addFunction: (Function *) aFunction{
+    if(nil == aFunction || NULL == aFunction) return -1;
     
-    [model removeObjectForKey:[self getKeyFromID:[function ID]]];
+    [aFunction setID:[self getCurrentID]];
+    [modelData addObject:aFunction];
     
-    return true;
+    return [aFunction ID];
 }
 
-- (bool) updateFunction : (Function *) function{
-    if(nil == function) return false;
-    if([function ID] < 0) return false;
-    if([[model allKeys] containsObject:[self getKeyFromID:[function ID]]]) return false;
+- (bool) removeFunctionWithID : (int) aFunctionID{
+    if(0 > aFunctionID || currentID <= aFunctionID) return false;
     
-    [model setObject:function forKey:[self getKeyFromID:[function ID]]];
+    int i;
+    bool found = false;
     
-    return true;
+    for(i=0; i<[modelData count]; i++){
+        if([[modelData objectAtIndex:i] ID] == aFunctionID){
+            found = true;
+            break;
+        }
+    }
+    
+    if(found)
+        [modelData removeObjectAtIndex:i];
+    
+    return found;
 }
 
-- (Function *) getFunctionWithID : (int) ID{
-    if(ID < 0 || [model count] <= ID ) return nil;
-    return [model valueForKey:[self getKeyFromID:ID]];
+- (bool) updateFunction : (Function *) aFunction{
+    if(nil == aFunction || NULL == aFunction) return false;
+    if(0 > [aFunction ID] || currentID <= [aFunction ID]) return false;
+    
+    int i;
+    bool found = false;
+    
+    for(i=0; i<[modelData count]; i++){
+        if([[modelData objectAtIndex:i] ID] == [aFunction ID]){
+            found = true;
+            break;
+        }
+    }
+    
+    if(found){
+        [modelData removeObjectAtIndex:i];
+        [modelData addObject:aFunction];
+    }
+    
+    return found;
+}
+
+- (Function *) getFunctionWithID : (int) aFunctionID{
+    if(0 > aFunctionID || currentID <= aFunctionID) return false;
+    
+    int i;
+    bool found = false;
+    
+    for(i=0; i<[modelData count]; i++){
+        if([[modelData objectAtIndex:i] ID] == aFunctionID){
+            found = true;
+            break;
+        }
+    }
+    
+    if(found){
+        return [modelData objectAtIndex:i];
+    }else{
+        return false;
+    }
 }
 
 - (bool) removeAllFunctions{
-    [model removeAllObjects];
+    [modelData removeAllObjects];
     return true;
 }
 
 - (NSArray *) allFunctions{
-    return [model allValues];
+    return [modelData copy];
+}
+
+- (long) count{
+    return [modelData count];
 }
 
 - (int) getCurrentID{
     return currentID++;
-}
-
-- (NSString *) getKeyFromID: (int) ID{
-    return [[NSString alloc] initWithFormat: @"%d",ID ];
-}
-
--(NSString *) description{
-    NSString * toString = nil;
-    toString = [[NSString alloc] initWithFormat: @"Model{currentID=%d, data=%@}",currentID,model];
-    return toString;
 }
 
 @end

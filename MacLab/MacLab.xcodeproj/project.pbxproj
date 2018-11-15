@@ -18,9 +18,7 @@
 		CD26FE13219711B40031B6F0 /* AddFunctionUIController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD26FE12219711B40031B6F0 /* AddFunctionUIController.m */; };
 		CDAE1542219AEEB900935252 /* FunctionTableUIController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAE1541219AEEB900935252 /* FunctionTableUIController.m */; };
 		CDAE1544219AEEEB00935252 /* FunctionTableUI.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDAE1543219AEEEB00935252 /* FunctionTableUI.xib */; };
-		CDF182FC219B77D90047C824 /* FunctionExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = CDF182FA219B77D90047C824 /* FunctionExpression.m */; };
 		CDF182FE219B77EB0047C824 /* Function.m in Sources */ = {isa = PBXBuildFile; fileRef = CDF182FD219B77EB0047C824 /* Function.m */; };
-		CDF18305219CA4D10047C824 /* NotificationDeclarations.m in Sources */ = {isa = PBXBuildFile; fileRef = CDF18304219CA4D10047C824 /* NotificationDeclarations.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,11 +43,7 @@
 		CDAE1541219AEEB900935252 /* FunctionTableUIController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FunctionTableUIController.m; sourceTree = "<group>"; };
 		CDAE1543219AEEEB00935252 /* FunctionTableUI.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FunctionTableUI.xib; sourceTree = "<group>"; };
 		CDF182F9219B77D90047C824 /* Function.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Function.h; path = Model/Bean/Function.h; sourceTree = "<group>"; };
-		CDF182FA219B77D90047C824 /* FunctionExpression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FunctionExpression.m; path = Model/Bean/FunctionExpression.m; sourceTree = "<group>"; };
-		CDF182FB219B77D90047C824 /* FunctionExpression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FunctionExpression.h; path = Model/Bean/FunctionExpression.h; sourceTree = "<group>"; };
 		CDF182FD219B77EB0047C824 /* Function.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Function.m; path = Model/Bean/Function.m; sourceTree = "<group>"; };
-		CDF18303219CA4D10047C824 /* NotificationDeclarations.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationDeclarations.h; sourceTree = "<group>"; };
-		CDF18304219CA4D10047C824 /* NotificationDeclarations.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationDeclarations.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,8 +92,6 @@
 		CD26FDFA21970FE50031B6F0 /* Bean */ = {
 			isa = PBXGroup;
 			children = (
-				CDF182FB219B77D90047C824 /* FunctionExpression.h */,
-				CDF182FA219B77D90047C824 /* FunctionExpression.m */,
 				CDF182F9219B77D90047C824 /* Function.h */,
 				CDF182FD219B77EB0047C824 /* Function.m */,
 			);
@@ -110,8 +102,8 @@
 		CD26FDFE219710210031B6F0 /* ViewsAndControllers */ = {
 			isa = PBXGroup;
 			children = (
-				CDAE153F219AEE3000935252 /* FuncionTableUI */,
 				CD26FE0E219711810031B6F0 /* AddFunctionUI */,
+				CDAE153F219AEE3000935252 /* FuncionTableUI */,
 				CD26FE0A219710D20031B6F0 /* PlotRepresentationUI */,
 			);
 			path = ViewsAndControllers;
@@ -162,8 +154,6 @@
 		CDF18302219CA4A70047C824 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				CDF18303219CA4D10047C824 /* NotificationDeclarations.h */,
-				CDF18304219CA4D10047C824 /* NotificationDeclarations.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -244,10 +234,8 @@
 				CD1BE93F219B661F002CD188 /* NSPlotView.m in Sources */,
 				CD26FE0D219710FC0031B6F0 /* PlotRepresentationUIController.m in Sources */,
 				CD26FE13219711B40031B6F0 /* AddFunctionUIController.m in Sources */,
-				CDF18305219CA4D10047C824 /* NotificationDeclarations.m in Sources */,
 				CD10C0032194A1980064ED2E /* AppDelegate.m in Sources */,
 				CD26FE03219710430031B6F0 /* Model.m in Sources */,
-				CDF182FC219B77D90047C824 /* FunctionExpression.m in Sources */,
 				CDAE1542219AEEB900935252 /* FunctionTableUIController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

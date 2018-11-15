@@ -9,16 +9,14 @@
 #import <Cocoa/Cocoa.h>
 #import <Foundation/Foundation.h>
 #import "AddFunctionUIController.h"
+#import "FunctionTableUIController.h"
 #import "Model.h"
-#import "FunctionExpression.h"
+#import "Function.h"
 
 
 @implementation AddFunctionUIController
 
-extern NSString * sendModelToAddFunctionUI;
-
-/*----------------------INITIALIZERS-----------------------*/
-
+/*----------------------Initializers--------------------*/
 -(id) init
 {
     self = [super initWithWindowNibName:@"AddFunctionUI"];
@@ -29,6 +27,7 @@ extern NSString * sendModelToAddFunctionUI;
     //Register handlers for the notification
     NSNotificationCenter * notificationCenter = nil;
     
+    notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self
                            selector:@selector(handleSendModel:)
                                name:sendModelToAddFunctionUI
@@ -82,10 +81,13 @@ extern NSString * sendModelToAddFunctionUI;
     [super windowDidLoad];
 }
 
-/*------------------NOTIFICATION HANDLERS-------------------*/
+/*----------------Notifications--------------*/
+
+extern NSString * sendModelToAddFunctionUI;
 
 /**
- *  @brief handler to recieve the model
+ *  @brief handler to sendModelToAddFunctionUI notification:
+ *          receives the model
  */
 -(void) handleSendModel:(NSNotification *)aNotification{
     NSDictionary * aDictionary = nil;
@@ -96,12 +98,13 @@ extern NSString * sendModelToAddFunctionUI;
     }
 }
 
-/*--------------------BUTTON HANDLERS-----------------------*/
+/*--------------Intern actions-------------*/
 -(IBAction)addFunction:(id)sender{
     FunctionType type;
     double aValue, bValue, cValue;
     NSColor * color = nil;
     NSString * functionName = nil;
+    Function * f = nil;
     
     aValue = [aValueTextField doubleValue];
     bValue = [bValueTextField doubleValue];
@@ -118,7 +121,9 @@ extern NSString * sendModelToAddFunctionUI;
         default: type = NONE_TYPE;
     }
     
-    [model addFunctionWithName:functionName color:color ExpressionType:type ExpressionAValue:aValue ExpressionBValue:bValue ExpressionCValue:cValue];
+    f = [[Function alloc] initWithName:functionName color:color ExpressionType:typeArc ExpressionAValue:aValue ExpressionBValue:bValue ExpressionCValue:cValue];
+    
+    [model addFunction:f];
 }
 
 -(IBAction)showOrHideCValueTextFiledAndLabel:(id)sender{
