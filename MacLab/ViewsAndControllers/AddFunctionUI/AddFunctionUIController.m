@@ -9,10 +9,83 @@
 #import <Cocoa/Cocoa.h>
 #import "AddFunctionUIController.h"
 #import "Model.h"
-#import "NSFunctionExpression.h"
+#import "FunctionExpression.h"
+
 
 @implementation AddFunctionUIController
 
+extern NSString * setModelNotificationSelector;
+
+/*----------------------INITIALIZERS-----------------------*/
+
+-(id) init
+{
+    self = [super initWithWindowNibName:@"AddFunctionUI"];
+    
+    if (nil == self)
+        return nil;
+    
+    return self;
+}
+
+
+-(instancetype) initWithWindow:(NSWindow *)window
+{
+    self = [super initWithWindow:window];
+    
+    if(nil == self)
+        return nil;
+    
+    //Register handlers for the notification
+    NSNotificationCenter * notificationCenter = nil;
+        
+    [notificationCenter addObserver:self
+                           selector:@selector(handleSendModel:)
+                               name:setModelNotificationSelector
+                             object:nil];
+    return self;
+}
+
+/**
+ * @brief ask the user if really want to lose the progress on the function creation
+ */
+-(BOOL) windowShouldClose:(NSWindow *)sender
+{
+    long result;
+    
+    result = NSRunAlertPanel(@"Atention",
+                             @"If you close this window, the function data will be losed\nDo you really want?",
+                             @"yes",
+                             @"no",
+                             nil);
+    if(result == NSAlertDefaultReturn)
+        return YES;
+    else
+        return NO;
+}
+
+/**
+ * @brief  for implement good coding practices
+ */
+- (void) windowDidLoad {
+    [super windowDidLoad];
+}
+
+/*------------------NOTIFICATION HANDLERS-------------------*/
+
+/**
+ *  @brief handler to recieve the model
+ */
+-(void) handleSendModel:(NSNotification *)aNotification{
+    NSDictionary * aDictionary = nil;
+    
+    aDictionary = [aNotification userInfo];
+    if(nil != aDictionary){
+        model = [aDictionary objectForKey:@"model"];
+    }
+}
+
+/*--------------------BUTTON HANDLERS-----------------------*/
 -(IBAction)addFunction:(id)sender{
     FunctionType type;
     double aValue, bValue, cValue;
@@ -49,5 +122,8 @@
     }
 }
 
+- (void) controlTextDidChange:(NSNotification *)obj{
+    
+}
 
 @end

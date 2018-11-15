@@ -6,10 +6,10 @@
 //  Copyright © 2018 GandalFran. All rights reserved.
 //
 
-#import "NSFunctionExpression.h"
+#import "FunctionExpression.h"
 #import <Cocoa/Cocoa.h>
 
-@class NSFunction;
+@class Function;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -30,9 +30,9 @@ typedef struct{
            ExpressionBValue : (double) b
            ExpressionCValue : (double) c;
 
-- (bool) deleteFunction : (NSFunction *) function;
-- (bool) updateFunction : (NSFunction *) function;
-- (NSFunction *) getFunctionWithID : (int) ID;
+- (bool) deleteFunction : (Function *) function;
+- (bool) updateFunction : (Function *) function;
+- (Function *) getFunctionWithID : (int) ID;
 - (bool) removeAllFunctions;
 - (NSArray *) allFunctions;
 

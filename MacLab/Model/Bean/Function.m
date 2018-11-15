@@ -6,14 +6,14 @@
 //  Copyright © 2018 GandalFran. All rights reserved.
 //
 
-#import "NSFunction.h"
-#import "NSFunctionExpression.h"
+#import "Function.h"
+#import "FunctionExpression.h"
 
-@implementation NSFunction
+@implementation Function
 
 @synthesize ID=_ID, name=_name, color=_color, expression=_expression, visible=_visible;
 
--(id)initWithID : (int) ID name : (NSString *) name color : (NSColor *) color Expression : (NSFunctionExpression *) expression visible:(bool)visible{
+-(id)initWithID : (int) ID name : (NSString *) name color : (NSColor *) color Expression : (FunctionExpression *) expression visible:(bool)visible{
     self = [super init];
     if (!self)
         return nil;
@@ -29,9 +29,9 @@
 
 -(id) initWithID : (int) ID name : (NSString *) name color : (NSColor *) color ExpressionType : (FunctionType) type ExpressionAValue : (double) a ExpressionBValue : (double) b ExpressionCValue : (double) c {
     
-    NSFunctionExpression * expressionInstance = nil;
+    FunctionExpression * expressionInstance = nil;
     
-    if(nil == (expressionInstance =  [[NSFunctionExpression alloc] initWithFunctionType:type aValue:a bValue:b cValue:c] ) )
+    if(nil == (expressionInstance =  [[FunctionExpression alloc] initWithFunctionType:type aValue:a bValue:b cValue:c] ) )
         return nil;
         
     return [self initWithID:ID name:name color:color Expression:expressionInstance visible:true];
@@ -50,10 +50,10 @@
 -(BOOL) isEqual:(id)object{
     if(NULL == object || nil == object){
         return false;
-    } else if( ![object isKindOfClass:[ NSFunction class] ]){
+    } else if( ![object isKindOfClass:[ Function class] ]){
         return false;
     }else{
-        NSFunction * f = object;
+        Function * f = object;
         return ( [f ID] == self.ID );
     }
 }

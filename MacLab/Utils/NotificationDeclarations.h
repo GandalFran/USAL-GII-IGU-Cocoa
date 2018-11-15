@@ -1,8 +1,8 @@
 //
-//  FunctionListUIController.h
+//  NotificationDeclarations.h
 //  MacLab
 //
-//  Created by GandalFran on 10/11/2018.
+//  Created by GandalFran on 14/11/2018.
 //  Copyright © 2018 GandalFran. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface FunctionListUIController : NSObject
+@interface NotificationDeclarations : NSObject
 
 @end
 

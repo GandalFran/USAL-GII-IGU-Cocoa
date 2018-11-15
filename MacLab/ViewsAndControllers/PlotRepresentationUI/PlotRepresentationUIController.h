@@ -6,14 +6,17 @@
 //  Copyright © 2018 GandalFran. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 @class NSPlotView;
+@class Model;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PlotRepresentationUIController : NSObject{
+@interface PlotRepresentationUIController : NSObject <NSWindowDelegate>{
     IBOutlet NSPlotView * plotView;
+    
+    Model * model;
 }
 
 @end

@@ -9,10 +9,11 @@
 #import <Cocoa/Cocoa.h>
 
 @class Model;
+@class AddFunctionUIController;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface FunctionTableUIController : NSObject{
+@interface FunctionTableUIController : NSWindowController<NSWindowDelegate>{
     
     IBOutlet NSTextField * xminTextField;
     IBOutlet NSTextField * xmaxTextField;
@@ -27,6 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 -(IBAction)addFunction:(id)sender;
 -(IBAction)deleteAllElements:(id)sender;
 -(IBAction)resetZoom:(id)sender;
+
+-(void) handleSendModel:(NSNotification *)aNotification;
 
 @end
 

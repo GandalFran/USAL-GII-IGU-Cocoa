@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef enum{COSINE, SINE, EXPONENTIAL, LINE, PARABOLA, HIPERBOLA, NONE_TYPE} FunctionType;
 
-@interface NSFunctionExpression : NSObject{
+@interface FunctionExpression : NSObject{
     FunctionType _type;;
     double _aValue;
     double _bValue;

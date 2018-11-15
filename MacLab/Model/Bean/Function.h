@@ -7,22 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "NSFunctionExpression.h"
+#import "FunctionExpression.h"
 #import "Cocoa/Cocoa.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NSFunction : NSObject{
+@interface Function : NSObject{
     int _ID;
     NSString * _name;
-    NSFunctionExpression * _expression;
+    FunctionExpression * _expression;
     NSColor * _color;
     bool _visible;
 }
 
 @property (nonatomic) int ID;
 @property (nonatomic, copy) NSString * name;
-@property (nonatomic, copy) NSFunctionExpression * expression;
+@property (nonatomic, copy) FunctionExpression * expression;
 @property (nonatomic, copy) NSColor * color;
 @property (nonatomic) bool visible;
 
@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(id)initWithID : (int) ID
            name : (NSString *) name
           color : (NSColor *) color
-     Expression : (NSFunctionExpression *) expression
+     Expression : (FunctionExpression *) expression
         visible : (bool) visible;
 
 -(id) initWithID : (int) ID

@@ -161,6 +161,9 @@
                     </button>
                 </subviews>
             </view>
+            <connections>
+                <outlet property="delegate" destination="IbI-iv-Glf" id="OBf-pA-v4f"/>
+            </connections>
             <point key="canvasLocation" x="-423" y="-157"/>
         </window>
         <customObject id="IbI-iv-Glf" customClass="AddFunctionUIController">

@@ -12,14 +12,15 @@
 		CD10C0082194A1990064ED2E /* PlotRepresentationUI.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD10C0062194A1990064ED2E /* PlotRepresentationUI.xib */; };
 		CD10C00B2194A1990064ED2E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CD10C00A2194A1990064ED2E /* main.m */; };
 		CD1BE93F219B661F002CD188 /* NSPlotView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD1BE93E219B661F002CD188 /* NSPlotView.m */; };
-		CD26FDFD219710020031B6F0 /* NSFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = CD26FDFC219710020031B6F0 /* NSFunction.m */; };
 		CD26FE03219710430031B6F0 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = CD26FE02219710430031B6F0 /* Model.m */; };
 		CD26FE0D219710FC0031B6F0 /* PlotRepresentationUIController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD26FE0C219710FC0031B6F0 /* PlotRepresentationUIController.m */; };
 		CD26FE10219711A10031B6F0 /* AddFunctionUI.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD26FE0F219711A10031B6F0 /* AddFunctionUI.xib */; };
 		CD26FE13219711B40031B6F0 /* AddFunctionUIController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD26FE12219711B40031B6F0 /* AddFunctionUIController.m */; };
-		CD322F982198250E009532AD /* NSFunctionExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = CD322F972198250E009532AD /* NSFunctionExpression.m */; };
 		CDAE1542219AEEB900935252 /* FunctionTableUIController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAE1541219AEEB900935252 /* FunctionTableUIController.m */; };
 		CDAE1544219AEEEB00935252 /* FunctionTableUI.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDAE1543219AEEEB00935252 /* FunctionTableUI.xib */; };
+		CDF182FC219B77D90047C824 /* FunctionExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = CDF182FA219B77D90047C824 /* FunctionExpression.m */; };
+		CDF182FE219B77EB0047C824 /* Function.m in Sources */ = {isa = PBXBuildFile; fileRef = CDF182FD219B77EB0047C824 /* Function.m */; };
+		CDF18305219CA4D10047C824 /* NotificationDeclarations.m in Sources */ = {isa = PBXBuildFile; fileRef = CDF18304219CA4D10047C824 /* NotificationDeclarations.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,8 +34,6 @@
 		CD10C00C2194A1990064ED2E /* MacLab.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacLab.entitlements; sourceTree = "<group>"; };
 		CD1BE93D219B661F002CD188 /* NSPlotView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSPlotView.h; sourceTree = "<group>"; };
 		CD1BE93E219B661F002CD188 /* NSPlotView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSPlotView.m; sourceTree = "<group>"; };
-		CD26FDFB219710020031B6F0 /* NSFunction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSFunction.h; sourceTree = "<group>"; };
-		CD26FDFC219710020031B6F0 /* NSFunction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSFunction.m; sourceTree = "<group>"; };
 		CD26FE01219710430031B6F0 /* Model.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
 		CD26FE02219710430031B6F0 /* Model.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Model.m; sourceTree = "<group>"; };
 		CD26FE0B219710FC0031B6F0 /* PlotRepresentationUIController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlotRepresentationUIController.h; sourceTree = "<group>"; };
@@ -42,11 +41,15 @@
 		CD26FE0F219711A10031B6F0 /* AddFunctionUI.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddFunctionUI.xib; sourceTree = "<group>"; };
 		CD26FE11219711B40031B6F0 /* AddFunctionUIController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddFunctionUIController.h; sourceTree = "<group>"; };
 		CD26FE12219711B40031B6F0 /* AddFunctionUIController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddFunctionUIController.m; sourceTree = "<group>"; };
-		CD322F962198250E009532AD /* NSFunctionExpression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSFunctionExpression.h; sourceTree = "<group>"; };
-		CD322F972198250E009532AD /* NSFunctionExpression.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSFunctionExpression.m; sourceTree = "<group>"; };
 		CDAE1540219AEEB900935252 /* FunctionTableUIController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FunctionTableUIController.h; sourceTree = "<group>"; };
 		CDAE1541219AEEB900935252 /* FunctionTableUIController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FunctionTableUIController.m; sourceTree = "<group>"; };
 		CDAE1543219AEEEB00935252 /* FunctionTableUI.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FunctionTableUI.xib; sourceTree = "<group>"; };
+		CDF182F9219B77D90047C824 /* Function.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Function.h; path = Model/Bean/Function.h; sourceTree = "<group>"; };
+		CDF182FA219B77D90047C824 /* FunctionExpression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FunctionExpression.m; path = Model/Bean/FunctionExpression.m; sourceTree = "<group>"; };
+		CDF182FB219B77D90047C824 /* FunctionExpression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FunctionExpression.h; path = Model/Bean/FunctionExpression.h; sourceTree = "<group>"; };
+		CDF182FD219B77EB0047C824 /* Function.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Function.m; path = Model/Bean/Function.m; sourceTree = "<group>"; };
+		CDF18303219CA4D10047C824 /* NotificationDeclarations.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationDeclarations.h; sourceTree = "<group>"; };
+		CDF18304219CA4D10047C824 /* NotificationDeclarations.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationDeclarations.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +66,7 @@
 		CD10BFF52194A1980064ED2E = {
 			isa = PBXGroup;
 			children = (
+				CDF18302219CA4A70047C824 /* Utils */,
 				CD26FDFF2197102B0031B6F0 /* Model */,
 				CD26FDFE219710210031B6F0 /* ViewsAndControllers */,
 				CD10C0002194A1980064ED2E /* MacLab */,
@@ -94,14 +98,14 @@
 		CD26FDFA21970FE50031B6F0 /* Bean */ = {
 			isa = PBXGroup;
 			children = (
-				CD26FDFB219710020031B6F0 /* NSFunction.h */,
-				CD26FDFC219710020031B6F0 /* NSFunction.m */,
-				CD322F962198250E009532AD /* NSFunctionExpression.h */,
-				CD322F972198250E009532AD /* NSFunctionExpression.m */,
+				CDF182FB219B77D90047C824 /* FunctionExpression.h */,
+				CDF182FA219B77D90047C824 /* FunctionExpression.m */,
+				CDF182F9219B77D90047C824 /* Function.h */,
+				CDF182FD219B77EB0047C824 /* Function.m */,
 			);
 			name = Bean;
-			path = ..;
-			sourceTree = "<group>";
+			path = "/Users/gandalfran/Desktop/IGU-Cocoa/MacLab";
+			sourceTree = "<absolute>";
 		};
 		CD26FDFE219710210031B6F0 /* ViewsAndControllers */ = {
 			isa = PBXGroup;
@@ -121,7 +125,7 @@
 				CD26FE02219710430031B6F0 /* Model.m */,
 			);
 			path = Model;
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 		CD26FE0A219710D20031B6F0 /* PlotRepresentationUI */ = {
 			isa = PBXGroup;
@@ -148,11 +152,20 @@
 		CDAE153F219AEE3000935252 /* FuncionTableUI */ = {
 			isa = PBXGroup;
 			children = (
+				CDAE1543219AEEEB00935252 /* FunctionTableUI.xib */,
 				CDAE1540219AEEB900935252 /* FunctionTableUIController.h */,
 				CDAE1541219AEEB900935252 /* FunctionTableUIController.m */,
-				CDAE1543219AEEEB00935252 /* FunctionTableUI.xib */,
 			);
 			path = FuncionTableUI;
+			sourceTree = "<group>";
+		};
+		CDF18302219CA4A70047C824 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				CDF18303219CA4D10047C824 /* NotificationDeclarations.h */,
+				CDF18304219CA4D10047C824 /* NotificationDeclarations.m */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -226,15 +239,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD26FDFD219710020031B6F0 /* NSFunction.m in Sources */,
+				CDF182FE219B77EB0047C824 /* Function.m in Sources */,
 				CD10C00B2194A1990064ED2E /* main.m in Sources */,
 				CD1BE93F219B661F002CD188 /* NSPlotView.m in Sources */,
 				CD26FE0D219710FC0031B6F0 /* PlotRepresentationUIController.m in Sources */,
 				CD26FE13219711B40031B6F0 /* AddFunctionUIController.m in Sources */,
+				CDF18305219CA4D10047C824 /* NotificationDeclarations.m in Sources */,
 				CD10C0032194A1980064ED2E /* AppDelegate.m in Sources */,
 				CD26FE03219710430031B6F0 /* Model.m in Sources */,
+				CDF182FC219B77D90047C824 /* FunctionExpression.m in Sources */,
 				CDAE1542219AEEB900935252 /* FunctionTableUIController.m in Sources */,
-				CD322F982198250E009532AD /* NSFunctionExpression.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
