@@ -8,15 +8,18 @@
 
 #import <Cocoa/Cocoa.h>
 #import <Foundation/Foundation.h>
-#import "AddFunctionUIController.h"
-#import "FunctionTableUIController.h"
+
 #import "Model.h"
 #import "Function.h"
+
+#import "AddFunctionUIController.h"
+#import "FunctionTableUIController.h"
 
 
 @implementation AddFunctionUIController
 
 /*----------------------Initializers--------------------*/
+
 -(id) init
 {
     self = [super initWithWindowNibName:@"AddFunctionUI"];
@@ -24,7 +27,7 @@
     if (nil == self)
         return nil;
     
-    //Register handlers for the notification
+    //Register handlers for notifications
     NSNotificationCenter * notificationCenter = nil;
     
     notificationCenter = [NSNotificationCenter defaultCenter];
@@ -33,10 +36,8 @@
                                name:sendModelToAddFunctionUI
                              object:nil];
     
-    
     return self;
 }
-
 
 -(instancetype) initWithWindow:(NSWindow *)window
 {
@@ -74,9 +75,11 @@
     }
 }
 
-/**
- * @brief  for implement good coding practices
- */
+-(void) awakeFromNib{
+    [cValueLabel setHidden: true];
+    [cValueTextField setHidden: true];
+}
+
 - (void) windowDidLoad {
     [super windowDidLoad];
 }
@@ -98,48 +101,65 @@ extern NSString * sendModelToAddFunctionUI;
     }
 }
 
-/*--------------Intern actions-------------*/
+/*--------------Delegation-------------*/
+
+- (void) controlTextDidChange:(NSNotification *)obj{
+    //TODO implement
+}
+
+/*--------------Bussinges logic-------------*/
+
+/**
+ * @brief retrieves the information from the formulary fields and
+ *          instances a Function, then add it to the model.
+ */
 -(IBAction)addFunction:(id)sender{
-    FunctionType type;
+    FunctionType aType;
     double aValue, bValue, cValue;
-    NSColor * color = nil;
-    NSString * functionName = nil;
-    Function * f = nil;
+    NSColor * aColor = nil;
+    NSString * aFunctionName = nil;
+    Function * aFunction = nil;
     
     aValue = [aValueTextField doubleValue];
     bValue = [bValueTextField doubleValue];
     cValue = [cValueTextField doubleValue];
-    color = [colorColorWell color];
-    functionName = [nameTextField stringValue];
+    aColor = [colorColorWell color];
+    aFunctionName = [nameTextField stringValue];
     switch((int)[typeCombobox indexOfSelectedItem]){
-        case 0: type = COSINE; break;
-        case 1: type = SINE; break;
-        case 2: type = EXPONENTIAL; break;
-        case 3: type = LINE; break;
-        case 4: type = PARABOLA; break;
-        case 5: type = HIPERBOLA; break;
-        default: type = NONE_TYPE;
+        case 0: aType = COSINE; break;
+        case 1: aType = SINE; break;
+        case 2: aType = EXPONENTIAL; break;
+        case 3: aType = LINE; break;
+        case 4: aType = PARABOLA; break;
+        case 5: aType = HIPERBOLA; break;
+        default: aType = NONE_TYPE;
     }
     
-    f = [[Function alloc] initWithName:functionName color:color ExpressionType:typeArc ExpressionAValue:aValue ExpressionBValue:bValue ExpressionCValue:cValue];
+    aFunction = [[Function alloc] initWithName:aFunctionName
+                                         color:aColor
+                                ExpressionType:aType
+                              ExpressionAValue:aValue
+                              ExpressionBValue:bValue
+                              ExpressionCValue:cValue];
     
-    [model addFunction:f];
+    [model addFunction:aFunction];
+    //TODO cerrar ventana
 }
 
+/**
+ *  @brief hides or shows the cValue label and textbox
+ *          according to the type comboBox
+ */
 -(IBAction)showOrHideCValueTextFiledAndLabel:(id)sender{
     int selectedItem = (int)[typeCombobox indexOfSelectedItem];
     
-    if( 4 == selectedItem ){
+    if( 4 != selectedItem ){
         [cValueLabel setHidden: true];
         [cValueTextField setHidden: true];
     }else{
         [cValueLabel setHidden: false];
         [cValueTextField setHidden: false];
     }
-}
-
-- (void) controlTextDidChange:(NSNotification *)obj{
-    
 }
 
 @end

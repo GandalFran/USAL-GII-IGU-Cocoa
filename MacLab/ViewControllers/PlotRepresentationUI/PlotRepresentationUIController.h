@@ -8,20 +8,28 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class NSPlotView;
 @class Model;
+@class NSPlotView;
 @class FunctionTableUIController;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PlotRepresentationUIController : NSWindowController <NSWindowDelegate>{
+    
     IBOutlet NSPlotView * plotView;
     
     Model * model;
+    
     FunctionTableUIController * functionTableUIController;
 }
 
--(void) handleTerminateApplication:(NSNotification *)aNotification;
+/*----------------Notifications--------------*/
+-(void) handleAddRepresentation:(NSNotification *)aNotification;
+/*--------------Delegation-------------*/
+
+/*--------------Bussines logic-------------*/
+-(void) addRepresentationWithFunctionArray: (NSArray *) aFunctionArray;
+
 @end
 
 NS_ASSUME_NONNULL_END

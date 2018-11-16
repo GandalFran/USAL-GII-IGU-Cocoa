@@ -6,11 +6,13 @@
 //  Copyright © 2018 GandalFran. All rights reserved.
 //
 
-#import "PlotRepresentationUIController.h"
-#import "FunctionTableUIController.h"
-#import "NSPlotView.h"
-#import "Model.h"
+#import <Cocoa/Cocoa.h>
 
+#import "Model.h"
+#import "NSPlotView.h"
+
+#import "FunctionTableUIController.h"
+#import "PlotRepresentationUIController.h"
 
 @implementation PlotRepresentationUIController
 
@@ -36,13 +38,13 @@
     notificationCenter = [NSNotificationCenter defaultCenter];
     notificationInfo = [NSDictionary dictionaryWithObject:model forKey:@"model"];
     [notificationCenter postNotificationName:sendModelToFunctionTableUI
-                                          object:self
-                                        userInfo:notificationInfo];
+                                      object:self
+                                    userInfo:notificationInfo];
     
     //register the handle for terminate app notification
     [notificationCenter addObserver:self
-                           selector:@selector(handleTerminateApplication:)
-                               name:terminateApplication
+                           selector:@selector(handleAddRepresentation:)
+                               name:sendNewRepresentation
                              object:nil];
     
     return self;
@@ -60,17 +62,29 @@
 /*----------------Notifications--------------*/
 
 NSString * sendModelToFunctionTableUI = @"sendModelToFunctionTableUI";
-extern NSString * terminateApplication;
+extern NSString * sendNewRepresentation;
 
 /**
- *  @brief handler for the terminateApplication notification:
- *          finishes the application
+ *  @brief handler for the sendNewRepresentation notification:
+ *          refreshes the representation content
  */
--(void) handleTerminateApplication:(NSNotification *)aNotification{
-    [NSApp terminate:self];
+-(void) handleAddRepresentation:(NSNotification *)aNotification{
+    NSArray * aFunctionArray = nil;
+    NSDictionary * aDictionary = nil;
+    
+    aDictionary = [aNotification userInfo];
+    aFunctionArray = [aDictionary objectForKey:@"representationArray"];
+    
+    [self addRepresentationWithFunctionArray: aFunctionArray];
 }
 
-/*--------------Intern actions-------------*/
+/*--------------Delegation-------------*/
 
+
+/*--------------Bussines logic-------------*/
+
+-(void) addRepresentationWithFunctionArray: (NSArray *) aFunctionArray{
+    //TODO implement
+}
 
 @end

@@ -33,22 +33,22 @@ typedef enum{COSINE, SINE, EXPONENTIAL, LINE, PARABOLA, HIPERBOLA, NONE_TYPE} Fu
 @property (nonatomic) double cValue;
 
 -(id) initWithID : (int) ID
-            name : (NSString *) name
-           color : (NSColor *) color
-         visible : (bool) visible
-    FunctionType : (FunctionType) type
+            name : (NSString *) aName
+           color : (NSColor *) aColor
+         visible : (bool) aVisible
+    FunctionType : (FunctionType) aType
 ExpressionAValue : (double) aValue
  ExpressionBValue: (double) bValue
  ExpressionCValue: (double) cValue;
 
--(id) initWithName : (NSString *) name
-            color : (NSColor *) color
-   ExpressionType : (FunctionType) type
- ExpressionAValue : (double) a
- ExpressionBValue : (double) b
- ExpressionCValue : (double) c;
+-(id) initWithName : (NSString *) aName
+            color : (NSColor *) aColor
+   ExpressionType : (FunctionType) aType
+ ExpressionAValue : (double) aValue
+ ExpressionBValue : (double) bValue
+ ExpressionCValue : (double) cValue;
 
--(double) calculateYValueWithXValue : (double) x;
+-(double) calculateYValueWithXValue : (double) aXValue;
 
 @end
 

@@ -15,10 +15,10 @@
 /*----------------------Initializers--------------------*/
 
 -(id) initWithID : (int) ID
-            name : (NSString *) name
-           color : (NSColor *) color
-         visible : (bool) visible
-    FunctionType : (FunctionType) type
+            name : (NSString *) aName
+           color : (NSColor *) aColor
+         visible : (bool) aVisible
+    FunctionType : (FunctionType) aType
 ExpressionAValue : (double) aValue
  ExpressionBValue: (double) bValue
  ExpressionCValue: (double) cValue
@@ -29,10 +29,10 @@ ExpressionAValue : (double) aValue
         return nil;
     
     [self setID: ID];
-    [self setName : name];
-    [self setColor : color];
-    [self setVisible : visible];
-    [self setType : type];
+    [self setName : aName];
+    [self setColor : aColor];
+    [self setVisible : aVisible];
+    [self setType : aType];
     [self setAValue : aValue];
     [self setBValue : bValue];
     [self setCValue : cValue];
@@ -40,14 +40,21 @@ ExpressionAValue : (double) aValue
     return self;
 }
 
--(id) initWithName : (NSString *) name
-             color : (NSColor *) color
-    ExpressionType : (FunctionType) type
-  ExpressionAValue : (double) a
-  ExpressionBValue : (double) b
-   ExpressionCValue: (double) c
+-(id) initWithName : (NSString *) aName
+             color : (NSColor *) aColor
+    ExpressionType : (FunctionType) aType
+  ExpressionAValue : (double) aValue
+  ExpressionBValue : (double) bValue
+   ExpressionCValue: (double) cValue
 {
-    return [self initWithID:0 name:name color:color visible:true FunctionType:type ExpressionAValue:a ExpressionBValue:b ExpressionCValue:c];
+    return [self initWithID:0
+                       name:aName
+                      color:aColor
+                    visible:true
+               FunctionType:aType
+           ExpressionAValue:aValue
+           ExpressionBValue:bValue
+           ExpressionCValue:cValue];
 }
 
 /*----------------------Bean basics--------------------*/
@@ -87,9 +94,28 @@ ExpressionAValue : (double) aValue
     return f;
 }
 
+
+
+- (nonnull id)copyWithZone:(nullable NSZone *)zone {
+    Function * f = nil;
+    
+    f = [[Function alloc] init];
+    
+    [f setID: self.ID];
+    [f setName : [self.name copy] ];
+    [f setColor : [self.color copy] ];
+    [f setVisible : self.visible];
+    [f setType : self.type];
+    [f setAValue : self.aValue];
+    [f setBValue : self.bValue];
+    [f setCValue : self.cValue];
+    
+    return f;
+}
+
 /*---------------------Bussines logic-------------------*/
 
--(double) calculateYValueWithXValue : (double) x
+-(double) calculateYValueWithXValue : (double) aXValue
 {
     double result, a, b, c;
     
@@ -99,22 +125,22 @@ ExpressionAValue : (double) aValue
     
     switch(self.type){
         case COSINE:
-            result =  a * cos( b * x );
+            result =  a * cos( b * aXValue );
             break;
         case SINE:
-            result = a * sin( b * x );
+            result = a * sin( b * aXValue );
             break;
         case EXPONENTIAL:
-            result = a * pow(x,b);
+            result = a * pow(aXValue,b);
             break;
         case LINE:
-            result = (a * x) + b;
+            result = (a * aXValue) + b;
             break;
         case PARABOLA:
-            result =  (a*x*x) + (b*x) + c;
+            result =  (a*aXValue*aXValue) + (b*aXValue) + c;
             break;
         case HIPERBOLA:
-            result = a / (b * x);
+            result = a / (b * aXValue);
             break;
         default:
             result = 0;

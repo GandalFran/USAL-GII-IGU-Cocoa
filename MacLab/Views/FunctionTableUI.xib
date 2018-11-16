@@ -20,7 +20,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="785" height="574"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="960"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="785" height="574"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -36,6 +36,15 @@
                                     <rect key="frame" x="18" y="28" width="33" height="17"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" title="xmin" id="0dw-Cl-T2k">
+                                        <font key="font" usesAppearanceFont="YES"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wAd-3O-gk1">
+                                    <rect key="frame" x="168" y="27" width="36" height="17"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="xmax" id="RhR-t6-6I2">
                                         <font key="font" usesAppearanceFont="YES"/>
                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -68,6 +77,9 @@
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
+                                    <connections>
+                                        <outlet property="delegate" destination="-2" id="4ZZ-sT-Ka6"/>
+                                    </connections>
                                 </textField>
                                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xtC-b7-rsc">
                                     <rect key="frame" x="210" y="25" width="81" height="22"/>
@@ -78,6 +90,9 @@
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
+                                    <connections>
+                                        <outlet property="delegate" destination="-2" id="rD2-gi-Bkr"/>
+                                    </connections>
                                 </textField>
                                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cD4-8g-7Oy">
                                     <rect key="frame" x="360" y="26" width="81" height="22"/>
@@ -88,6 +103,9 @@
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
+                                    <connections>
+                                        <outlet property="delegate" destination="-2" id="R7S-qE-0C1"/>
+                                    </connections>
                                 </textField>
                                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fdq-Cv-4YY">
                                     <rect key="frame" x="508" y="25" width="81" height="22"/>
@@ -98,27 +116,21 @@
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
+                                    <connections>
+                                        <outlet property="delegate" destination="-2" id="LCc-MO-MBm"/>
+                                    </connections>
                                 </textField>
                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cLi-tX-jW6">
                                     <rect key="frame" x="622" y="20" width="87" height="32"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Bdo-6J-bOu">
+                                    <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" imagePosition="overlaps" alignment="center" borderStyle="border" toolTip="save representation parameters" imageScaling="proportionallyDown" inset="2" id="Bdo-6J-bOu">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
                                     <connections>
-                                        <action selector="setNewRepresentationParameters:" target="-2" id="RxD-8q-mVM"/>
+                                        <action selector="setNewRepresentationParameters:" target="-2" id="BTs-UX-gBf"/>
                                     </connections>
                                 </button>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wAd-3O-gk1">
-                                    <rect key="frame" x="168" y="27" width="36" height="17"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" title="xmax" id="RhR-t6-6I2">
-                                        <font key="font" usesAppearanceFont="YES"/>
-                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                </textField>
                             </subviews>
                         </view>
                     </box>
@@ -210,6 +222,10 @@
                                                         </prototypeCellViews>
                                                     </tableColumn>
                                                 </tableColumns>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="-2" id="oMK-CW-8WJ"/>
+                                                    <outlet property="delegate" destination="-2" id="1Kb-LA-hcb"/>
+                                                </connections>
                                             </tableView>
                                         </subviews>
                                     </clipView>
@@ -226,7 +242,7 @@
                                         <autoresizingMask key="autoresizingMask"/>
                                     </tableHeaderView>
                                 </scrollView>
-                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1cU-XS-bBd">
+                                <button toolTip="add function" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1cU-XS-bBd">
                                     <rect key="frame" x="658" y="379" width="40" height="32"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSAddTemplate" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="3Sn-9J-j8s">
@@ -234,10 +250,10 @@
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
                                     <connections>
-                                        <action selector="addFunction:" target="-2" id="oQv-kc-REt"/>
+                                        <action selector="addFunction:" target="-2" id="CVV-Tu-NAZ"/>
                                     </connections>
                                 </button>
-                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RiU-cW-EJg">
+                                <button toolTip="remove all functions" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RiU-cW-EJg">
                                     <rect key="frame" x="610" y="379" width="40" height="32"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSStopProgressTemplate" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dzJ-vO-HVh">
@@ -245,18 +261,18 @@
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
                                     <connections>
-                                        <action selector="deleteAllElements:" target="-2" id="f9H-8p-hkD"/>
+                                        <action selector="removeAllModelElements:" target="-2" id="f9H-8p-hkD"/>
                                     </connections>
                                 </button>
-                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="y9H-5W-8Yg">
-                                    <rect key="frame" x="506" y="379" width="40" height="32"/>
+                                <button toolTip="represent selcted functions" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pAu-54-ZA7">
+                                    <rect key="frame" x="14" y="379" width="218" height="32"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSRevealFreestandingTemplate" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="kOa-wz-afu">
+                                    <buttonCell key="cell" type="push" title="Represent selected functions" bezelStyle="rounded" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tQ2-AS-vCY">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
                                     <connections>
-                                        <action selector="resetZoom:" target="-2" id="P3o-ys-t9Q"/>
+                                        <action selector="representSelectedFunctions:" target="-2" id="Pqf-xp-5Xa"/>
                                     </connections>
                                 </button>
                             </subviews>
@@ -272,7 +288,6 @@
     </objects>
     <resources>
         <image name="NSAddTemplate" width="11" height="11"/>
-        <image name="NSRevealFreestandingTemplate" width="14" height="14"/>
         <image name="NSStopProgressTemplate" width="11" height="11"/>
     </resources>
 </document>

@@ -6,11 +6,14 @@
 //  Copyright © 2018 GandalFran. All rights reserved.
 //
 
+#import <Cocoa/Cocoa.h>
+
 #import "Model.h"
+#import "Function.h"
+
+#import "AddFunctionUIController.h"
 #import "FunctionTableUIController.h"
 #import "PlotRepresentationUIController.h"
-#import "AddFunctionUIController.h"
-#import "Function.h"
 
 
 @implementation FunctionTableUIController
@@ -23,7 +26,6 @@
         return nil;
     return self;
 }
-
 
 -(instancetype) initWithWindow:(NSWindow *)window
 {
@@ -44,25 +46,14 @@
 }
 
 /**
- * @brief stop the application if the user closes the window
+ * @brief send a notification to the main controller to stop the application if the user closes the window
  */
 -(BOOL) windowShouldClose:(NSWindow *)sender
 {
-    NSNotificationCenter * notificationCenter = nil;
-    
-    notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter postNotificationName:terminateApplication object:self];
-    
+    [NSApp terminate:self];
     return YES;
 }
 
--(void) awakeFromNib{
-    
-}
-
-/**
- * @brief  for implement good coding practices
- */
 - (void) windowDidLoad {
     [super windowDidLoad];
 }
@@ -70,7 +61,7 @@
 /*----------------Notifications--------------*/
 
 NSString * sendModelToAddFunctionUI = @"sendModelToAddFunctionUI";
-NSString * terminateApplication = @"terminateApplication";
+NSString * sendNewRepresentation = @"sendNewRepresentation";
 extern NSString * sendModelToFunctionTableUI;
 
 /**
@@ -81,15 +72,18 @@ extern NSString * sendModelToFunctionTableUI;
     NSDictionary * aDictionary = nil;
     
     aDictionary = [aNotification userInfo];
-    if(nil != aDictionary){
+    if(nil != aDictionary)
         model = [aDictionary objectForKey:@"model"];
-    }
+    
 }
 
-/*--------------Intern actions-------------*/
+/*--------------Delegation-------------*/
+
+
+/*--------------Bussines logic-------------*/
 
 /*
- * @brief method to take the representation parameters and set it on the model
+ * @brief take the representation parameters and set it on the model
  */
 -(IBAction)setNewRepresentationParameters:(id)sender{
     RepresentationParameters new;
@@ -102,6 +96,9 @@ extern NSString * sendModelToFunctionTableUI;
     [model setRepresentationParameters:new];
 }
 
+/**
+ *  @brief displays the addFunction formulary when the addFunction button is pushed
+ */
 -(IBAction)addFunction:(id)sender{
     NSDictionary * notificationInfo = nil;
     NSNotificationCenter * notificationCenter = nil;
@@ -118,15 +115,31 @@ extern NSString * sendModelToFunctionTableUI;
     }
 }
 
--(IBAction)deleteAllElements:(id)sender{
+/**
+ *  @brief removes all elements from model
+ */
+-(IBAction)removeAllModelElements:(id)sender{
     [model removeAllFunctions];
 }
 
-//TEMPORARY -- test model
--(IBAction)resetZoom:(id)sender{
-
+/**
+ *  @brief take the selected items and send them to the main window
+ *          to be represented
+ */
+-(IBAction)representSelectedFunctions:(id)sender{
+    NSArray * aFunctionArray = nil;
+    NSDictionary * aDictionary = nil;
+    NSNotificationCenter * aNotificationCenter = nil;
+    
+    //TODO retrieve selected functions in table
+    
+    aNotificationCenter = [NSNotificationCenter defaultCenter];
+    
+    aDictionary = [NSDictionary dictionaryWithObject: aFunctionArray
+                                              forKey:@"representationArray"];
+    [aNotificationCenter postNotificationName:sendNewRepresentation
+                                       object:self
+                                     userInfo:aDictionary];
 }
-
-/*--------------Delegation-------------*/
 
 @end

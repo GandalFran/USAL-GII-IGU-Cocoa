@@ -683,26 +683,27 @@
         <window title="MacLab" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="480" height="360"/>
+            <rect key="contentRect" x="335" y="390" width="707" height="477"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="960"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
+                <rect key="frame" x="0.0" y="0.0" width="707" height="477"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fNv-lo-4Bp" customClass="NSPlotView">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <rect key="frame" x="0.0" y="0.0" width="707" height="477"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     </customView>
                 </subviews>
             </view>
             <connections>
                 <outlet property="delegate" destination="hem-EW-vmY" id="0C3-Hm-f9e"/>
             </connections>
-            <point key="canvasLocation" x="162" y="152"/>
+            <point key="canvasLocation" x="275.5" y="210.5"/>
         </window>
         <customObject id="hem-EW-vmY" customClass="PlotRepresentationUIController">
             <connections>
-                <outlet property="plotView" destination="fNv-lo-4Bp" id="vX4-Fc-zKw"/>
+                <outlet property="plotView" destination="fNv-lo-4Bp" id="5Oa-GO-SBj"/>
+                <outlet property="window" destination="QvC-M9-y7g" id="tiv-OI-LSO"/>
             </connections>
         </customObject>
     </objects>

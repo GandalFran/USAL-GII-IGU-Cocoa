@@ -60,11 +60,12 @@
 		CD10BFF52194A1980064ED2E = {
 			isa = PBXGroup;
 			children = (
-				CDF18302219CA4A70047C824 /* Utils */,
-				CD26FDFF2197102B0031B6F0 /* Model */,
-				CD26FDFE219710210031B6F0 /* ViewsAndControllers */,
 				CD10C0002194A1980064ED2E /* MacLab */,
 				CD10BFFF2194A1980064ED2E /* Products */,
+				CD20BA90219EB58C00302CB0 /* Views */,
+				CD20BA91219EB59900302CB0 /* ViewControllers */,
+				CD26FDFF2197102B0031B6F0 /* Model */,
+				CDF18302219CA4A70047C824 /* Utils */,
 			);
 			sourceTree = "<group>";
 		};
@@ -89,6 +90,26 @@
 			path = MacLab;
 			sourceTree = "<group>";
 		};
+		CD20BA90219EB58C00302CB0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CD26FE0F219711A10031B6F0 /* AddFunctionUI.xib */,
+				CDAE1543219AEEEB00935252 /* FunctionTableUI.xib */,
+				CD10C0062194A1990064ED2E /* PlotRepresentationUI.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		CD20BA91219EB59900302CB0 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				CD26FE0E219711810031B6F0 /* AddFunctionUI */,
+				CDAE153F219AEE3000935252 /* FuncionTableUI */,
+				CD26FE0A219710D20031B6F0 /* PlotRepresentationUI */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
 		CD26FDFA21970FE50031B6F0 /* Bean */ = {
 			isa = PBXGroup;
 			children = (
@@ -99,22 +120,12 @@
 			path = "/Users/gandalfran/Desktop/IGU-Cocoa/MacLab";
 			sourceTree = "<absolute>";
 		};
-		CD26FDFE219710210031B6F0 /* ViewsAndControllers */ = {
-			isa = PBXGroup;
-			children = (
-				CD26FE0E219711810031B6F0 /* AddFunctionUI */,
-				CDAE153F219AEE3000935252 /* FuncionTableUI */,
-				CD26FE0A219710D20031B6F0 /* PlotRepresentationUI */,
-			);
-			path = ViewsAndControllers;
-			sourceTree = "<group>";
-		};
 		CD26FDFF2197102B0031B6F0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				CD26FDFA21970FE50031B6F0 /* Bean */,
 				CD26FE01219710430031B6F0 /* Model.h */,
 				CD26FE02219710430031B6F0 /* Model.m */,
+				CD26FDFA21970FE50031B6F0 /* Bean */,
 			);
 			path = Model;
 			sourceTree = SOURCE_ROOT;
@@ -122,7 +133,6 @@
 		CD26FE0A219710D20031B6F0 /* PlotRepresentationUI */ = {
 			isa = PBXGroup;
 			children = (
-				CD10C0062194A1990064ED2E /* PlotRepresentationUI.xib */,
 				CD26FE0B219710FC0031B6F0 /* PlotRepresentationUIController.h */,
 				CD26FE0C219710FC0031B6F0 /* PlotRepresentationUIController.m */,
 				CD1BE93D219B661F002CD188 /* NSPlotView.h */,
@@ -134,7 +144,6 @@
 		CD26FE0E219711810031B6F0 /* AddFunctionUI */ = {
 			isa = PBXGroup;
 			children = (
-				CD26FE0F219711A10031B6F0 /* AddFunctionUI.xib */,
 				CD26FE11219711B40031B6F0 /* AddFunctionUIController.h */,
 				CD26FE12219711B40031B6F0 /* AddFunctionUIController.m */,
 			);
@@ -144,7 +153,6 @@
 		CDAE153F219AEE3000935252 /* FuncionTableUI */ = {
 			isa = PBXGroup;
 			children = (
-				CDAE1543219AEEEB00935252 /* FunctionTableUI.xib */,
 				CDAE1540219AEEB900935252 /* FunctionTableUIController.h */,
 				CDAE1541219AEEB900935252 /* FunctionTableUIController.m */,
 			);

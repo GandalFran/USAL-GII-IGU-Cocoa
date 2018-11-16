@@ -21,15 +21,19 @@ NS_ASSUME_NONNULL_BEGIN
     IBOutlet NSTextField * ymaxTextField;
     
     Model * model;
+    
     AddFunctionUIController * addFunctionUIController;
 }
 
--(IBAction)setNewRepresentationParameters:(id)sender;
--(IBAction)addFunction:(id)sender;
--(IBAction)deleteAllElements:(id)sender;
--(IBAction)resetZoom:(id)sender;
-
+/*----------------Notifications--------------*/
 -(void) handleSendModel:(NSNotification *)aNotification;
+/*--------------Delegation-------------*/
+
+/*--------------Bussines logic-------------*/
+-(IBAction)addFunction:(id)sender;
+-(IBAction)removeAllModelElements:(id)sender;
+-(IBAction)representSelectedFunctions:(id)sender;
+-(IBAction)setNewRepresentationParameters:(id)sender;
 
 @end
 
