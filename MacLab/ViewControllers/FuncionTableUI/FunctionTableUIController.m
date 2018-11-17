@@ -130,13 +130,33 @@ extern NSString * functionAdded;
     f = [[model allFunctions] objectAtIndex:row];
     
     if([columnIdentifier isEqualToString:@"NameColumn"]){
-        return [[f name] copy];
-    }else if([columnIdentifier isEqualToString:@"ExpressionColumn"]){
-        return [[NSString alloc] initWithFormat:@"exp:%d a:%f b:%f c:%f",[f type],[f aValue], [f bValue], [f cValue]];
+        return [f name];
+    }else if([columnIdentifier isEqualToString:@"typeColumn"]){
+        if([f type] == COSINE){
+            return @"a*cos(b*x)";
+        }else if([f type] == SINE){
+            return @"a*sin(b*x)";
+        }else if([f type] == EXPONENTIAL){
+            return @"a*x^b)";
+        }else if([f type] == LINE){
+            return @"a + b*x";
+        }else if([f type] == PARABOLA){
+            return @"a*x^2 + b*x + c";
+        }else if([f type] == HIPERBOLA){
+            return @"a/(b*x)";
+        }else{
+            return nil;
+        }
+    }else if([columnIdentifier isEqualToString:@"aValueColumn"]){
+        return [[NSString alloc]initWithFormat:@"%f",[f aValue]];
+    }else if([columnIdentifier isEqualToString:@"bValueColumn"]){
+        return [[NSString alloc]initWithFormat:@"%f",[f bValue]];
+    }else if([columnIdentifier isEqualToString:@"cValueColumn"]){
+        return ([f type] == PARABOLA)? [[NSString alloc]initWithFormat:@"%f",[f cValue]] : @"-";
     }else if([columnIdentifier isEqualToString:@"ColorColumn"]){
-        return [[NSString alloc] initWithFormat:@"%@",[f color]];
-    }else if([columnIdentifier isEqualToString:@"VisibilityColumn"]){
-        return [[NSString alloc] initWithFormat:@"%d",[f visible]];
+        return nil;
+    }else if([columnIdentifier isEqualToString:@"vissibleColumn"]){
+        return nil;
     }else{
         return nil;
     }
@@ -152,11 +172,29 @@ extern NSString * functionAdded;
     
     if([columnIdentifier isEqualToString:@"NameColumn"]){
         [f setName:anObject];
-    }else if([columnIdentifier isEqualToString:@"ExpressionColumn"]){
-        //TODO
+    }else if([columnIdentifier isEqualToString:@"typeColumn"]){
+        if([anObject isEqualToString:@"a*cos(b*x)"]){
+            [f setType:COSINE];
+        }else if([anObject isEqualToString:@"a*sin(b*x)"]){
+            [f setType:SINE];
+        }else if([anObject isEqualToString:@"a*x^b)"]){
+            [f setType:EXPONENTIAL];
+        }else if([anObject isEqualToString:@"a + b*x"]){
+            [f setType:LINE];
+        }else if([anObject isEqualToString:@"a*x^2 + b*x + c"]){
+            [f setType:PARABOLA];
+        }else if([anObject isEqualToString:@"a/(b*x)"]){
+            [f setType:HIPERBOLA];
+        }
+    }else if([columnIdentifier isEqualToString:@"aValueColumn"]){
+        [f setAValue:[anObject doubleValue]];
+    }else if([columnIdentifier isEqualToString:@"bValueColumn"]){
+        [f setBValue:[anObject doubleValue]];
+    }else if([columnIdentifier isEqualToString:@"cValueColumn"] && ([f type] == PARABOLA)){
+        [f setCValue:[anObject doubleValue]];
     }else if([columnIdentifier isEqualToString:@"ColorColumn"]){
         //TODO
-    }else if([columnIdentifier isEqualToString:@"VisibilityColumn"]){
+    }else if([columnIdentifier isEqualToString:@"vissibleColumn"]){
         //TODO
     }
     
