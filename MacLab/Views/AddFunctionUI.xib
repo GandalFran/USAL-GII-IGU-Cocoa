@@ -8,6 +8,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="AddFunctionUIController">
             <connections>
                 <outlet property="aValueTextField" destination="ZcT-P9-wfc" id="dWk-ql-vV8"/>
+                <outlet property="addButton" destination="bvH-ym-f29" id="4EH-x8-Few"/>
                 <outlet property="bValueTextField" destination="hwQ-vl-gnG" id="bLp-xW-ZEl"/>
                 <outlet property="cValueLabel" destination="GC7-sS-O0g" id="1Uz-kv-J3d"/>
                 <outlet property="cValueTextField" destination="b2e-mK-Zr1" id="2bV-ma-xyC"/>
@@ -23,7 +24,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="570" height="202"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="960"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="570" height="202"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -37,6 +38,9 @@
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
+                        <connections>
+                            <outlet property="delegate" destination="-2" id="tgB-8t-wmC"/>
+                        </connections>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZcT-P9-wfc">
                         <rect key="frame" x="377" y="168" width="179" height="22"/>
@@ -47,6 +51,9 @@
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
+                        <connections>
+                            <outlet property="delegate" destination="-2" id="1Vm-EG-0U9"/>
+                        </connections>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hwQ-vl-gnG">
                         <rect key="frame" x="377" y="127" width="179" height="22"/>
@@ -57,6 +64,9 @@
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
+                        <connections>
+                            <outlet property="delegate" destination="-2" id="awk-YP-NBI"/>
+                        </connections>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IBS-89-bSz">
                         <rect key="frame" x="80" y="168" width="191" height="22"/>
@@ -66,11 +76,14 @@
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
+                        <connections>
+                            <outlet property="delegate" destination="-2" id="hov-cz-O2e"/>
+                        </connections>
                     </textField>
                     <comboBox verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RhW-Iu-8SU">
                         <rect key="frame" x="80" y="124" width="194" height="26"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="function type" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="aFo-e3-2iE">
+                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="function type" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="aFo-e3-2iE">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -84,7 +97,6 @@
                             </objectValues>
                         </comboBoxCell>
                         <connections>
-                            <action selector="showOrHideCValueTextFiledAndLabel:" target="-2" id="vyB-oc-IgL"/>
                             <outlet property="delegate" destination="-2" id="78w-Yg-Qlq"/>
                         </connections>
                     </comboBox>
@@ -150,7 +162,7 @@
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bvH-ym-f29">
                         <rect key="frame" x="321" y="25" width="241" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSAddTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" sound="Basso" inset="2" id="UgG-aa-fO6">
+                        <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSAddTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UgG-aa-fO6">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -168,6 +180,5 @@
     </objects>
     <resources>
         <image name="NSAddTemplate" width="11" height="11"/>
-        <sound name="Basso"/>
     </resources>
 </document>

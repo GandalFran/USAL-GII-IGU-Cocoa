@@ -192,6 +192,10 @@
 		CD10BFF62194A1980064ED2E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					ExpressionColumn,
+					NameColumn,
+				);
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = GandalFran;
 				TargetAttributes = {

@@ -13,12 +13,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface FunctionTableUIController : NSWindowController<NSWindowDelegate>{
+@interface FunctionTableUIController : NSWindowController<NSWindowDelegate, NSTextDelegate, NSTableViewDelegate, NSTableViewDataSource>{
     
     IBOutlet NSTextField * xminTextField;
     IBOutlet NSTextField * xmaxTextField;
     IBOutlet NSTextField * yminTextField;
     IBOutlet NSTextField * ymaxTextField;
+    IBOutlet NSButton * saveSettingsButton;
+    IBOutlet NSTableView * tableView;
     
     Model * model;
     
@@ -27,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*----------------Notifications--------------*/
 -(void) handleSendModel:(NSNotification *)aNotification;
+-(void) handleFunctionAdded:(NSNotification *)aNotification;
 /*--------------Delegation-------------*/
 
 /*--------------Bussines logic-------------*/
@@ -34,6 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
 -(IBAction)removeAllModelElements:(id)sender;
 -(IBAction)representSelectedFunctions:(id)sender;
 -(IBAction)setNewRepresentationParameters:(id)sender;
+
+
+-(IBAction)TEST:(id)sender;
 
 @end
 

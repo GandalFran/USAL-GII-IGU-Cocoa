@@ -27,6 +27,13 @@
     currentID = 0;
     modelData = [[NSMutableArray alloc] init];
     
+    RepresentationParameters parameters;
+    parameters.xmin = -10;
+    parameters.xmax = 10;
+    parameters.ymin = -10;
+    parameters.ymax = 10;
+    [self setRepresentationParameters: parameters];
+    
     if(!modelData)
         return nil;
     
@@ -66,9 +73,10 @@
     if(0 > [aFunction ID] || currentID <= [aFunction ID]) return false;
     
     int index = [self getIndexWithID: [aFunction ID]];
-    if(-1 != index)
+    if(-1 != index){
+        [modelData removeObjectAtIndex:index];
         [modelData insertObject:aFunction atIndex:index];
-    
+    }
     return (-1 != index);
 }
 

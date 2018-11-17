@@ -22,20 +22,15 @@
 
 -(id) init
 {
-    self = [super initWithWindowNibName:@"AddFunctionUI"];
-    
-    if (nil == self)
+    if(nil == [super initWithWindowNibName:@"AddFunctionUI"])
         return nil;
     
     //Register handlers for notifications
-    NSNotificationCenter * notificationCenter = nil;
-    
-    notificationCenter = [NSNotificationCenter defaultCenter];
+    NSNotificationCenter * notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self
                            selector:@selector(handleSendModel:)
                                name:sendModelToAddFunctionUI
                              object:nil];
-    
     return self;
 }
 
@@ -62,13 +57,15 @@
         return YES;
     
     [alert setMessageText:@"Atention"];
-    [alert setInformativeText:@"If you close this window, the function data will be losed\nDo you really want?"];
+    [alert setInformativeText:@"If you close this window, the function data will be losed."];
     [alert addButtonWithTitle:@"yes"];
     [alert addButtonWithTitle:@"no"];
     [alert setAlertStyle:NSAlertStyleWarning];
     response = [alert runModal];
 
     if (NSAlertFirstButtonReturn == response) {
+        [self cleanAndDeactivateFields];
+        [NSApp stopModal];
         return YES;
     }else{
         return NO;
@@ -76,8 +73,7 @@
 }
 
 -(void) awakeFromNib{
-    [cValueLabel setHidden: true];
-    [cValueTextField setHidden: true];
+    [self cleanAndDeactivateFields];
 }
 
 - (void) windowDidLoad {
@@ -87,6 +83,7 @@
 /*----------------Notifications--------------*/
 
 extern NSString * sendModelToAddFunctionUI;
+NSString * functionAdded = @"functionAdded";
 
 /**
  *  @brief handler to sendModelToAddFunctionUI notification:
@@ -99,12 +96,37 @@ extern NSString * sendModelToAddFunctionUI;
     if(nil != aDictionary){
         model = [aDictionary objectForKey:@"model"];
     }
+    
+    NSWindow *w = [self window];
+    [NSApp runModalForWindow:w];
 }
 
 /*--------------Delegation-------------*/
 
+/**
+ *  @brief enables or disables the add button if the
+ *         formulary is completed or not
+ */
 - (void) controlTextDidChange:(NSNotification *)obj{
-    //TODO implement
+    BOOL formularyCompleted = [self isFormCompleted];
+    [addButton setEnabled: formularyCompleted];
+}
+
+
+/**
+ *  @brief hides or shows the cValue label and textbox
+ *         according to the type comboBox.
+ *         and enables or disables the add button if the
+ *         formulary is completed or not
+ */
+-(void)comboBoxSelectionDidChange:(NSNotification *)notification{
+    BOOL selectedItem = (4 == [typeCombobox indexOfSelectedItem]);
+    BOOL formularyCompleted = [self isFormCompleted];
+    
+    [cValueLabel setHidden: !selectedItem];
+    [cValueTextField setHidden: !selectedItem];
+
+    [addButton setEnabled: formularyCompleted];
 }
 
 /*--------------Bussinges logic-------------*/
@@ -114,6 +136,22 @@ extern NSString * sendModelToAddFunctionUI;
  *          instances a Function, then add it to the model.
  */
 -(IBAction)addFunction:(id)sender{
+    Function * aFunction = nil;
+    NSNotificationCenter * notificationCenter = nil;
+    
+    //Obtain the Function and add to the model
+    aFunction = [self takeDataFromFormulary];
+    [model addFunction:aFunction];
+    //Throw notification to advise that a function has been aded
+    notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter postNotificationName:functionAdded object:self];
+    
+    [self cleanAndDeactivateFields];
+    [NSApp stopModal];
+    [self close];
+}
+
+-(Function *) takeDataFromFormulary{
     FunctionType aType;
     double aValue, bValue, cValue;
     NSColor * aColor = nil;
@@ -142,24 +180,38 @@ extern NSString * sendModelToAddFunctionUI;
                               ExpressionBValue:bValue
                               ExpressionCValue:cValue];
     
-    [model addFunction:aFunction];
-    //TODO cerrar ventana
+    return aFunction;
 }
 
-/**
- *  @brief hides or shows the cValue label and textbox
- *          according to the type comboBox
- */
--(IBAction)showOrHideCValueTextFiledAndLabel:(id)sender{
-    int selectedItem = (int)[typeCombobox indexOfSelectedItem];
+- (BOOL) isFormCompleted{
+    NSNumberFormatter * numberFormatter = [[NSNumberFormatter alloc] init];
     
-    if( 4 != selectedItem ){
-        [cValueLabel setHidden: true];
-        [cValueTextField setHidden: true];
-    }else{
-        [cValueLabel setHidden: false];
-        [cValueTextField setHidden: false];
-    }
+    BOOL areAllFilled = ([[nameTextField stringValue] length] != 0
+                        && [[aValueTextField stringValue] length] != 0
+                        && [[bValueTextField stringValue] length] != 0
+                        && ([[cValueTextField stringValue] length] != 0 || [cValueTextField isHidden] == YES)
+                        && [typeCombobox selectedTag] != -1);
+    
+    //TODO improve the validation of numbers
+    BOOL areNumberTextFieldsCorrectlyFilled = (
+        [numberFormatter numberFromString:[aValueTextField stringValue]] != nil
+        && [numberFormatter numberFromString:[bValueTextField stringValue]] != nil
+        && ([numberFormatter numberFromString:[cValueTextField stringValue]] || [cValueTextField isHidden] == YES)
+    );
+    
+    return (areAllFilled && areNumberTextFieldsCorrectlyFilled);
+}
+
+-(void) cleanAndDeactivateFields{
+    [nameTextField setStringValue:@""];
+    [aValueTextField setStringValue:@""];
+    [bValueTextField setStringValue:@""];
+    [cValueTextField setStringValue:@""];
+    [typeCombobox setStringValue:@""];
+    
+    [cValueLabel setHidden: YES];
+    [cValueTextField setHidden: YES];
+    [addButton setEnabled: NO];
 }
 
 @end

@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AddFunctionUIController : NSWindowController <NSWindowDelegate,NSComboBoxDelegate, NSTextFieldDelegate>{
+@interface AddFunctionUIController : NSWindowController <NSWindowDelegate, NSComboBoxDelegate, NSTextFieldDelegate>{
     
     IBOutlet NSTextField * nameTextField;
     IBOutlet NSTextField * aValueTextField;
@@ -21,17 +21,15 @@ NS_ASSUME_NONNULL_BEGIN
     IBOutlet NSColorWell * colorColorWell;
     IBOutlet NSComboBox * typeCombobox;
     IBOutlet NSTextField * cValueLabel;
+    IBOutlet NSButton * addButton;
     
     Model * model;
 }
 
 /*----------------Notifications--------------*/
 -(void) handleSendModel:(NSNotification *)aNotification;
-/*--------------Delegation-------------*/
--(void) controlTextDidChange:(NSNotification *)obj;
 /*--------------Bussines logic-------------*/
 -(IBAction)addFunction:(id)sender;
--(IBAction)showOrHideCValueTextFiledAndLabel:(id)sender;
 
 @end
 

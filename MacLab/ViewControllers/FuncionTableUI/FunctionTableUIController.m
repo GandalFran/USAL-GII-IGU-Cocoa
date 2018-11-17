@@ -42,6 +42,11 @@
                            selector:@selector(handleSendModel:)
                                name:sendModelToFunctionTableUI
                              object:nil];
+    [notificationCenter addObserver:self
+                           selector:@selector(handleFunctionAdded:)
+                               name:functionAdded
+                             object:nil];
+    
     return self;
 }
 
@@ -54,6 +59,15 @@
     return YES;
 }
 
+-(void) awakeFromNib{
+    RepresentationParameters parameters = [model representationParameters];
+    
+    [xminTextField setFloatValue:parameters.xmin];
+    [xmaxTextField setFloatValue:parameters.xmax];
+    [yminTextField setFloatValue:parameters.ymin];
+    [ymaxTextField setFloatValue:parameters.ymax];
+}
+
 - (void) windowDidLoad {
     [super windowDidLoad];
 }
@@ -63,6 +77,7 @@
 NSString * sendModelToAddFunctionUI = @"sendModelToAddFunctionUI";
 NSString * sendNewRepresentation = @"sendNewRepresentation";
 extern NSString * sendModelToFunctionTableUI;
+extern NSString * functionAdded;
 
 /**
  *  @brief handler for sendModelToFunctionTableUI notification:
@@ -74,11 +89,85 @@ extern NSString * sendModelToFunctionTableUI;
     aDictionary = [aNotification userInfo];
     if(nil != aDictionary)
         model = [aDictionary objectForKey:@"model"];
-    
+}
+
+/**
+ *  @brief handler for functionAdded notification:
+ *              reloads the view
+ */
+-(void) handleFunctionAdded:(NSNotification *)aNotification{
+    [tableView reloadData];
 }
 
 /*--------------Delegation-------------*/
 
+/**
+ *  @brief enables or disables the save button if the
+ *         formulary is completed or not
+ */
+- (void) controlTextDidChange:(NSNotification *)obj{
+    BOOL formularyCompleted = [self isFormCompleted];
+    [saveSettingsButton setEnabled: formularyCompleted];
+}
+
+
+-(void) tableViewSelectionDidChange:(NSNotification *)notification
+{
+    NSInteger row = [tableView selectedRow];
+    
+    if(-1 == row)
+        return;
+    
+    //TODO de momento nada
+}
+
+-(id) tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    Function * f = nil;
+    NSString * columnIdentifier = nil;
+    
+    columnIdentifier = [tableColumn identifier];
+    f = [[model allFunctions] objectAtIndex:row];
+    
+    if([columnIdentifier isEqualToString:@"NameColumn"]){
+        return [[f name] copy];
+    }else if([columnIdentifier isEqualToString:@"ExpressionColumn"]){
+        return [[NSString alloc] initWithFormat:@"exp:%d a:%f b:%f c:%f",[f type],[f aValue], [f bValue], [f cValue]];
+    }else if([columnIdentifier isEqualToString:@"ColorColumn"]){
+        return [[NSString alloc] initWithFormat:@"%@",[f color]];
+    }else if([columnIdentifier isEqualToString:@"VisibilityColumn"]){
+        return [[NSString alloc] initWithFormat:@"%d",[f visible]];
+    }else{
+        return nil;
+    }
+}
+
+- (void)tableView:(NSTableView *)aTableView setObjectValue:(id)anObject forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex{
+    
+    Function * f = nil;
+    NSString * columnIdentifier = nil;
+    
+    columnIdentifier = [aTableColumn identifier];
+    f = [[model allFunctions] objectAtIndex:rowIndex];
+    
+    if([columnIdentifier isEqualToString:@"NameColumn"]){
+        [f setName:anObject];
+    }else if([columnIdentifier isEqualToString:@"ExpressionColumn"]){
+        //TODO
+    }else if([columnIdentifier isEqualToString:@"ColorColumn"]){
+        //TODO
+    }else if([columnIdentifier isEqualToString:@"VisibilityColumn"]){
+        //TODO
+    }
+    
+    [model updateFunction:f];
+    [tableView reloadData];
+}
+
+-(NSInteger) numberOfRowsInTableView:(NSTableView *)tableView
+{
+    return [model count];
+}
 
 /*--------------Bussines logic-------------*/
 
@@ -103,16 +192,16 @@ extern NSString * sendModelToFunctionTableUI;
     NSDictionary * notificationInfo = nil;
     NSNotificationCenter * notificationCenter = nil;
     
-    if(!addFunctionUIController){
+    if(nil == addFunctionUIController){
         addFunctionUIController = [[AddFunctionUIController alloc] init];
-        
-        [addFunctionUIController showWindow:self];
-        
-        notificationCenter = [NSNotificationCenter defaultCenter];
-        notificationInfo = [NSDictionary dictionaryWithObject:model forKey:@"model"];
-        
-        [notificationCenter postNotificationName:sendModelToAddFunctionUI object:self userInfo:notificationInfo];
     }
+    
+    [addFunctionUIController showWindow:self];
+    
+    notificationCenter = [NSNotificationCenter defaultCenter];
+    notificationInfo = [NSDictionary dictionaryWithObject:model forKey:@"model"];
+    
+    [notificationCenter postNotificationName:sendModelToAddFunctionUI object:self userInfo:notificationInfo];
 }
 
 /**
@@ -120,6 +209,7 @@ extern NSString * sendModelToFunctionTableUI;
  */
 -(IBAction)removeAllModelElements:(id)sender{
     [model removeAllFunctions];
+    [tableView reloadData];
 }
 
 /**
@@ -140,6 +230,44 @@ extern NSString * sendModelToFunctionTableUI;
     [aNotificationCenter postNotificationName:sendNewRepresentation
                                        object:self
                                      userInfo:aDictionary];
+}
+
+- (BOOL) isFormCompleted{
+    NSNumberFormatter * numberFormatter = [[NSNumberFormatter alloc] init];
+    
+    BOOL areAllFilled = ([[xminTextField stringValue] length] != 0
+                         && [[xmaxTextField stringValue] length] != 0
+                         && [[yminTextField stringValue] length] != 0
+                         && [[ymaxTextField stringValue] length] != 0);
+    
+    //TODO improve the validation of numbers
+    BOOL areNumberTextFieldsCorrectlyFilled = (
+                            [numberFormatter numberFromString:[xminTextField stringValue]] != nil
+                            && [numberFormatter numberFromString:[xmaxTextField stringValue]] != nil
+                            && [numberFormatter numberFromString:[yminTextField stringValue]] != nil
+                            && [numberFormatter numberFromString:[ymaxTextField stringValue]] != nil);
+    
+    return (areAllFilled && areNumberTextFieldsCorrectlyFilled);
+}
+
+
+-(IBAction)TEST:(id)sender{
+    Function * f = nil;
+    NSString * name = nil;
+    NSColor * color = nil;
+    FunctionType type;
+    
+    int i;
+    for(i=0; i<20; i++){
+        name = [[NSString alloc] initWithFormat: @"%d",i];
+        type = arc4random_uniform(6);
+        color = [NSColor colorWithRed:arc4random_uniform(255) green:arc4random_uniform(255) blue:arc4random_uniform(255) alpha:1.0];
+        f = [[Function alloc] initWithName:name color:color ExpressionType:type ExpressionAValue:1.0 ExpressionBValue:2.0 ExpressionCValue:3.0];
+        [model addFunction: f];
+    }
+    
+    [tableView reloadData];
+    
 }
 
 @end
