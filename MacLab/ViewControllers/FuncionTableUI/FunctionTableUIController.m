@@ -122,7 +122,8 @@ extern NSString * functionAdded;
     
     if([tableColumn isEqual:[tableView tableColumns][0]]){
         cellContent = [f name];
-        [[cell textField] setStringValue:cellContent];
+        NSTextField * textField = [[cell subviews] objectAtIndex:0];
+        [textField setStringValue:cellContent];
     }else if([tableColumn isEqual:[tableView tableColumns][1]]){
         NSComboBox * comboBox = [[cell subviews] objectAtIndex:0];
 
@@ -137,24 +138,66 @@ extern NSString * functionAdded;
         }
         
     }else if([tableColumn isEqual:[tableView tableColumns][2]]){
-        cellContent = [[NSString alloc]initWithFormat:@"%f",[f aValue]];
-        [[cell textField] setStringValue:cellContent];
+        cellContent = [[NSString alloc]initWithFormat:@"%.2f",[f aValue]];
+        NSTextField * textField = [[cell subviews] objectAtIndex:0];
+        [textField setStringValue:cellContent];
     }else if([tableColumn isEqual:[tableView tableColumns][3]]){
-        cellContent = [[NSString alloc]initWithFormat:@"%f",[f bValue]];
-        [[cell textField] setStringValue:cellContent];
+        cellContent = [[NSString alloc]initWithFormat:@"%.2f",[f bValue]];
+        NSTextField * textField = [[cell subviews] objectAtIndex:0];
+        [textField setStringValue:cellContent];
     }else if([tableColumn isEqual:[tableView tableColumns][4]]){
-        cellContent = ([f type] == PARABOLA)? [[NSString alloc]initWithFormat:@"%f",[f cValue]] : @"-";
-        [[cell textField] setStringValue:cellContent];
+        cellContent = ([f type] == PARABOLA)? [[NSString alloc]initWithFormat:@"%.2f",[f cValue]] : @"-";
+        NSTextField * textField = [[cell subviews] objectAtIndex:0];
+        [textField setStringValue:cellContent];
     }else if([tableColumn isEqual:[tableView tableColumns][5]]){
         NSColorWell * colorWell = [[cell subviews] objectAtIndex:0];
         [colorWell setColor:[f color]]; 
-    }else if([tableColumn isEqual:[tableView tableColumns][6]]){
-        //TODO
     }
     
     return cell;
 }
 
+- (void)tableView:(NSTableView *)aTableView setObjectValue:(id)anObject forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex{
+    
+    NSLog(@"AUXILIO ME DESMAYO");
+    
+    Function * f = nil;
+    NSString * columnIdentifier = nil;
+    
+    columnIdentifier = [aTableColumn identifier];
+    f = [[model allFunctions] objectAtIndex:rowIndex];
+    
+    if([columnIdentifier isEqualToString:@"NameColumn"]){
+        [f setName:anObject];
+    }else if([columnIdentifier isEqualToString:@"typeColumn"]){
+        if([anObject isEqualToString:@"a*cos(b*x)"]){
+            [f setType:COSINE];
+        }else if([anObject isEqualToString:@"a*sin(b*x)"]){
+            [f setType:SINE];
+        }else if([anObject isEqualToString:@"a*x^b)"]){
+            [f setType:EXPONENTIAL];
+        }else if([anObject isEqualToString:@"a + b*x"]){
+            [f setType:LINE];
+        }else if([anObject isEqualToString:@"a*x^2 + b*x + c"]){
+            [f setType:PARABOLA];
+        }else if([anObject isEqualToString:@"a/(b*x)"]){
+            [f setType:HIPERBOLA];
+        }
+    }else if([columnIdentifier isEqualToString:@"aValueColumn"]){
+        [f setAValue:[anObject doubleValue]];
+    }else if([columnIdentifier isEqualToString:@"bValueColumn"]){
+        [f setBValue:[anObject doubleValue]];
+    }else if([columnIdentifier isEqualToString:@"cValueColumn"] && ([f type] == PARABOLA)){
+        [f setCValue:[anObject doubleValue]];
+    }else if([columnIdentifier isEqualToString:@"ColorColumn"]){
+        //TODO
+    }else if([columnIdentifier isEqualToString:@"vissibleColumn"]){
+        //TODO
+    }
+    
+    [model updateFunction:f];
+    [tableView reloadData];
+}
 /*
 -(void) tableViewSelectionDidChange:(NSNotification *)notification
 {
@@ -345,10 +388,10 @@ extern NSString * functionAdded;
     for(i=0; i<20; i++){
         name = [[NSString alloc] initWithFormat: @"FunctionNumber%d",i];
         type = arc4random_uniform(6);
-        color = [NSColor colorWithRed:arc4random_uniform(255) green:arc4random_uniform(255) blue:arc4random_uniform(255) alpha:1.0];
-        a = arc4random_uniform(10000)/100;
-        b = arc4random_uniform(10000)/100;
-        c = arc4random_uniform(10000)/100;
+        color = [NSColor colorWithRed: ((float)arc4random_uniform(100))/100 green:((float)arc4random_uniform(100))/100 blue:((float)arc4random_uniform(100))/100 alpha:1.0];
+        a = ((float)arc4random_uniform(10000))/100;
+        b = ((float)arc4random_uniform(10000))/100;
+        c = ((float)arc4random_uniform(10000))/100;
         
         f = [[Function alloc] initWithName:name color:color ExpressionType:type ExpressionAValue:a ExpressionBValue:b ExpressionCValue:c];
         [model addFunction: f];
