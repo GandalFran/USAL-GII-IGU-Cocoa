@@ -34,6 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*--------------Bussines logic-------------*/
 -(IBAction)addFunction:(id)sender;
+-(IBAction)removeFunction:(id)sender;
+-(IBAction)editFunction:(id)sender;
 -(IBAction)removeAllModelElements:(id)sender;
 -(IBAction)representSelectedFunctions:(id)sender;
 -(IBAction)setNewRepresentationParameters:(id)sender;

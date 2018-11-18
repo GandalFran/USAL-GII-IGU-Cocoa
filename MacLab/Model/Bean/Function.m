@@ -149,4 +149,33 @@ ExpressionAValue : (double) aValue
     return result;
 }
 
+-(NSString *) expressionStringValue{
+    NSString * expressionString = nil;
+    
+    switch([self type]){
+        case COSINE:
+            expressionString =  [[NSString alloc] initWithFormat:@"%.2f*cos(%.2f*x)",[self aValue],[self bValue]];
+            break;
+        case SINE:
+            expressionString =  [[NSString alloc] initWithFormat:@"%.2f*sin(%.2f*x)",[self aValue],[self bValue]];
+            break;
+        case EXPONENTIAL:
+            expressionString =  [[NSString alloc] initWithFormat:@"%.2f*x^%.2f",[self aValue],[self bValue]];
+            break;
+        case LINE:
+            expressionString =  [[NSString alloc] initWithFormat:@"%.2f*x + %.2f",[self aValue],[self bValue]];
+            break;
+        case PARABOLA:
+            expressionString =  [[NSString alloc] initWithFormat:@"%.2f*x^2 + %.2f*x + %.2f)",[self aValue],[self bValue],[self cValue]];
+            break;
+        case HIPERBOLA:
+            expressionString =  [[NSString alloc] initWithFormat:@"%.2f*/(%.2f*x)",[self aValue],[self bValue]];
+            break;
+        default:
+            expressionString = nil;
+    }
+    
+    return expressionString;
+}
+
 @end

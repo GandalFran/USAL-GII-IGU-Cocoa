@@ -49,6 +49,7 @@ ExpressionAValue : (double) aValue
  ExpressionCValue : (double) cValue;
 
 -(double) calculateYValueWithXValue : (double) aXValue;
+-(NSString *) expressionStringValue;
 
 @end
 

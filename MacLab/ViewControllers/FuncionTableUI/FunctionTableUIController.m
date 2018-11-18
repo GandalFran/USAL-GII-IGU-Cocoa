@@ -110,56 +110,8 @@ extern NSString * functionAdded;
     [saveSettingsButton setEnabled: formularyCompleted];
 }
 
-- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row{
-    Function * f = nil;
-    NSString * identifier = nil;
-    NSString * cellContent = nil;
-    NSTableCellView * cell = nil;
-    
-    identifier = [tableColumn identifier];
-    cell = [tableView makeViewWithIdentifier:identifier owner:nil];
-    f = [[model allFunctions] objectAtIndex:row];
-    
-    if([tableColumn isEqual:[tableView tableColumns][0]]){
-        cellContent = [f name];
-        NSTextField * textField = [[cell subviews] objectAtIndex:0];
-        [textField setStringValue:cellContent];
-    }else if([tableColumn isEqual:[tableView tableColumns][1]]){
-        NSComboBox * comboBox = [[cell subviews] objectAtIndex:0];
-
-        switch([f type]){
-            case COSINE: [comboBox setStringValue:@"a*cos(b*x)"]; break;
-            case SINE: [comboBox setStringValue:@"a*sin(b*x)"]; break;
-            case EXPONENTIAL: [comboBox setStringValue:@"a*x^b)"]; break;
-            case LINE: [comboBox setStringValue:@"a + b*x"]; break;
-            case PARABOLA: [comboBox setStringValue:@"a*x^2 + b*x + c"]; break;
-            case HIPERBOLA: [comboBox setStringValue:@"a/(b*x)"]; break;
-            case NONE_TYPE: break;
-        }
-        
-    }else if([tableColumn isEqual:[tableView tableColumns][2]]){
-        cellContent = [[NSString alloc]initWithFormat:@"%.2f",[f aValue]];
-        NSTextField * textField = [[cell subviews] objectAtIndex:0];
-        [textField setStringValue:cellContent];
-    }else if([tableColumn isEqual:[tableView tableColumns][3]]){
-        cellContent = [[NSString alloc]initWithFormat:@"%.2f",[f bValue]];
-        NSTextField * textField = [[cell subviews] objectAtIndex:0];
-        [textField setStringValue:cellContent];
-    }else if([tableColumn isEqual:[tableView tableColumns][4]]){
-        cellContent = ([f type] == PARABOLA)? [[NSString alloc]initWithFormat:@"%.2f",[f cValue]] : @"-";
-        NSTextField * textField = [[cell subviews] objectAtIndex:0];
-        [textField setStringValue:cellContent];
-    }else if([tableColumn isEqual:[tableView tableColumns][5]]){
-        NSColorWell * colorWell = [[cell subviews] objectAtIndex:0];
-        [colorWell setColor:[f color]]; 
-    }
-    
-    return cell;
-}
-
+/*
 - (void)tableView:(NSTableView *)aTableView setObjectValue:(id)anObject forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex{
-    
-    NSLog(@"AUXILIO ME DESMAYO");
     
     Function * f = nil;
     NSString * columnIdentifier = nil;
@@ -197,17 +149,7 @@ extern NSString * functionAdded;
     
     [model updateFunction:f];
     [tableView reloadData];
-}
-/*
--(void) tableViewSelectionDidChange:(NSNotification *)notification
-{
-    NSInteger row = [tableView selectedRow];
-    
-    if(-1 == row)
-        return;
-    
-    //TODO de momento nada
-}
+}*/
 
 -(id) tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
@@ -219,37 +161,13 @@ extern NSString * functionAdded;
     
     if([columnIdentifier isEqualToString:@"NameColumn"]){
         return [f name];
-    }else if([columnIdentifier isEqualToString:@"typeColumn"]){
-        if([f type] == COSINE){
-            return @"a*cos(b*x)";
-        }else if([f type] == SINE){
-            return @"a*sin(b*x)";
-        }else if([f type] == EXPONENTIAL){
-            return @"a*x^b)";
-        }else if([f type] == LINE){
-            return @"a + b*x";
-        }else if([f type] == PARABOLA){
-            return @"a*x^2 + b*x + c";
-        }else if([f type] == HIPERBOLA){
-            return @"a/(b*x)";
-        }else{
-            return nil;
-        }
-    }else if([columnIdentifier isEqualToString:@"aValueColumn"]){
-        return [[NSString alloc]initWithFormat:@"%f",[f aValue]];
-    }else if([columnIdentifier isEqualToString:@"bValueColumn"]){
-        return [[NSString alloc]initWithFormat:@"%f",[f bValue]];
-    }else if([columnIdentifier isEqualToString:@"cValueColumn"]){
-        return ([f type] == PARABOLA)? [[NSString alloc]initWithFormat:@"%f",[f cValue]] : @"-";
-    }else if([columnIdentifier isEqualToString:@"ColorColumn"]){
-        return nil;
-    }else if([columnIdentifier isEqualToString:@"vissibleColumn"]){
-        return nil;
+    }else if([columnIdentifier isEqualToString:@"ExpressionColumn"]){
+        return [f expressionStringValue];
     }else{
         return nil;
     }
 }
-
+/*
 - (void)tableView:(NSTableView *)aTableView setObjectValue:(id)anObject forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex{
     
     Function * f = nil;
@@ -288,8 +206,8 @@ extern NSString * functionAdded;
     
     [model updateFunction:f];
     [tableView reloadData];
-}
-*/
+}*/
+
 -(NSInteger) numberOfRowsInTableView:(NSTableView *)tableView
 {
     return [model count];
@@ -320,14 +238,40 @@ extern NSString * functionAdded;
     
     if(nil == addFunctionUIController){
         addFunctionUIController = [[AddFunctionUIController alloc] init];
+        notificationCenter = [NSNotificationCenter defaultCenter];
+        notificationInfo = [NSDictionary dictionaryWithObject:model forKey:@"model"];
+        [notificationCenter postNotificationName:sendModelToAddFunctionUI object:self userInfo:notificationInfo];
     }
     
     [addFunctionUIController showWindow:self];
+}
+
+
+-(IBAction)removeFunction:(id)sender{
+    NSInteger row;
+    Function * f = nil;
     
-    notificationCenter = [NSNotificationCenter defaultCenter];
-    notificationInfo = [NSDictionary dictionaryWithObject:model forKey:@"model"];
+    row = [tableView selectedRow];
+    if(-1 == row) return;
     
-    [notificationCenter postNotificationName:sendModelToAddFunctionUI object:self userInfo:notificationInfo];
+    f = [[model allFunctions] objectAtIndex:row];
+    [model removeFunctionWithID:[f ID]];
+    [tableView reloadData];
+}
+
+-(IBAction)editFunction:(id)sender{
+    //SAME WITH EDITWINDOW
+    NSDictionary * notificationInfo = nil;
+    NSNotificationCenter * notificationCenter = nil;
+    
+    if(nil == addFunctionUIController){
+        addFunctionUIController = [[AddFunctionUIController alloc] init];
+        notificationCenter = [NSNotificationCenter defaultCenter];
+        notificationInfo = [NSDictionary dictionaryWithObject:model forKey:@"model"];
+        [notificationCenter postNotificationName:sendModelToAddFunctionUI object:self userInfo:notificationInfo];
+    }
+    
+    [addFunctionUIController showWindow:self];
 }
 
 /**
