@@ -10,6 +10,7 @@
 
 @class Model;
 @class AddFunctionUIController;
+@class EditFunctionUIController;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,11 +26,12 @@ NS_ASSUME_NONNULL_BEGIN
     Model * model;
     
     AddFunctionUIController * addFunctionUIController;
+    EditFunctionUIController * editFunctionUIController;
 }
 
 /*----------------Notifications--------------*/
 -(void) handleSendModel:(NSNotification *)aNotification;
--(void) handleFunctionAdded:(NSNotification *)aNotification;
+-(void) handleReloadData:(NSNotification *)aNotification;
 /*--------------Delegation-------------*/
 
 /*--------------Bussines logic-------------*/

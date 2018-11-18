@@ -13,6 +13,7 @@
 
 #import "AddFunctionUIController.h"
 #import "FunctionTableUIController.h"
+#import "EditFunctionUIController.h"
 #import "PlotRepresentationUIController.h"
 
 
@@ -43,10 +44,13 @@
                                name:sendModelToFunctionTableUI
                              object:nil];
     [notificationCenter addObserver:self
-                           selector:@selector(handleFunctionAdded:)
+                           selector:@selector(handleReloadData:)
                                name:functionAdded
                              object:nil];
-    
+    [notificationCenter addObserver:self
+                           selector:@selector(handleReloadData:)
+                               name:functionEdited
+                             object:nil];
     return self;
 }
 
@@ -75,9 +79,15 @@
 /*----------------Notifications--------------*/
 
 NSString * sendModelToAddFunctionUI = @"sendModelToAddFunctionUI";
+
 NSString * sendNewRepresentation = @"sendNewRepresentation";
+
+NSString * sendModelToEditFunctionUI = @"sendModelToEditFunctionUI";
+NSString * sendFunctionToEditFunctionUI = @"sendFunctionToEditFunctionUI";
+
 extern NSString * sendModelToFunctionTableUI;
 extern NSString * functionAdded;
+extern NSString * functionEdited;
 
 /**
  *  @brief handler for sendModelToFunctionTableUI notification:
@@ -95,7 +105,7 @@ extern NSString * functionAdded;
  *  @brief handler for functionAdded notification:
  *              reloads the view
  */
--(void) handleFunctionAdded:(NSNotification *)aNotification{
+-(void) handleReloadData:(NSNotification *)aNotification{
     [tableView reloadData];
 }
 
@@ -260,18 +270,29 @@ extern NSString * functionAdded;
 }
 
 -(IBAction)editFunction:(id)sender{
-    //SAME WITH EDITWINDOW
+    NSInteger row;
+    Function * function = nil;
     NSDictionary * notificationInfo = nil;
     NSNotificationCenter * notificationCenter = nil;
+
+    row = [tableView selectedRow];
+    if(-1 == row) return;
     
-    if(nil == addFunctionUIController){
-        addFunctionUIController = [[AddFunctionUIController alloc] init];
-        notificationCenter = [NSNotificationCenter defaultCenter];
+    function = [[model allFunctions] objectAtIndex:row];
+    [model removeFunctionWithID:[function ID]];
+    
+    notificationCenter = [NSNotificationCenter defaultCenter];
+    
+    if(nil == editFunctionUIController){
+        editFunctionUIController = [[EditFunctionUIController alloc] init];
         notificationInfo = [NSDictionary dictionaryWithObject:model forKey:@"model"];
-        [notificationCenter postNotificationName:sendModelToAddFunctionUI object:self userInfo:notificationInfo];
+        [notificationCenter postNotificationName:sendModelToEditFunctionUI object:self userInfo:notificationInfo];
     }
     
-    [addFunctionUIController showWindow:self];
+    notificationInfo = [NSDictionary dictionaryWithObject:function forKey:@"function"];
+    [notificationCenter postNotificationName:sendFunctionToEditFunctionUI object:self userInfo:notificationInfo];
+    
+    [editFunctionUIController showWindow:self];
 }
 
 /**
