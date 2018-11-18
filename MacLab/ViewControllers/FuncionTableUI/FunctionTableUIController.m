@@ -110,7 +110,52 @@ extern NSString * functionAdded;
     [saveSettingsButton setEnabled: formularyCompleted];
 }
 
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row{
+    Function * f = nil;
+    NSString * identifier = nil;
+    NSString * cellContent = nil;
+    NSTableCellView * cell = nil;
+    
+    identifier = [tableColumn identifier];
+    cell = [tableView makeViewWithIdentifier:identifier owner:nil];
+    f = [[model allFunctions] objectAtIndex:row];
+    
+    if([tableColumn isEqual:[tableView tableColumns][0]]){
+        cellContent = [f name];
+        [[cell textField] setStringValue:cellContent];
+    }else if([tableColumn isEqual:[tableView tableColumns][1]]){
+        NSComboBox * comboBox = [[cell subviews] objectAtIndex:0];
 
+        switch([f type]){
+            case COSINE: [comboBox setStringValue:@"a*cos(b*x)"]; break;
+            case SINE: [comboBox setStringValue:@"a*sin(b*x)"]; break;
+            case EXPONENTIAL: [comboBox setStringValue:@"a*x^b)"]; break;
+            case LINE: [comboBox setStringValue:@"a + b*x"]; break;
+            case PARABOLA: [comboBox setStringValue:@"a*x^2 + b*x + c"]; break;
+            case HIPERBOLA: [comboBox setStringValue:@"a/(b*x)"]; break;
+            case NONE_TYPE: break;
+        }
+        
+    }else if([tableColumn isEqual:[tableView tableColumns][2]]){
+        cellContent = [[NSString alloc]initWithFormat:@"%f",[f aValue]];
+        [[cell textField] setStringValue:cellContent];
+    }else if([tableColumn isEqual:[tableView tableColumns][3]]){
+        cellContent = [[NSString alloc]initWithFormat:@"%f",[f bValue]];
+        [[cell textField] setStringValue:cellContent];
+    }else if([tableColumn isEqual:[tableView tableColumns][4]]){
+        cellContent = ([f type] == PARABOLA)? [[NSString alloc]initWithFormat:@"%f",[f cValue]] : @"-";
+        [[cell textField] setStringValue:cellContent];
+    }else if([tableColumn isEqual:[tableView tableColumns][5]]){
+        NSColorWell * colorWell = [[cell subviews] objectAtIndex:0];
+        [colorWell setColor:[f color]]; 
+    }else if([tableColumn isEqual:[tableView tableColumns][6]]){
+        //TODO
+    }
+    
+    return cell;
+}
+
+/*
 -(void) tableViewSelectionDidChange:(NSNotification *)notification
 {
     NSInteger row = [tableView selectedRow];
@@ -201,7 +246,7 @@ extern NSString * functionAdded;
     [model updateFunction:f];
     [tableView reloadData];
 }
-
+*/
 -(NSInteger) numberOfRowsInTableView:(NSTableView *)tableView
 {
     return [model count];
@@ -294,18 +339,22 @@ extern NSString * functionAdded;
     NSString * name = nil;
     NSColor * color = nil;
     FunctionType type;
+    float a,b,c;
     
     int i;
     for(i=0; i<20; i++){
-        name = [[NSString alloc] initWithFormat: @"%d",i];
+        name = [[NSString alloc] initWithFormat: @"FunctionNumber%d",i];
         type = arc4random_uniform(6);
         color = [NSColor colorWithRed:arc4random_uniform(255) green:arc4random_uniform(255) blue:arc4random_uniform(255) alpha:1.0];
-        f = [[Function alloc] initWithName:name color:color ExpressionType:type ExpressionAValue:1.0 ExpressionBValue:2.0 ExpressionCValue:3.0];
+        a = arc4random_uniform(10000)/100;
+        b = arc4random_uniform(10000)/100;
+        c = arc4random_uniform(10000)/100;
+        
+        f = [[Function alloc] initWithName:name color:color ExpressionType:type ExpressionAValue:a ExpressionBValue:b ExpressionCValue:c];
         [model addFunction: f];
     }
     
     [tableView reloadData];
-    
 }
 
 @end
