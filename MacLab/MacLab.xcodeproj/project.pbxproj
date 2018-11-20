@@ -12,8 +12,6 @@
 		CD10C0082194A1990064ED2E /* PlotRepresentationUI.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD10C0062194A1990064ED2E /* PlotRepresentationUI.xib */; };
 		CD10C00B2194A1990064ED2E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CD10C00A2194A1990064ED2E /* main.m */; };
 		CD1BE93F219B661F002CD188 /* NSPlotView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD1BE93E219B661F002CD188 /* NSPlotView.m */; };
-		CD22093D21A35D5E00B0CAF6 /* EditFunctionUIController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD22093C21A35D5E00B0CAF6 /* EditFunctionUIController.m */; };
-		CD22093F21A35D7300B0CAF6 /* EditFunctionUI.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD22093E21A35D7300B0CAF6 /* EditFunctionUI.xib */; };
 		CD26FE03219710430031B6F0 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = CD26FE02219710430031B6F0 /* Model.m */; };
 		CD26FE0D219710FC0031B6F0 /* PlotRepresentationUIController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD26FE0C219710FC0031B6F0 /* PlotRepresentationUIController.m */; };
 		CD26FE10219711A10031B6F0 /* AddFunctionUI.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD26FE0F219711A10031B6F0 /* AddFunctionUI.xib */; };
@@ -34,9 +32,6 @@
 		CD10C00C2194A1990064ED2E /* MacLab.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacLab.entitlements; sourceTree = "<group>"; };
 		CD1BE93D219B661F002CD188 /* NSPlotView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSPlotView.h; sourceTree = "<group>"; };
 		CD1BE93E219B661F002CD188 /* NSPlotView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSPlotView.m; sourceTree = "<group>"; };
-		CD22093B21A35D5E00B0CAF6 /* EditFunctionUIController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditFunctionUIController.h; sourceTree = "<group>"; };
-		CD22093C21A35D5E00B0CAF6 /* EditFunctionUIController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditFunctionUIController.m; sourceTree = "<group>"; };
-		CD22093E21A35D7300B0CAF6 /* EditFunctionUI.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditFunctionUI.xib; sourceTree = "<group>"; };
 		CD26FE01219710430031B6F0 /* Model.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
 		CD26FE02219710430031B6F0 /* Model.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Model.m; sourceTree = "<group>"; };
 		CD26FE0B219710FC0031B6F0 /* PlotRepresentationUIController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlotRepresentationUIController.h; sourceTree = "<group>"; };
@@ -101,7 +96,6 @@
 				CD26FE0F219711A10031B6F0 /* AddFunctionUI.xib */,
 				CDAE1543219AEEEB00935252 /* FunctionTableUI.xib */,
 				CD10C0062194A1990064ED2E /* PlotRepresentationUI.xib */,
-				CD22093E21A35D7300B0CAF6 /* EditFunctionUI.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -109,21 +103,11 @@
 		CD20BA91219EB59900302CB0 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				CD22093A21A35D2A00B0CAF6 /* EditFunctionUI */,
 				CD26FE0E219711810031B6F0 /* AddFunctionUI */,
 				CDAE153F219AEE3000935252 /* FuncionTableUI */,
 				CD26FE0A219710D20031B6F0 /* PlotRepresentationUI */,
 			);
 			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		CD22093A21A35D2A00B0CAF6 /* EditFunctionUI */ = {
-			isa = PBXGroup;
-			children = (
-				CD22093B21A35D5E00B0CAF6 /* EditFunctionUIController.h */,
-				CD22093C21A35D5E00B0CAF6 /* EditFunctionUIController.m */,
-			);
-			path = EditFunctionUI;
 			sourceTree = "<group>";
 		};
 		CD26FDFA21970FE50031B6F0 /* Bean */ = {
@@ -245,7 +229,6 @@
 			files = (
 				CD10C0052194A1990064ED2E /* Assets.xcassets in Resources */,
 				CD10C0082194A1990064ED2E /* PlotRepresentationUI.xib in Resources */,
-				CD22093F21A35D7300B0CAF6 /* EditFunctionUI.xib in Resources */,
 				CD26FE10219711A10031B6F0 /* AddFunctionUI.xib in Resources */,
 				CDAE1544219AEEEB00935252 /* FunctionTableUI.xib in Resources */,
 			);
@@ -259,7 +242,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CDF182FE219B77EB0047C824 /* Function.m in Sources */,
-				CD22093D21A35D5E00B0CAF6 /* EditFunctionUIController.m in Sources */,
 				CD10C00B2194A1990064ED2E /* main.m in Sources */,
 				CD1BE93F219B661F002CD188 /* NSPlotView.m in Sources */,
 				CD26FE0D219710FC0031B6F0 /* PlotRepresentationUIController.m in Sources */,

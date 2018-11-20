@@ -13,7 +13,6 @@
 
 #import "AddFunctionUIController.h"
 #import "FunctionTableUIController.h"
-#import "EditFunctionUIController.h"
 #import "PlotRepresentationUIController.h"
 
 
@@ -47,10 +46,6 @@
                            selector:@selector(handleReloadData:)
                                name:functionAdded
                              object:nil];
-    [notificationCenter addObserver:self
-                           selector:@selector(handleReloadData:)
-                               name:functionEdited
-                             object:nil];
     return self;
 }
 
@@ -70,6 +65,21 @@
     [xmaxTextField setFloatValue:parameters.xmax];
     [yminTextField setFloatValue:parameters.ymin];
     [ymaxTextField setFloatValue:parameters.ymax];
+    
+    [nameTextField setStringValue:@""];
+    [aValueTextField setStringValue:@""];
+    [bValueTextField setStringValue:@""];
+    [cValueTextField setStringValue:@""];
+    [typeCombobox setStringValue:@""];
+    [nameTextField setEnabled: NO];
+    [aValueTextField setEnabled: NO];
+    [bValueTextField setEnabled: NO];
+    [cValueTextField setEnabled: NO];
+    [typeCombobox setEnabled: NO];
+    
+    [cValueLabel setHidden: YES];
+    [cValueTextField setHidden: YES];
+    [editButton setEnabled: NO];
 }
 
 - (void) windowDidLoad {
@@ -82,12 +92,8 @@ NSString * sendModelToAddFunctionUI = @"sendModelToAddFunctionUI";
 
 NSString * sendNewRepresentation = @"sendNewRepresentation";
 
-NSString * sendModelToEditFunctionUI = @"sendModelToEditFunctionUI";
-NSString * sendFunctionToEditFunctionUI = @"sendFunctionToEditFunctionUI";
-
 extern NSString * sendModelToFunctionTableUI;
 extern NSString * functionAdded;
-extern NSString * functionEdited;
 
 /**
  *  @brief handler for sendModelToFunctionTableUI notification:
@@ -112,12 +118,32 @@ extern NSString * functionEdited;
 /*--------------Delegation-------------*/
 
 /**
- *  @brief enables or disables the save button if the
+ *  @brief enables or disables the add button if the
  *         formulary is completed or not
  */
 - (void) controlTextDidChange:(NSNotification *)obj{
-    BOOL formularyCompleted = [self isFormCompleted];
+    BOOL formularyCompleted = [self isEditFormCompleted];
+    [editButton setEnabled: formularyCompleted];
+    
+    formularyCompleted = [self isSettingsFormCompleted];
     [saveSettingsButton setEnabled: formularyCompleted];
+}
+
+
+/**
+ *  @brief hides or shows the cValue label and textbox
+ *         according to the type comboBox.
+ *         and enables or disables the add button if the
+ *         formulary is completed or not
+ */
+-(void)comboBoxSelectionDidChange:(NSNotification *)notification{
+    BOOL selectedItem = (4 == [typeCombobox indexOfSelectedItem]);
+    BOOL formularyCompleted = [self isEditFormCompleted];
+    
+    [cValueLabel setHidden: !selectedItem];
+    [cValueTextField setHidden: !selectedItem];
+    
+    [editButton setEnabled: formularyCompleted];
 }
 
 /*
@@ -218,6 +244,54 @@ extern NSString * functionEdited;
     [tableView reloadData];
 }*/
 
+-(void)tableViewSelectionDidChange:(NSNotification *)notification{
+    NSInteger row;
+    Function * function = nil;
+    
+    row = [tableView selectedRow];
+    
+    if(row == -1){
+        [nameTextField setStringValue:@""];
+        [aValueTextField setStringValue:@""];
+        [bValueTextField setStringValue:@""];
+        [cValueTextField setStringValue:@""];
+        [typeCombobox setStringValue:@""];
+        [nameTextField setEnabled: NO];
+        [aValueTextField setEnabled: NO];
+        [bValueTextField setEnabled: NO];
+        [cValueTextField setEnabled: NO];
+        [typeCombobox setEnabled: NO];
+        
+        [cValueLabel setHidden: YES];
+        [cValueTextField setHidden: YES];
+        [editButton setEnabled: NO];
+    }else{
+        function = [[model allFunctions] objectAtIndex:row];
+        
+        [nameTextField setStringValue: [function name]];
+        [aValueTextField setFloatValue:[function aValue]];
+        [bValueTextField setFloatValue:[function bValue]];
+        [cValueTextField setFloatValue:[function cValue]];
+        [typeCombobox setStringValue:@"POR IMPLEMENTAR"];
+        [nameTextField setEnabled: YES];
+        [aValueTextField setEnabled: YES];
+        [bValueTextField setEnabled: YES];
+        [cValueTextField setEnabled: YES];
+        [typeCombobox setEnabled: YES];
+        
+        if([function type] == PARABOLA){
+            [cValueLabel setHidden: NO];
+            [cValueTextField setHidden: NO];
+        }else{
+            [cValueLabel setHidden: YES];
+            [cValueTextField setHidden: YES];
+        }
+        
+        [editButton setEnabled: YES];
+    }
+    
+}
+
 -(NSInteger) numberOfRowsInTableView:(NSTableView *)tableView
 {
     return [model count];
@@ -267,32 +341,8 @@ extern NSString * functionEdited;
     f = [[model allFunctions] objectAtIndex:row];
     [model removeFunctionWithID:[f ID]];
     [tableView reloadData];
-}
-
--(IBAction)editFunction:(id)sender{
-    NSInteger row;
-    Function * function = nil;
-    NSDictionary * notificationInfo = nil;
-    NSNotificationCenter * notificationCenter = nil;
-
-    row = [tableView selectedRow];
-    if(-1 == row) return;
-    
-    function = [[model allFunctions] objectAtIndex:row];
-    [model removeFunctionWithID:[function ID]];
-    
-    notificationCenter = [NSNotificationCenter defaultCenter];
-    
-    if(nil == editFunctionUIController){
-        editFunctionUIController = [[EditFunctionUIController alloc] init];
-        notificationInfo = [NSDictionary dictionaryWithObject:model forKey:@"model"];
-        [notificationCenter postNotificationName:sendModelToEditFunctionUI object:self userInfo:notificationInfo];
-    }
-    
-    notificationInfo = [NSDictionary dictionaryWithObject:function forKey:@"function"];
-    [notificationCenter postNotificationName:sendFunctionToEditFunctionUI object:self userInfo:notificationInfo];
-    
-    [editFunctionUIController showWindow:self];
+    //When a function is removed is neccesary to disable the edit button
+    [self tableViewSelectionDidChange:nil];
 }
 
 /**
@@ -301,6 +351,8 @@ extern NSString * functionEdited;
 -(IBAction)removeAllModelElements:(id)sender{
     [model removeAllFunctions];
     [tableView reloadData];
+    //When a function is removed is neccesary to disable the edit button
+    [self tableViewSelectionDidChange:nil];
 }
 
 /**
@@ -323,7 +375,7 @@ extern NSString * functionEdited;
                                      userInfo:aDictionary];
 }
 
-- (BOOL) isFormCompleted{
+- (BOOL) isSettingsFormCompleted{
     NSNumberFormatter * numberFormatter = [[NSNumberFormatter alloc] init];
     
     BOOL areAllFilled = ([[xminTextField stringValue] length] != 0
@@ -341,6 +393,53 @@ extern NSString * functionEdited;
     return (areAllFilled && areNumberTextFieldsCorrectlyFilled);
 }
 
+
+-(IBAction)editFunction:(id)sender{
+    NSInteger row;
+    FunctionType aType;
+    Function * function = nil;
+    
+    row = [tableView selectedRow];
+    function = [[model allFunctions] objectAtIndex:row];
+    
+    switch((int)[typeCombobox indexOfSelectedItem]){
+        case 0: aType = COSINE; break;
+        case 1: aType = SINE; break;
+        case 2: aType = EXPONENTIAL; break;
+        case 3: aType = LINE; break;
+        case 4: aType = PARABOLA; break;
+        case 5: aType = HIPERBOLA; break;
+        default: aType = NONE_TYPE;
+    }
+    
+    [function setName: [nameTextField stringValue]];
+    [function setAValue:[aValueTextField doubleValue]];
+    [function setBValue:[bValueTextField doubleValue]];
+    [function setCValue:[cValueTextField doubleValue]];
+    [function setColor:[colorColorWell color]];
+    [function setType: aType];
+    
+    [tableView reloadData];
+}
+
+- (BOOL) isEditFormCompleted{
+    NSNumberFormatter * numberFormatter = [[NSNumberFormatter alloc] init];
+    
+    BOOL areAllFilled = ([[nameTextField stringValue] length] != 0
+                         && [[aValueTextField stringValue] length] != 0
+                         && [[bValueTextField stringValue] length] != 0
+                         && ([[cValueTextField stringValue] length] != 0 || [cValueTextField isHidden] == YES)
+                         && [typeCombobox selectedTag] != -1);
+    
+    //TODO improve the validation of numbers
+    BOOL areNumberTextFieldsCorrectlyFilled = (
+                                               [numberFormatter numberFromString:[aValueTextField stringValue]] != nil
+                                               && [numberFormatter numberFromString:[bValueTextField stringValue]] != nil
+                                               && ([numberFormatter numberFromString:[cValueTextField stringValue]] || [cValueTextField isHidden] == YES)
+                                               );
+    
+    return (areAllFilled && areNumberTextFieldsCorrectlyFilled);
+}
 
 -(IBAction)TEST:(id)sender{
     Function * f = nil;
