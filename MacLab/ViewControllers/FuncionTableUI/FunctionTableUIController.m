@@ -38,7 +38,7 @@
         return nil;
     
     //Create the combobox datasource
-    comboBoxDataSource = [[NSArray alloc] initWithObjects:@"a*cos(b*x)", @"a*sin(b*x)",@"a*x^b",@"a*x + b",@"a*x^2 + b*x + c",@"a/(b*x)",@"",nil];
+    comboBoxDataSource = [[NSArray alloc] initWithObjects:@"a*cos(b*x)", @"a*sin(b*x)",@"a*x^b",@"a+ x*b",@"a*x^2 + b*x + c",@"a/(b*x)",@"",nil];
 
     //Register handlers for the notifications
     NSNotificationCenter * notificationCenter = nil;
@@ -67,7 +67,7 @@
 -(void) awakeFromNib{
     RepresentationParameters parameters = [model representationParameters];
     
-    [xminTextField setFloatValue:(float)parameters.xmin];
+    [xminTextField setDoubleValue:parameters.xmin];
 
 }
 
@@ -129,6 +129,10 @@ extern NSString * functionAdded;
         [textField setAction:@selector(tableViewEditNameColumn:)];
     }else if([tableColumn isEqual:[tableView tableColumns][1]]){
         NSComboBox * comboBox = [[cell subviews] objectAtIndex:0];
+        
+        [comboBox removeAllItems];
+        [comboBox addItemsWithObjectValues:[comboBoxDataSource subarrayWithRange: NSMakeRange(0, 6)] ];
+        
         [comboBox setStringValue:comboBoxDataSource[[f type]]];
         [comboBox setTag: row];
         [comboBox setTarget:self];
@@ -314,11 +318,16 @@ extern NSString * functionAdded;
  *          to be represented
  */
 -(IBAction)representSelectedFunctions:(id)sender{
-    NSArray * aFunctionArray = nil;
+    NSMutableArray * aFunctionArray = [[NSMutableArray alloc] init];
+    NSIndexSet * indexesOfselectedFunctions = nil;
     NSDictionary * aDictionary = nil;
     NSNotificationCenter * aNotificationCenter = nil;
     
-    //TODO retrieve selected functions in table
+    indexesOfselectedFunctions = [functionTableView selectedRowIndexes];
+    
+    [[functionTableView selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger range, BOOL *stop) {
+        [aFunctionArray addObject:[[model allFunctions] objectAtIndex:range] ];
+    }];
     
     aNotificationCenter = [NSNotificationCenter defaultCenter];
     

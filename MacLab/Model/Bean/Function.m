@@ -134,7 +134,7 @@ ExpressionAValue : (double) aValue
             result = a * pow(aXValue,b);
             break;
         case LINE:
-            result = (a * aXValue) + b;
+            result = a + (b * aXValue);
             break;
         case PARABOLA:
             result =  (a*aXValue*aXValue) + (b*aXValue) + c;

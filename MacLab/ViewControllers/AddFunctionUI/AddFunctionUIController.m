@@ -16,7 +16,9 @@
 #import "FunctionTableUIController.h"
 
 
-@implementation AddFunctionUIController
+@implementation AddFunctionUIController{
+    NSArray * comboBoxDataSource;
+}
 
 /*----------------------Initializers--------------------*/
 
@@ -31,6 +33,9 @@
                            selector:@selector(handleSendModel:)
                                name:sendModelToAddFunctionUI
                              object:nil];
+    //Create the combobox datasource
+    comboBoxDataSource = [[NSArray alloc] initWithObjects:@"a*cos(b*x)", @"a*sin(b*x)",@"a*x^b",@"a+ x*b",@"a*x^2 + b*x + c",@"a/(b*x)",@"",nil];
+    
     return self;
 }
 
@@ -72,6 +77,7 @@
 }
 
 -(void) awakeFromNib{
+    [typeCombobox addItemsWithObjectValues: [comboBoxDataSource subarrayWithRange: NSMakeRange(0, 6)] ] ;
     [self cleanAndDeactivateFields];
 }
 
@@ -157,15 +163,7 @@ NSString * functionAdded = @"functionAdded";
     cValue = [cValueTextField doubleValue];
     aColor = [colorColorWell color];
     aFunctionName = [nameTextField stringValue];
-    switch((int)[typeCombobox indexOfSelectedItem]){
-        case 0: aType = COSINE; break;
-        case 1: aType = SINE; break;
-        case 2: aType = EXPONENTIAL; break;
-        case 3: aType = LINE; break;
-        case 4: aType = PARABOLA; break;
-        case 5: aType = HIPERBOLA; break;
-        default: aType = NONE_TYPE;
-    }
+    aType = (FunctionType) [typeCombobox indexOfSelectedItem];
     
     aFunction = [[Function alloc] initWithName:aFunctionName
                                          color:aColor
@@ -201,7 +199,7 @@ NSString * functionAdded = @"functionAdded";
     [aValueTextField setStringValue:@""];
     [bValueTextField setStringValue:@""];
     [cValueTextField setStringValue:@""];
-    [typeCombobox setStringValue:@""];
+    [typeCombobox setStringValue:comboBoxDataSource[NONE_TYPE]];
     
     [cValueLabel setHidden: YES];
     [cValueTextField setHidden: YES];

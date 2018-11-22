@@ -260,14 +260,6 @@
                                                                             <font key="font" metaFont="system"/>
                                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                            <objectValues>
-                                                                                <string>a * cos( b*x )</string>
-                                                                                <string>a * sin( b*x )</string>
-                                                                                <string>a * x^b</string>
-                                                                                <string>a + b*x</string>
-                                                                                <string>a*x^2 + b*x + c</string>
-                                                                                <string>a/(b*x)</string>
-                                                                            </objectValues>
                                                                         </comboBoxCell>
                                                                     </comboBox>
                                                                 </subviews>
