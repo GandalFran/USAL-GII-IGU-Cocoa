@@ -122,21 +122,24 @@
 }
 
 -(bool) exportFile:(NSString *) path{
-    int i;
-    NSCoder * encoder = [[NSCoder alloc] init];
+    NSFileManager * fileManager = nil;
     
-    for(i=0; i<[modelData count]; i++){
-        [[modelData objectAtIndex:i] encodeWithCoder:encoder];
-    }
+    fileManager = [NSFileManager defaultManager];
+    if (NO == [fileManager fileExistsAtPath:path])
+       [fileManager createFileAtPath:path contents:nil attributes:nil];
     
-    //BOOL success = [NSKeyedArchiver archiveRootObject:_collection toFile:path];
-    return NO;
+    return [NSKeyedArchiver archiveRootObject:modelData toFile:path];
 }
 -(bool) importFile:(NSString *) path{
-    //loading
-    NSData *data = [[NSData alloc] initWithContentsOfFile:path];
-    //if (data) _collection = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    return NO;
+    NSMutableArray *anArray = nil;
+    
+    anArray = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+    if(nil == anArray)
+        return NO;
+    else{
+        modelData = anArray;
+        return YES;
+    }
 }
 
 @end

@@ -340,37 +340,56 @@ extern NSString * functionAdded;
 
 //https://stackoverflow.com/questions/1640419/open-file-dialog-box
 -(IBAction)exportProject:(id)sender{
-    NSURL * path;
-    NSSavePanel *panel = [NSSavePanel savePanel];
-    [panel setNameFieldStringValue:@"data.bin"];
-    [panel beginWithCompletionHandler:^(NSInteger result) {
-        if (result == NSFileHandlingPanelOKButton) {
-            NSFileManager *manager = [NSFileManager defaultManager];
-            NSURL *saveURL = [panel URL];
-            [manager copyItemAtURL:path toURL:saveURL error:nil];
-            NSLog(@"\n\n\n%@",path);
-        }
-    }];
+    bool IOresult;
     
+    IOresult = [model exportFile:@"//Users//gandalfran//Desktop//test.bin"];
+    if(!IOresult){
+        NSLog(@"\n\n\n\nHI");
+    }else
+        NSLog(@"\n\n\n\nYES");
+    
+    /*
+    NSInteger result;
+    NSString * path = nil;
+    NSSavePanel * panel = nil;
+    
+    panel = [NSSavePanel savePanel];
+    [panel setAllowedFileTypes:[NSArray arrayWithObject:@"bin"]];
+    [panel setTitle:@"Save project"];
+    result = [panel runModal];
+    
+    if (NSModalResponseOK == result) {
+        
+        path = [[panel URL] path];
+        NSLog(@"\n\n%@",path);
+        IOresult = [model exportFile: path];
+        if(!IOresult){
+            
+        }
+    }*/
 }
 
 -(IBAction)importProject:(id)sender{
-    int i;
-    NSString * path;
-    NSOpenPanel* openDlg = [NSOpenPanel openPanel];
-    [openDlg setCanChooseFiles:YES];
-    [openDlg setAllowsMultipleSelection:NO];
-    [openDlg setCanChooseDirectories:NO];
-    if ( [openDlg runModalForDirectory:nil file:nil] == NSOKButton )
-    {
-        NSArray* files = [openDlg filenames];
-        for( i = 0; i < [files count]; i++ )
-        {
-            path = [files objectAtIndex:i];
+    bool IOresult;
+    NSInteger result;
+    NSString * path = nil;
+    NSOpenPanel * panel = nil;
+    
+    panel = [NSOpenPanel openPanel];
+    [panel setAllowedFileTypes:[NSArray arrayWithObject:@"bin"]];
+    [panel setTitle:@"Open project"];
+    [panel setAllowsMultipleSelection:NO];
+    result = [panel runModal];
+    
+    if (NSModalResponseOK == result) {
+        
+        path = [[panel URL] path];
+        NSLog(@"\n\n%@",path);
+        IOresult = [model importFile: path];
+        if(!IOresult){
+            
         }
     }
-    
-    NSLog(@"\n\n\n%@",path);
 }
 
 -(IBAction)TEST:(id)sender{
