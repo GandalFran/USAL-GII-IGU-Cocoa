@@ -13,8 +13,6 @@
 
 #import "AddFunctionUIController.h"
 #import "FunctionTableUIController.h"
-#import "PlotRepresentationUIController.h"
-
 
 @implementation FunctionTableUIController{
     
@@ -23,10 +21,16 @@
 
 /*----------------------Initializers--------------------*/
 
--(id) init
+-(id) initWithModel: (Model *) aModel
 {
     if(nil == [super initWithWindowNibName:@"FunctionTableUI"])
         return nil;
+    
+    //Save model
+    model = aModel;
+    //Create the combobox datasource
+    comboBoxDataSource = [[NSArray alloc] initWithObjects:@"a*cos(b*x)", @"a*sin(b*x)",@"a*x^b",@"a+ x*b",@"a*x^2 + b*x + c",@"a/(b*x)",@"",nil];
+    
     return self;
 }
 
@@ -37,21 +41,13 @@
     if(nil == self)
         return nil;
     
-    //Create the combobox datasource
-    comboBoxDataSource = [[NSArray alloc] initWithObjects:@"a*cos(b*x)", @"a*sin(b*x)",@"a*x^b",@"a+ x*b",@"a*x^2 + b*x + c",@"a/(b*x)",@"",nil];
-
     //Register handlers for the notifications
-    NSNotificationCenter * notificationCenter = nil;
-
-    notificationCenter = [NSNotificationCenter defaultCenter];
+    NSNotificationCenter * notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self
-                           selector:@selector(handleSendModel:)
-                               name:sendModelToFunctionTableUI
-                             object:nil];
-    [notificationCenter addObserver:self
-                           selector:@selector(handleReloadData:)
+                           selector:@selector(handlFunctionAdded:)
                                name:functionAdded
                              object:nil];
+
     return self;
 }
 
@@ -75,32 +71,27 @@
     [super windowDidLoad];
 }
 
-/*----------------Notifications--------------*/
-
-NSString * sendModelToAddFunctionUI = @"sendModelToAddFunctionUI";
-
-NSString * sendNewRepresentation = @"sendNewRepresentation";
-
-extern NSString * sendModelToFunctionTableUI;
-extern NSString * functionAdded;
-
-/**
- *  @brief handler for sendModelToFunctionTableUI notification:
- *              recives the model
- */
--(void) handleSendModel:(NSNotification *)aNotification{
-    NSDictionary * aDictionary = nil;
-    
-    aDictionary = [aNotification userInfo];
-    if(nil != aDictionary)
-        model = [aDictionary objectForKey:@"model"];
+-(void)dealloc{
+    NSNotificationCenter * notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter removeObserver:self];
 }
+
+/*----------------Notifications--------------*/
+NSString * sendNewRepresentation = @"sendNewRepresentation";
+extern NSString * functionAdded;
 
 /**
  *  @brief handler for functionAdded notification:
  *              reloads the view
  */
--(void) handleReloadData:(NSNotification *)aNotification{
+-(void) handlFunctionAdded:(NSNotification *)aNotification{
+    Function * aFunction = nil;
+    NSDictionary * notificationInfo = nil;
+    
+    notificationInfo = [aNotification userInfo];
+    aFunction = [notificationInfo objectForKey:@"function"];
+    [model addFunction:aFunction];
+    
     [functionTableView reloadData];
 }
 
@@ -119,7 +110,7 @@ extern NSString * functionAdded;
 
     NSString * identifier = [tableColumn identifier];
     NSTableCellView * cell = [tableView makeViewWithIdentifier:identifier owner:nil];
-    Function * f = [[model allFunctions] objectAtIndex:row];
+    Function * f = [model getFunctionWithIndex:(int)row];
     
     if([tableColumn isEqual:[tableView tableColumns][0]]){
         NSTextField * textField = [[cell subviews] objectAtIndex:0];
@@ -179,7 +170,7 @@ extern NSString * functionAdded;
     
     row = [tf tag];
     
-    f = [[model allFunctions] objectAtIndex:row];
+    f = [model getFunctionWithIndex:(int)row];
     [f setName: [tf stringValue] ];
     [model updateFunction:f];
 }
@@ -190,7 +181,7 @@ extern NSString * functionAdded;
     
     row = [cb tag];
     
-    f = [[model allFunctions] objectAtIndex:row];
+    f = [model getFunctionWithIndex:(int)row];
     [f setType:(FunctionType)[cb indexOfSelectedItem]];
     if([f type] != PARABOLA)
         [f setCValue:0];
@@ -208,7 +199,7 @@ extern NSString * functionAdded;
     
     row = [tf tag];
     
-    f = [[model allFunctions] objectAtIndex:row];
+    f = [model getFunctionWithIndex:(int)row];
     [f setAValue: [tf floatValue] ];
     [model updateFunction:f];
 }
@@ -219,7 +210,7 @@ extern NSString * functionAdded;
     
     row = [tf tag];
     
-    f = [[model allFunctions] objectAtIndex:row];
+    f = [model getFunctionWithIndex:(int)row];
     [f setBValue: [tf floatValue] ];
     [model updateFunction:f];
 }
@@ -230,7 +221,7 @@ extern NSString * functionAdded;
     
     row = [tf tag];
     
-    f = [[model allFunctions] objectAtIndex:row];
+    f = [model getFunctionWithIndex:(int)row];
     
     if([f type] == PARABOLA){
         [f setCValue: [tf floatValue] ];
@@ -248,7 +239,7 @@ extern NSString * functionAdded;
     
     row = [colorWell tag];
     
-    f = [[model allFunctions] objectAtIndex:row];
+    f = [model getFunctionWithIndex:(int)row];
     [f setColor: [colorWell color] ];
     [model updateFunction:f];
 }
@@ -279,16 +270,8 @@ extern NSString * functionAdded;
  *  @brief displays the addFunction formulary when the addFunction button is pushed
  */
 -(IBAction)showAddFunctionPanel:(id)sender{
-    NSDictionary * notificationInfo = nil;
-    NSNotificationCenter * notificationCenter = nil;
-    
-    if(nil == addFunctionUIController){
-        addFunctionUIController = [[AddFunctionUIController alloc] init];
-        notificationCenter = [NSNotificationCenter defaultCenter];
-        notificationInfo = [NSDictionary dictionaryWithObject:model forKey:@"model"];
-        [notificationCenter postNotificationName:sendModelToAddFunctionUI object:self userInfo:notificationInfo];
-    }
-    
+    if(nil == addFunctionUIController)
+        addFunctionUIController = [[AddFunctionUIController alloc] initWithComboBoxDataSource:comboBoxDataSource];
     [addFunctionUIController showWindow:self];
 }
 
@@ -300,7 +283,7 @@ extern NSString * functionAdded;
     row = [functionTableView selectedRow];
     if(-1 == row) return;
     
-    f = [[model allFunctions] objectAtIndex:row];
+    f = [model getFunctionWithIndex:(int)row];
     [model removeFunctionWithID:[f ID]];
     [functionTableView reloadData];
 }
@@ -325,12 +308,11 @@ extern NSString * functionAdded;
     
     indexesOfselectedFunctions = [functionTableView selectedRowIndexes];
     
-    [[functionTableView selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger range, BOOL *stop) {
-        [aFunctionArray addObject:[[model allFunctions] objectAtIndex:range] ];
+    [[functionTableView selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger index, BOOL *stop) {
+       [ aFunctionArray addObject:[model getFunctionWithIndex:(int)index] ];
     }];
     
     aNotificationCenter = [NSNotificationCenter defaultCenter];
-    
     aDictionary = [NSDictionary dictionaryWithObject: aFunctionArray
                                               forKey:@"representationArray"];
     [aNotificationCenter postNotificationName:sendNewRepresentation
@@ -354,6 +336,41 @@ extern NSString * functionAdded;
                             && [numberFormatter numberFromString:[ymaxTextField stringValue]] != nil);
     
     return (areAllFilled && areNumberTextFieldsCorrectlyFilled);
+}
+
+//https://stackoverflow.com/questions/1640419/open-file-dialog-box
+-(IBAction)exportProject:(id)sender{
+    NSURL * path;
+    NSSavePanel *panel = [NSSavePanel savePanel];
+    [panel setNameFieldStringValue:@"data.bin"];
+    [panel beginWithCompletionHandler:^(NSInteger result) {
+        if (result == NSFileHandlingPanelOKButton) {
+            NSFileManager *manager = [NSFileManager defaultManager];
+            NSURL *saveURL = [panel URL];
+            [manager copyItemAtURL:path toURL:saveURL error:nil];
+            NSLog(@"\n\n\n%@",path);
+        }
+    }];
+    
+}
+
+-(IBAction)importProject:(id)sender{
+    int i;
+    NSString * path;
+    NSOpenPanel* openDlg = [NSOpenPanel openPanel];
+    [openDlg setCanChooseFiles:YES];
+    [openDlg setAllowsMultipleSelection:NO];
+    [openDlg setCanChooseDirectories:NO];
+    if ( [openDlg runModalForDirectory:nil file:nil] == NSOKButton )
+    {
+        NSArray* files = [openDlg filenames];
+        for( i = 0; i < [files count]; i++ )
+        {
+            path = [files objectAtIndex:i];
+        }
+    }
+    
+    NSLog(@"\n\n\n%@",path);
 }
 
 -(IBAction)TEST:(id)sender{

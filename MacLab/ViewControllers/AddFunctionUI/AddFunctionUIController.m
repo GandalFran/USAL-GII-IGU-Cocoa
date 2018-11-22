@@ -9,11 +9,8 @@
 #import <Cocoa/Cocoa.h>
 #import <Foundation/Foundation.h>
 
-#import "Model.h"
 #import "Function.h"
-
 #import "AddFunctionUIController.h"
-#import "FunctionTableUIController.h"
 
 
 @implementation AddFunctionUIController{
@@ -22,19 +19,13 @@
 
 /*----------------------Initializers--------------------*/
 
--(id) init
+-(id)initWithComboBoxDataSource:(NSArray *) anArray
 {
     if(nil == [super initWithWindowNibName:@"AddFunctionUI"])
         return nil;
     
-    //Register handlers for notifications
-    NSNotificationCenter * notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter addObserver:self
-                           selector:@selector(handleSendModel:)
-                               name:sendModelToAddFunctionUI
-                             object:nil];
-    //Create the combobox datasource
-    comboBoxDataSource = [[NSArray alloc] initWithObjects:@"a*cos(b*x)", @"a*sin(b*x)",@"a*x^b",@"a+ x*b",@"a*x^2 + b*x + c",@"a/(b*x)",@"",nil];
+    //Register the combobox datasource
+    comboBoxDataSource = anArray;
     
     return self;
 }
@@ -86,23 +77,7 @@
 }
 
 /*----------------Notifications--------------*/
-
-extern NSString * sendModelToAddFunctionUI;
 NSString * functionAdded = @"functionAdded";
-
-/**
- *  @brief handler to sendModelToAddFunctionUI notification:
- *          receives the model
- */
--(void) handleSendModel:(NSNotification *)aNotification{
-    NSDictionary * aDictionary = nil;
-    
-    aDictionary = [aNotification userInfo];
-    if(nil != aDictionary){
-        model = [aDictionary objectForKey:@"model"];
-    }
-}
-
 /*--------------Delegation-------------*/
 
 /**
@@ -136,16 +111,20 @@ NSString * functionAdded = @"functionAdded";
  * @brief retrieves the information from the formulary fields and
  *          instances a Function, then add it to the model.
  */
--(IBAction)addFunction:(id)sender{
+-(IBAction)sendFunctionDataAndCloseWindow:(id)sender{
     Function * aFunction = nil;
+    NSDictionary * notificationInfo = nil;
     NSNotificationCenter * notificationCenter = nil;
     
     //Obtain the Function and add to the model
     aFunction = [self takeDataFromFormulary];
-    [model addFunction:aFunction];
     //Throw notification to advise that a function has been aded
+    notificationInfo = [NSDictionary dictionaryWithObject:aFunction
+                                                   forKey:@"function"];
     notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter postNotificationName:functionAdded object:self];
+    [notificationCenter postNotificationName:functionAdded
+                                      object:self
+                                    userInfo:notificationInfo];
     
     [self cleanAndDeactivateFields];
     [self close];

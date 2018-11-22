@@ -8,8 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class Model;
-
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AddFunctionUIController : NSWindowController <NSWindowDelegate, NSComboBoxDelegate, NSTextFieldDelegate>{
@@ -22,14 +20,12 @@ NS_ASSUME_NONNULL_BEGIN
     IBOutlet NSComboBox * typeCombobox;
     IBOutlet NSTextField * cValueLabel;
     IBOutlet NSButton * addButton;
-    
-    Model * model;
 }
 
-/*----------------Notifications--------------*/
--(void) handleSendModel:(NSNotification *)aNotification;
+-(id)initWithComboBoxDataSource:(NSArray *) anArray;
+
 /*--------------Bussines logic-------------*/
--(IBAction)addFunction:(id)sender;
+-(IBAction)sendFunctionDataAndCloseWindow:(id)sender;
 
 @end
 

@@ -56,6 +56,23 @@ ExpressionAValue : (double) aValue
            ExpressionBValue:bValue
            ExpressionCValue:cValue];
 }
+/*---------------------En/Decoder-------------------*/
+
+- (void)encodeWithCoder:(NSCoder *)encoder
+{
+    [encoder encodeObject:[self name] forKey:@"name"];
+    [encoder encodeObject:[self color] forKey:@"color"];
+    [encoder encodeObject:[[NSNumber alloc] initWithBool:[self visible]] forKey:@"visible"];
+    [encoder encodeObject:[[NSNumber alloc] initWithInt:[self type]] forKey:@"type"];
+    [encoder encodeObject:[[NSNumber alloc] initWithDouble:[self aValue]] forKey:@"aValue"];
+    [encoder encodeObject:[[NSNumber alloc] initWithDouble:[self bValue]] forKey:@"bValue"];
+    [encoder encodeObject:[[NSNumber alloc] initWithDouble:[self cValue]] forKey:@"cValue"];
+}
+
+- (id)initWithCoder:(NSCoder *)decoder
+{
+    return [self initWithName:[decoder decodeObjectForKey:@"name"] color:[decoder decodeObjectForKey:@"color"] ExpressionType:[decoder decodeIntForKey:@"type"] ExpressionAValue:[decoder decodeDoubleForKey:@"aValue"] ExpressionBValue:[decoder decodeDoubleForKey:@"bValue"] ExpressionCValue:[decoder decodeDoubleForKey:@"cValue"]];
+}
 
 /*----------------------Bean basics--------------------*/
 

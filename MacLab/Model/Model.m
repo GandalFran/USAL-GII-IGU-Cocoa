@@ -83,6 +83,11 @@
     return (-1 == index)? nil : [[modelData objectAtIndex:index] copy];
 }
 
+- (Function *) getFunctionWithIndex : (int) anIndex{
+    if(0 > anIndex || [modelData count]<=anIndex) return nil;
+    return modelData[anIndex];
+}
+
 - (bool) removeAllFunctions{
     [modelData removeAllObjects];
     return true;
@@ -114,6 +119,24 @@
     }
     
     return found? i : -1;
+}
+
+-(bool) exportFile:(NSString *) path{
+    int i;
+    NSCoder * encoder = [[NSCoder alloc] init];
+    
+    for(i=0; i<[modelData count]; i++){
+        [[modelData objectAtIndex:i] encodeWithCoder:encoder];
+    }
+    
+    //BOOL success = [NSKeyedArchiver archiveRootObject:_collection toFile:path];
+    return NO;
+}
+-(bool) importFile:(NSString *) path{
+    //loading
+    NSData *data = [[NSData alloc] initWithContentsOfFile:path];
+    //if (data) _collection = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    return NO;
 }
 
 @end

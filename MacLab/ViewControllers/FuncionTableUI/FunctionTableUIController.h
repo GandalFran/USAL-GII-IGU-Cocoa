@@ -28,17 +28,17 @@ NS_ASSUME_NONNULL_BEGIN
     AddFunctionUIController * addFunctionUIController;
 }
 
+-(id) initWithModel: (Model *) aModel;
 /*----------------Notifications--------------*/
--(void) handleSendModel:(NSNotification *)aNotification;
--(void) handleReloadData:(NSNotification *)aNotification;
-/*--------------Delegation-------------*/
-
+-(void) handlFunctionAdded:(NSNotification *)aNotification;
 /*--------------Bussines logic-------------*/
 -(IBAction)showAddFunctionPanel:(id)sender;
 -(IBAction)removeFunction:(id)sender;
 -(IBAction)removeAllModelElements:(id)sender;
 -(IBAction)representSelectedFunctions:(id)sender;
 -(IBAction)setNewRepresentationParameters:(id)sender;
+-(IBAction)exportProject:(id)sender;
+-(IBAction)importProject:(id)sender;
 
 -(IBAction)tableViewEditNameColumn:(id)sender;
 -(IBAction)tableViewEditTypeColumn:(id)sender;

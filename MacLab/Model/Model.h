@@ -26,9 +26,13 @@ typedef struct{
 - (bool) removeFunctionWithID : (int) aFunctionID;
 - (bool) updateFunction : (Function *) aFunction;
 - (Function *) getFunctionWithID : (int) aFunctionID;
+- (Function *) getFunctionWithIndex : (int) anIndex;
 - (bool) removeAllFunctions;
 - (NSArray *) allFunctions;
 - (long) count;
+
+-(bool) exportFile:(NSString *) path;
+-(bool) importFile:(NSString *) path;
 
 @end
 

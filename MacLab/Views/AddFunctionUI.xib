@@ -164,7 +164,7 @@
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="addFunction:" target="-2" id="jaR-gG-Xeu"/>
+                            <action selector="sendFunctionDataAndCloseWindow:" target="-2" id="jaR-gG-Xeu"/>
                         </connections>
                     </button>
                 </subviews>

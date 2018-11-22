@@ -28,7 +28,7 @@
     model =[[Model alloc] init];
     
     //Instance and throw secondary window
-    functionTableUIController = [[FunctionTableUIController alloc] init];
+    functionTableUIController = [[FunctionTableUIController alloc] initWithModel: model];
     [functionTableUIController showWindow:self];
     
     //set default values for xmin, xmax, ymin and ymax
@@ -39,18 +39,8 @@
     parameters.ymax = 10.0;
     [model setRepresentationParameters:parameters];
     
-    
-    //Send the model
-    NSDictionary * notificationInfo = nil;
-    NSNotificationCenter * notificationCenter = nil;
-    
-    notificationCenter = [NSNotificationCenter defaultCenter];
-    notificationInfo = [NSDictionary dictionaryWithObject:model forKey:@"model"];
-    [notificationCenter postNotificationName:sendModelToFunctionTableUI
-                                      object:self
-                                    userInfo:notificationInfo];
-    
     //register the handle for terminate app notification
+    NSNotificationCenter * notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self
                            selector:@selector(handleAddRepresentation:)
                                name:sendNewRepresentation
@@ -68,9 +58,13 @@
     return YES;
 }
 
+-(void)dealloc{
+    NSNotificationCenter * notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter removeObserver:self];
+}
+
 /*----------------Notifications--------------*/
 
-NSString * sendModelToFunctionTableUI = @"sendModelToFunctionTableUI";
 extern NSString * sendNewRepresentation;
 
 /**
@@ -94,6 +88,7 @@ extern NSString * sendNewRepresentation;
 
 -(void) addRepresentationWithFunctionArray: (NSArray *) aFunctionArray{
     //TODO implement
+    NSLog(@"\n\n%@",aFunctionArray);
 }
 
 @end

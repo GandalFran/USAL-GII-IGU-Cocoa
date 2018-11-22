@@ -19,14 +19,11 @@ NS_ASSUME_NONNULL_BEGIN
     IBOutlet NSPlotView * plotView;
     
     Model * model;
-    
     FunctionTableUIController * functionTableUIController;
 }
 
 /*----------------Notifications--------------*/
 -(void) handleAddRepresentation:(NSNotification *)aNotification;
-/*--------------Delegation-------------*/
-
 /*--------------Bussines logic-------------*/
 -(void) addRepresentationWithFunctionArray: (NSArray *) aFunctionArray;
 
