@@ -49,9 +49,6 @@
     NSModalResponse response;
     
     alert = [[NSAlert alloc] init];
-    if(nil == alert)
-        return YES;
-    
     [alert setMessageText:@"Atention"];
     [alert setInformativeText:@"If you close this window, the function data will be losed."];
     [alert addButtonWithTitle:@"yes"];

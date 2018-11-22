@@ -37,8 +37,6 @@ NS_ASSUME_NONNULL_BEGIN
 -(IBAction)removeAllModelElements:(id)sender;
 -(IBAction)representSelectedFunctions:(id)sender;
 -(IBAction)setNewRepresentationParameters:(id)sender;
--(IBAction)exportProject:(id)sender;
--(IBAction)importProject:(id)sender;
 
 -(IBAction)tableViewEditNameColumn:(id)sender;
 -(IBAction)tableViewEditTypeColumn:(id)sender;
@@ -48,6 +46,8 @@ NS_ASSUME_NONNULL_BEGIN
 -(IBAction)tableViewEditColorColumn:(id)sender;
 
 -(IBAction)TEST:(id)sender;
+
+-(void) reloadData;
 
 @end
 

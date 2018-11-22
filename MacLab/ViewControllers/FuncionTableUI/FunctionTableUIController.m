@@ -338,58 +338,8 @@ extern NSString * functionAdded;
     return (areAllFilled && areNumberTextFieldsCorrectlyFilled);
 }
 
-//https://stackoverflow.com/questions/1640419/open-file-dialog-box
--(IBAction)exportProject:(id)sender{
-    bool IOresult;
-    
-    IOresult = [model exportFile:@"//Users//gandalfran//Desktop//test.bin"];
-    if(!IOresult){
-        NSLog(@"\n\n\n\nHI");
-    }else
-        NSLog(@"\n\n\n\nYES");
-    
-    /*
-    NSInteger result;
-    NSString * path = nil;
-    NSSavePanel * panel = nil;
-    
-    panel = [NSSavePanel savePanel];
-    [panel setAllowedFileTypes:[NSArray arrayWithObject:@"bin"]];
-    [panel setTitle:@"Save project"];
-    result = [panel runModal];
-    
-    if (NSModalResponseOK == result) {
-        
-        path = [[panel URL] path];
-        NSLog(@"\n\n%@",path);
-        IOresult = [model exportFile: path];
-        if(!IOresult){
-            
-        }
-    }*/
-}
-
--(IBAction)importProject:(id)sender{
-    bool IOresult;
-    NSInteger result;
-    NSString * path = nil;
-    NSOpenPanel * panel = nil;
-    
-    panel = [NSOpenPanel openPanel];
-    [panel setAllowedFileTypes:[NSArray arrayWithObject:@"bin"]];
-    [panel setTitle:@"Open project"];
-    [panel setAllowsMultipleSelection:NO];
-    result = [panel runModal];
-    
-    if (NSModalResponseOK == result) {
-        
-        path = [[panel URL] path];
-        NSLog(@"\n\n%@",path);
-        IOresult = [model importFile: path];
-        if(!IOresult){
-            
-        }
-    }
+-(void) reloadData{
+    [functionTableView reloadData];
 }
 
 -(IBAction)TEST:(id)sender{

@@ -91,4 +91,80 @@ extern NSString * sendNewRepresentation;
     NSLog(@"\n\n%@",aFunctionArray);
 }
 
+//https://stackoverflow.com/questions/1640419/open-file-dialog-box
+-(IBAction)exportProject:(id)sender{
+    bool IOresult;
+    NSInteger result;
+    NSString * path = nil;
+    NSSavePanel * panel = nil;
+    
+    if([model count] == 0){
+        NSAlert * alert = [[NSAlert alloc] init];
+        [alert setMessageText:@"Error"];
+        [alert setInformativeText:@"To export the project must be declared fucntions."];
+        [alert addButtonWithTitle:@"ok"];
+        [alert setAlertStyle:NSAlertStyleCritical];
+        [alert runModal];
+        return;
+    }
+    
+    panel = [NSSavePanel savePanel];
+    [panel setAllowsOtherFileTypes:NO];
+    [panel setExtensionHidden:YES];
+    [panel setCanCreateDirectories:NO];
+    [panel setAllowedFileTypes:[NSArray arrayWithObject:@"bin"]];
+    [panel setTitle:@"Save project"];
+    result = [panel runModal];
+    
+    if (NSModalResponseOK == result) {
+        path = [[panel URL] path];
+        NSLog(@"\n\n%@",path);
+        IOresult = [model exportFile: path];
+        if(!IOresult){
+            NSAlert * alert = [[NSAlert alloc] init];
+            [alert setMessageText:@"Error"];
+            [alert setInformativeText:@"Data couldnt be exported."];
+            [alert addButtonWithTitle:@"ok"];
+            [alert setAlertStyle:NSAlertStyleCritical];
+            [alert runModal];
+            return;
+        }else{
+            [functionTableUIController reloadData];
+        }
+    }
+    
+    
+}
+
+-(IBAction)importProject:(id)sender{
+    bool IOresult;
+    NSInteger result;
+    NSString * path = nil;
+    NSOpenPanel * panel = nil;
+    
+    panel = [NSOpenPanel openPanel];
+    [panel setAllowedFileTypes:[NSArray arrayWithObject:@"bin"]];
+    [panel setTitle:@"Open project"];
+    [panel setAllowsMultipleSelection:NO];
+    result = [panel runModal];
+    
+    if (NSModalResponseOK == result) {
+        
+        path = [[panel URL] path];
+        NSLog(@"\n\n%@",path);
+        IOresult = [model importFile: path];
+        if(!IOresult){
+            NSAlert * alert = [[NSAlert alloc] init];
+            [alert setMessageText:@"Error"];
+            [alert setInformativeText:@"Data couldnt be imported."];
+            [alert addButtonWithTitle:@"ok"];
+            [alert setAlertStyle:NSAlertStyleCritical];
+            [alert runModal];
+            return;
+        }else{
+            [functionTableUIController reloadData];
+        }
+    }
+}
+
 @end
