@@ -65,7 +65,6 @@
 
     if (NSAlertFirstButtonReturn == response) {
         [self cleanAndDeactivateFields];
-        [NSApp stopModal];
         return YES;
     }else{
         return NO;
@@ -96,9 +95,6 @@ NSString * functionAdded = @"functionAdded";
     if(nil != aDictionary){
         model = [aDictionary objectForKey:@"model"];
     }
-    
-    NSWindow *w = [self window];
-    [NSApp runModalForWindow:w];
 }
 
 /*--------------Delegation-------------*/
@@ -121,11 +117,10 @@ NSString * functionAdded = @"functionAdded";
  */
 -(void)comboBoxSelectionDidChange:(NSNotification *)notification{
     BOOL selectedItem = (4 == [typeCombobox indexOfSelectedItem]);
-    BOOL formularyCompleted = [self isFormCompleted];
-    
     [cValueLabel setHidden: !selectedItem];
     [cValueTextField setHidden: !selectedItem];
-
+    
+    BOOL formularyCompleted = [self isFormCompleted];
     [addButton setEnabled: formularyCompleted];
 }
 
@@ -147,7 +142,6 @@ NSString * functionAdded = @"functionAdded";
     [notificationCenter postNotificationName:functionAdded object:self];
     
     [self cleanAndDeactivateFields];
-    [NSApp stopModal];
     [self close];
 }
 

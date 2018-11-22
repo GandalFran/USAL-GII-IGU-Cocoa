@@ -31,6 +31,15 @@
     functionTableUIController = [[FunctionTableUIController alloc] init];
     [functionTableUIController showWindow:self];
     
+    //set default values for xmin, xmax, ymin and ymax
+    RepresentationParameters parameters;
+    parameters.xmin = -10.0;
+    parameters.xmax = 10.0;
+    parameters.ymin = -10.0;
+    parameters.ymax = 10.0;
+    [model setRepresentationParameters:parameters];
+    
+    
     //Send the model
     NSDictionary * notificationInfo = nil;
     NSNotificationCenter * notificationCenter = nil;

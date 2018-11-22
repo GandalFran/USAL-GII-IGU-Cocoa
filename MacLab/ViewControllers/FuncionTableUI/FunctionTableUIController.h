@@ -10,33 +10,22 @@
 
 @class Model;
 @class AddFunctionUIController;
-@class EditFunctionUIController;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface FunctionTableUIController : NSWindowController<NSWindowDelegate, NSTextDelegate, NSComboBoxDelegate, NSTableViewDelegate, NSTableViewDataSource>{
-    
-    IBOutlet NSTextField * nameTextField;
-    IBOutlet NSTextField * aValueTextField;
-    IBOutlet NSTextField * bValueTextField;
-    IBOutlet NSTextField * cValueTextField;
-    IBOutlet NSColorWell * colorColorWell;
-    IBOutlet NSComboBox * typeCombobox;
-    IBOutlet NSTextField * cValueLabel;
-    IBOutlet NSButton * editButton;
-    
+
     IBOutlet NSTextField * xminTextField;
     IBOutlet NSTextField * xmaxTextField;
     IBOutlet NSTextField * yminTextField;
     IBOutlet NSTextField * ymaxTextField;
     IBOutlet NSButton * saveSettingsButton;
     
-    IBOutlet NSTableView * tableView;
+    IBOutlet NSTableView * functionTableView;
     
     Model * model;
     
     AddFunctionUIController * addFunctionUIController;
-    EditFunctionUIController * editFunctionUIController;
 }
 
 /*----------------Notifications--------------*/
@@ -45,13 +34,18 @@ NS_ASSUME_NONNULL_BEGIN
 /*--------------Delegation-------------*/
 
 /*--------------Bussines logic-------------*/
--(IBAction)addFunction:(id)sender;
+-(IBAction)showAddFunctionPanel:(id)sender;
 -(IBAction)removeFunction:(id)sender;
--(IBAction)editFunction:(id)sender;
 -(IBAction)removeAllModelElements:(id)sender;
 -(IBAction)representSelectedFunctions:(id)sender;
 -(IBAction)setNewRepresentationParameters:(id)sender;
 
+-(IBAction)tableViewEditNameColumn:(id)sender;
+-(IBAction)tableViewEditTypeColumn:(id)sender;
+-(IBAction)tableViewEditAValueColumn:(id)sender;
+-(IBAction)tableViewEditBValueColumn:(id)sender;
+-(IBAction)tableViewEditCValueColumn:(id)sender;
+-(IBAction)tableViewEditColorColumn:(id)sender;
 
 -(IBAction)TEST:(id)sender;
 

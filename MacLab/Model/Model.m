@@ -27,13 +27,6 @@
     currentID = 0;
     modelData = [[NSMutableArray alloc] init];
     
-    RepresentationParameters parameters;
-    parameters.xmin = -10;
-    parameters.xmax = 10;
-    parameters.ymin = -10;
-    parameters.ymax = 10;
-    [self setRepresentationParameters: parameters];
-    
     if(!modelData)
         return nil;
     
@@ -77,6 +70,9 @@
         [modelData removeObjectAtIndex:index];
         [modelData insertObject:aFunction atIndex:index];
     }
+    
+    NSLog(@"\n\nUpdated f:%@",aFunction);
+    
     return (-1 != index);
 }
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7D0445FC21A597AE00E016BA /* Function.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0445FA21A597AE00E016BA /* Function.m */; };
 		CD10C0032194A1980064ED2E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CD10C0022194A1980064ED2E /* AppDelegate.m */; };
 		CD10C0052194A1990064ED2E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD10C0042194A1990064ED2E /* Assets.xcassets */; };
 		CD10C0082194A1990064ED2E /* PlotRepresentationUI.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD10C0062194A1990064ED2E /* PlotRepresentationUI.xib */; };
@@ -18,10 +19,11 @@
 		CD26FE13219711B40031B6F0 /* AddFunctionUIController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD26FE12219711B40031B6F0 /* AddFunctionUIController.m */; };
 		CDAE1542219AEEB900935252 /* FunctionTableUIController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAE1541219AEEB900935252 /* FunctionTableUIController.m */; };
 		CDAE1544219AEEEB00935252 /* FunctionTableUI.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDAE1543219AEEEB00935252 /* FunctionTableUI.xib */; };
-		CDF182FE219B77EB0047C824 /* Function.m in Sources */ = {isa = PBXBuildFile; fileRef = CDF182FD219B77EB0047C824 /* Function.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7D0445FA21A597AE00E016BA /* Function.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Function.m; path = Model/Bean/Function.m; sourceTree = SOURCE_ROOT; };
+		7D0445FB21A597AE00E016BA /* Function.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Function.h; path = Model/Bean/Function.h; sourceTree = SOURCE_ROOT; };
 		CD10BFFE2194A1980064ED2E /* MacLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD10C0012194A1980064ED2E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CD10C0022194A1980064ED2E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -42,8 +44,6 @@
 		CDAE1540219AEEB900935252 /* FunctionTableUIController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FunctionTableUIController.h; sourceTree = "<group>"; };
 		CDAE1541219AEEB900935252 /* FunctionTableUIController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FunctionTableUIController.m; sourceTree = "<group>"; };
 		CDAE1543219AEEEB00935252 /* FunctionTableUI.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FunctionTableUI.xib; sourceTree = "<group>"; };
-		CDF182F9219B77D90047C824 /* Function.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Function.h; path = Model/Bean/Function.h; sourceTree = "<group>"; };
-		CDF182FD219B77EB0047C824 /* Function.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Function.m; path = Model/Bean/Function.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +57,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7D0445F921A5979C00E016BA /* Bean */ = {
+			isa = PBXGroup;
+			children = (
+				7D0445FB21A597AE00E016BA /* Function.h */,
+				7D0445FA21A597AE00E016BA /* Function.m */,
+			);
+			name = Bean;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		CD10BFF52194A1980064ED2E = {
 			isa = PBXGroup;
 			children = (
@@ -65,7 +75,6 @@
 				CD20BA90219EB58C00302CB0 /* Views */,
 				CD20BA91219EB59900302CB0 /* ViewControllers */,
 				CD26FDFF2197102B0031B6F0 /* Model */,
-				CDF18302219CA4A70047C824 /* Utils */,
 			);
 			sourceTree = "<group>";
 		};
@@ -110,22 +119,12 @@
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
-		CD26FDFA21970FE50031B6F0 /* Bean */ = {
-			isa = PBXGroup;
-			children = (
-				CDF182F9219B77D90047C824 /* Function.h */,
-				CDF182FD219B77EB0047C824 /* Function.m */,
-			);
-			name = Bean;
-			path = "/Users/gandalfran/Desktop/IGU-Cocoa/MacLab";
-			sourceTree = "<absolute>";
-		};
 		CD26FDFF2197102B0031B6F0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				7D0445F921A5979C00E016BA /* Bean */,
 				CD26FE01219710430031B6F0 /* Model.h */,
 				CD26FE02219710430031B6F0 /* Model.m */,
-				CD26FDFA21970FE50031B6F0 /* Bean */,
 			);
 			path = Model;
 			sourceTree = SOURCE_ROOT;
@@ -157,13 +156,6 @@
 				CDAE1541219AEEB900935252 /* FunctionTableUIController.m */,
 			);
 			path = FuncionTableUI;
-			sourceTree = "<group>";
-		};
-		CDF18302219CA4A70047C824 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -241,10 +233,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDF182FE219B77EB0047C824 /* Function.m in Sources */,
 				CD10C00B2194A1990064ED2E /* main.m in Sources */,
 				CD1BE93F219B661F002CD188 /* NSPlotView.m in Sources */,
 				CD26FE0D219710FC0031B6F0 /* PlotRepresentationUIController.m in Sources */,
+				7D0445FC21A597AE00E016BA /* Function.m in Sources */,
 				CD26FE13219711B40031B6F0 /* AddFunctionUIController.m in Sources */,
 				CD10C0032194A1980064ED2E /* AppDelegate.m in Sources */,
 				CD26FE03219710430031B6F0 /* Model.m in Sources */,

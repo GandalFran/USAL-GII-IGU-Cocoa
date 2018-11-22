@@ -16,7 +16,10 @@
 #import "PlotRepresentationUIController.h"
 
 
-@implementation FunctionTableUIController
+@implementation FunctionTableUIController{
+    
+    NSArray * comboBoxDataSource;
+}
 
 /*----------------------Initializers--------------------*/
 
@@ -33,6 +36,9 @@
     
     if(nil == self)
         return nil;
+    
+    //Create the combobox datasource
+    comboBoxDataSource = [[NSArray alloc] initWithObjects:@"a*cos(b*x)", @"a*sin(b*x)",@"a*x^b",@"a*x + b",@"a*x^2 + b*x + c",@"a/(b*x)",@"",nil];
 
     //Register handlers for the notifications
     NSNotificationCenter * notificationCenter = nil;
@@ -61,25 +67,8 @@
 -(void) awakeFromNib{
     RepresentationParameters parameters = [model representationParameters];
     
-    [xminTextField setFloatValue:parameters.xmin];
-    [xmaxTextField setFloatValue:parameters.xmax];
-    [yminTextField setFloatValue:parameters.ymin];
-    [ymaxTextField setFloatValue:parameters.ymax];
-    
-    [nameTextField setStringValue:@""];
-    [aValueTextField setStringValue:@""];
-    [bValueTextField setStringValue:@""];
-    [cValueTextField setStringValue:@""];
-    [typeCombobox setStringValue:@""];
-    [nameTextField setEnabled: NO];
-    [aValueTextField setEnabled: NO];
-    [bValueTextField setEnabled: NO];
-    [cValueTextField setEnabled: NO];
-    [typeCombobox setEnabled: NO];
-    
-    [cValueLabel setHidden: YES];
-    [cValueTextField setHidden: YES];
-    [editButton setEnabled: NO];
+    [xminTextField setFloatValue:(float)parameters.xmin];
+
 }
 
 - (void) windowDidLoad {
@@ -112,7 +101,7 @@ extern NSString * functionAdded;
  *              reloads the view
  */
 -(void) handleReloadData:(NSNotification *)aNotification{
-    [tableView reloadData];
+    [functionTableView reloadData];
 }
 
 /*--------------Delegation-------------*/
@@ -122,174 +111,142 @@ extern NSString * functionAdded;
  *         formulary is completed or not
  */
 - (void) controlTextDidChange:(NSNotification *)obj{
-    BOOL formularyCompleted = [self isEditFormCompleted];
-    [editButton setEnabled: formularyCompleted];
-    
-    formularyCompleted = [self isSettingsFormCompleted];
+    BOOL formularyCompleted = [self isSettingsFormCompleted];
     [saveSettingsButton setEnabled: formularyCompleted];
 }
 
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row{
 
-/**
- *  @brief hides or shows the cValue label and textbox
- *         according to the type comboBox.
- *         and enables or disables the add button if the
- *         formulary is completed or not
- */
--(void)comboBoxSelectionDidChange:(NSNotification *)notification{
-    BOOL selectedItem = (4 == [typeCombobox indexOfSelectedItem]);
-    BOOL formularyCompleted = [self isEditFormCompleted];
+    NSString * identifier = [tableColumn identifier];
+    NSTableCellView * cell = [tableView makeViewWithIdentifier:identifier owner:nil];
+    Function * f = [[model allFunctions] objectAtIndex:row];
     
-    [cValueLabel setHidden: !selectedItem];
-    [cValueTextField setHidden: !selectedItem];
-    
-    [editButton setEnabled: formularyCompleted];
-}
-
-/*
-- (void)tableView:(NSTableView *)aTableView setObjectValue:(id)anObject forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex{
-    
-    Function * f = nil;
-    NSString * columnIdentifier = nil;
-    
-    columnIdentifier = [aTableColumn identifier];
-    f = [[model allFunctions] objectAtIndex:rowIndex];
-    
-    if([columnIdentifier isEqualToString:@"NameColumn"]){
-        [f setName:anObject];
-    }else if([columnIdentifier isEqualToString:@"typeColumn"]){
-        if([anObject isEqualToString:@"a*cos(b*x)"]){
-            [f setType:COSINE];
-        }else if([anObject isEqualToString:@"a*sin(b*x)"]){
-            [f setType:SINE];
-        }else if([anObject isEqualToString:@"a*x^b)"]){
-            [f setType:EXPONENTIAL];
-        }else if([anObject isEqualToString:@"a + b*x"]){
-            [f setType:LINE];
-        }else if([anObject isEqualToString:@"a*x^2 + b*x + c"]){
-            [f setType:PARABOLA];
-        }else if([anObject isEqualToString:@"a/(b*x)"]){
-            [f setType:HIPERBOLA];
+    if([tableColumn isEqual:[tableView tableColumns][0]]){
+        NSTextField * textField = [[cell subviews] objectAtIndex:0];
+        [textField setStringValue: [f name]];
+        [textField setTag: row];
+        [textField setTarget:self];
+        [textField setAction:@selector(tableViewEditNameColumn:)];
+    }else if([tableColumn isEqual:[tableView tableColumns][1]]){
+        NSComboBox * comboBox = [[cell subviews] objectAtIndex:0];
+        [comboBox setStringValue:comboBoxDataSource[[f type]]];
+        [comboBox setTag: row];
+        [comboBox setTarget:self];
+        [comboBox setAction:@selector(tableViewEditTypeColumn:)];
+    }else if([tableColumn isEqual:[tableView tableColumns][2]]){
+        NSTextField * textField = [[cell subviews] objectAtIndex:0];
+        [textField setStringValue: [[NSString alloc]initWithFormat:@"%.2f",[f aValue]]];
+        [textField setTag: row];
+        [textField setTarget:self];
+        [textField setAction:@selector(tableViewEditAValueColumn:)];
+    }else if([tableColumn isEqual:[tableView tableColumns][3]]){
+        NSTextField * textField = [[cell subviews] objectAtIndex:0];
+        [textField setStringValue: [[NSString alloc]initWithFormat:@"%.2f",[f bValue]]];
+        [textField setTag: row];
+        [textField setTarget:self];
+        [textField setAction:@selector(tableViewEditBValueColumn:)];
+    }else if([tableColumn isEqual:[tableView tableColumns][4]]){
+        NSTextField * textField = [[cell subviews] objectAtIndex:0];
+        if([f type] == PARABOLA){
+            [textField setStringValue: [[NSString alloc]initWithFormat:@"%.2f",[f cValue]]];
+            [textField setEnabled: YES];
+        }else{
+            [textField setStringValue: @"-"];
+            [textField setEnabled: NO];
         }
-    }else if([columnIdentifier isEqualToString:@"aValueColumn"]){
-        [f setAValue:[anObject doubleValue]];
-    }else if([columnIdentifier isEqualToString:@"bValueColumn"]){
-        [f setBValue:[anObject doubleValue]];
-    }else if([columnIdentifier isEqualToString:@"cValueColumn"] && ([f type] == PARABOLA)){
-        [f setCValue:[anObject doubleValue]];
-    }else if([columnIdentifier isEqualToString:@"ColorColumn"]){
-        //TODO
-    }else if([columnIdentifier isEqualToString:@"vissibleColumn"]){
-        //TODO
+        [textField setTag: row];
+        [textField setTarget:self];
+        [textField setAction:@selector(tableViewEditCValueColumn:)];
+    }else if([tableColumn isEqual:[tableView tableColumns][5]]){
+        NSColorWell * colorWell = [[cell subviews] objectAtIndex:0];
+        [colorWell setColor:[f color]];
+        [colorWell setTag: row];
+        [colorWell setTarget:self];
+        [colorWell setAction:@selector(tableViewEditColorColumn:)];
     }
     
-    [model updateFunction:f];
-    [tableView reloadData];
-}*/
+    return cell;
+}
 
--(id) tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
-{
+-(IBAction)tableViewEditNameColumn:(id)sender{
+    NSInteger row;
     Function * f = nil;
-    NSString * columnIdentifier = nil;
+    NSTextField * tf = sender;
     
-    columnIdentifier = [tableColumn identifier];
+    row = [tf tag];
+    
+    f = [[model allFunctions] objectAtIndex:row];
+    [f setName: [tf stringValue] ];
+    [model updateFunction:f];
+}
+-(IBAction)tableViewEditTypeColumn:(id)sender{
+    NSInteger row;
+    Function * f = nil;
+    NSComboBox * cb = sender;
+    
+    row = [cb tag];
+    
+    f = [[model allFunctions] objectAtIndex:row];
+    [f setType:(FunctionType)[cb indexOfSelectedItem]];
+    if([f type] != PARABOLA)
+        [f setCValue:0];
+    
+    [model updateFunction:f];
+    
+    //here the data is reloaded because if is selected or deselected the PARABOLA
+    //  the c value should be changed
+    [functionTableView reloadData];
+}
+-(IBAction)tableViewEditAValueColumn:(id)sender{
+    NSInteger row;
+    Function * f = nil;
+    NSTextField * tf = sender;
+    
+    row = [tf tag];
+    
+    f = [[model allFunctions] objectAtIndex:row];
+    [f setAValue: [tf floatValue] ];
+    [model updateFunction:f];
+}
+-(IBAction)tableViewEditBValueColumn:(id)sender{
+    NSInteger row;
+    Function * f = nil;
+    NSTextField * tf = sender;
+    
+    row = [tf tag];
+    
+    f = [[model allFunctions] objectAtIndex:row];
+    [f setBValue: [tf floatValue] ];
+    [model updateFunction:f];
+}
+-(IBAction)tableViewEditCValueColumn:(id)sender{
+    NSInteger row;
+    Function * f = nil;
+    NSTextField * tf = sender;
+    
+    row = [tf tag];
+    
     f = [[model allFunctions] objectAtIndex:row];
     
-    if([columnIdentifier isEqualToString:@"NameColumn"]){
-        return [f name];
-    }else if([columnIdentifier isEqualToString:@"ExpressionColumn"]){
-        return [f expressionStringValue];
-    }else{
-        return nil;
+    if([f type] == PARABOLA){
+        [f setCValue: [tf floatValue] ];
+        [model updateFunction:f];
     }
+    
+    //here the data is reloaded because if is selected or deselected the PARABOLA
+    //  the c value has different treatement
+    [functionTableView reloadData];
 }
-/*
-- (void)tableView:(NSTableView *)aTableView setObjectValue:(id)anObject forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex{
-    
-    Function * f = nil;
-    NSString * columnIdentifier = nil;
-    
-    columnIdentifier = [aTableColumn identifier];
-    f = [[model allFunctions] objectAtIndex:rowIndex];
-    
-    if([columnIdentifier isEqualToString:@"NameColumn"]){
-        [f setName:anObject];
-    }else if([columnIdentifier isEqualToString:@"typeColumn"]){
-        if([anObject isEqualToString:@"a*cos(b*x)"]){
-            [f setType:COSINE];
-        }else if([anObject isEqualToString:@"a*sin(b*x)"]){
-            [f setType:SINE];
-        }else if([anObject isEqualToString:@"a*x^b)"]){
-            [f setType:EXPONENTIAL];
-        }else if([anObject isEqualToString:@"a + b*x"]){
-            [f setType:LINE];
-        }else if([anObject isEqualToString:@"a*x^2 + b*x + c"]){
-            [f setType:PARABOLA];
-        }else if([anObject isEqualToString:@"a/(b*x)"]){
-            [f setType:HIPERBOLA];
-        }
-    }else if([columnIdentifier isEqualToString:@"aValueColumn"]){
-        [f setAValue:[anObject doubleValue]];
-    }else if([columnIdentifier isEqualToString:@"bValueColumn"]){
-        [f setBValue:[anObject doubleValue]];
-    }else if([columnIdentifier isEqualToString:@"cValueColumn"] && ([f type] == PARABOLA)){
-        [f setCValue:[anObject doubleValue]];
-    }else if([columnIdentifier isEqualToString:@"ColorColumn"]){
-        //TODO
-    }else if([columnIdentifier isEqualToString:@"vissibleColumn"]){
-        //TODO
-    }
-    
-    [model updateFunction:f];
-    [tableView reloadData];
-}*/
-
--(void)tableViewSelectionDidChange:(NSNotification *)notification{
+-(IBAction)tableViewEditColorColumn:(id)sender{
     NSInteger row;
-    Function * function = nil;
+    Function * f = nil;
+    NSColorWell * colorWell = sender;
     
-    row = [tableView selectedRow];
+    row = [colorWell tag];
     
-    if(row == -1){
-        [nameTextField setStringValue:@""];
-        [aValueTextField setStringValue:@""];
-        [bValueTextField setStringValue:@""];
-        [cValueTextField setStringValue:@""];
-        [typeCombobox setStringValue:@""];
-        [nameTextField setEnabled: NO];
-        [aValueTextField setEnabled: NO];
-        [bValueTextField setEnabled: NO];
-        [cValueTextField setEnabled: NO];
-        [typeCombobox setEnabled: NO];
-        
-        [cValueLabel setHidden: YES];
-        [cValueTextField setHidden: YES];
-        [editButton setEnabled: NO];
-    }else{
-        function = [[model allFunctions] objectAtIndex:row];
-        
-        [nameTextField setStringValue: [function name]];
-        [aValueTextField setFloatValue:[function aValue]];
-        [bValueTextField setFloatValue:[function bValue]];
-        [cValueTextField setFloatValue:[function cValue]];
-        [typeCombobox setStringValue:@"POR IMPLEMENTAR"];
-        [nameTextField setEnabled: YES];
-        [aValueTextField setEnabled: YES];
-        [bValueTextField setEnabled: YES];
-        [cValueTextField setEnabled: YES];
-        [typeCombobox setEnabled: YES];
-        
-        if([function type] == PARABOLA){
-            [cValueLabel setHidden: NO];
-            [cValueTextField setHidden: NO];
-        }else{
-            [cValueLabel setHidden: YES];
-            [cValueTextField setHidden: YES];
-        }
-        
-        [editButton setEnabled: YES];
-    }
-    
+    f = [[model allFunctions] objectAtIndex:row];
+    [f setColor: [colorWell color] ];
+    [model updateFunction:f];
 }
 
 -(NSInteger) numberOfRowsInTableView:(NSTableView *)tableView
@@ -303,6 +260,7 @@ extern NSString * functionAdded;
  * @brief take the representation parameters and set it on the model
  */
 -(IBAction)setNewRepresentationParameters:(id)sender{
+    
     RepresentationParameters new;
     
     new.xmin = [xminTextField doubleValue];
@@ -316,7 +274,7 @@ extern NSString * functionAdded;
 /**
  *  @brief displays the addFunction formulary when the addFunction button is pushed
  */
--(IBAction)addFunction:(id)sender{
+-(IBAction)showAddFunctionPanel:(id)sender{
     NSDictionary * notificationInfo = nil;
     NSNotificationCenter * notificationCenter = nil;
     
@@ -335,14 +293,12 @@ extern NSString * functionAdded;
     NSInteger row;
     Function * f = nil;
     
-    row = [tableView selectedRow];
+    row = [functionTableView selectedRow];
     if(-1 == row) return;
     
     f = [[model allFunctions] objectAtIndex:row];
     [model removeFunctionWithID:[f ID]];
-    [tableView reloadData];
-    //When a function is removed is neccesary to disable the edit button
-    [self tableViewSelectionDidChange:nil];
+    [functionTableView reloadData];
 }
 
 /**
@@ -350,9 +306,7 @@ extern NSString * functionAdded;
  */
 -(IBAction)removeAllModelElements:(id)sender{
     [model removeAllFunctions];
-    [tableView reloadData];
-    //When a function is removed is neccesary to disable the edit button
-    [self tableViewSelectionDidChange:nil];
+    [functionTableView reloadData];
 }
 
 /**
@@ -393,54 +347,6 @@ extern NSString * functionAdded;
     return (areAllFilled && areNumberTextFieldsCorrectlyFilled);
 }
 
-
--(IBAction)editFunction:(id)sender{
-    NSInteger row;
-    FunctionType aType;
-    Function * function = nil;
-    
-    row = [tableView selectedRow];
-    function = [[model allFunctions] objectAtIndex:row];
-    
-    switch((int)[typeCombobox indexOfSelectedItem]){
-        case 0: aType = COSINE; break;
-        case 1: aType = SINE; break;
-        case 2: aType = EXPONENTIAL; break;
-        case 3: aType = LINE; break;
-        case 4: aType = PARABOLA; break;
-        case 5: aType = HIPERBOLA; break;
-        default: aType = NONE_TYPE;
-    }
-    
-    [function setName: [nameTextField stringValue]];
-    [function setAValue:[aValueTextField doubleValue]];
-    [function setBValue:[bValueTextField doubleValue]];
-    [function setCValue:[cValueTextField doubleValue]];
-    [function setColor:[colorColorWell color]];
-    [function setType: aType];
-    
-    [tableView reloadData];
-}
-
-- (BOOL) isEditFormCompleted{
-    NSNumberFormatter * numberFormatter = [[NSNumberFormatter alloc] init];
-    
-    BOOL areAllFilled = ([[nameTextField stringValue] length] != 0
-                         && [[aValueTextField stringValue] length] != 0
-                         && [[bValueTextField stringValue] length] != 0
-                         && ([[cValueTextField stringValue] length] != 0 || [cValueTextField isHidden] == YES)
-                         && [typeCombobox selectedTag] != -1);
-    
-    //TODO improve the validation of numbers
-    BOOL areNumberTextFieldsCorrectlyFilled = (
-                                               [numberFormatter numberFromString:[aValueTextField stringValue]] != nil
-                                               && [numberFormatter numberFromString:[bValueTextField stringValue]] != nil
-                                               && ([numberFormatter numberFromString:[cValueTextField stringValue]] || [cValueTextField isHidden] == YES)
-                                               );
-    
-    return (areAllFilled && areNumberTextFieldsCorrectlyFilled);
-}
-
 -(IBAction)TEST:(id)sender{
     Function * f = nil;
     NSString * name = nil;
@@ -461,7 +367,7 @@ extern NSString * functionAdded;
         [model addFunction: f];
     }
     
-    [tableView reloadData];
+    [functionTableView reloadData];
 }
 
 @end
