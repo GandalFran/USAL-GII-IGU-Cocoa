@@ -14,10 +14,15 @@
 #import "FunctionTableUIController.h"
 #import "PlotRepresentationUIController.h"
 
+@interface PlotRepresentationUIController(){
+    Model * model;
+    FunctionTableUIController * functionTableUIController;
+}
+@end
+
 @implementation PlotRepresentationUIController
 
-/*----------------------Initializers--------------------*/
-
+//----------------Initializers---------------------
 -(id) init {
     self = [super init];
     
@@ -26,10 +31,6 @@
     
     //Instance model
     model =[[Model alloc] init];
-    
-    //Instance and throw secondary window
-    functionTableUIController = [[FunctionTableUIController alloc] initWithModel: model];
-    [functionTableUIController showWindow:self];
     
     //set default values for xmin, xmax, ymin and ymax
     RepresentationParameters parameters;
@@ -58,12 +59,13 @@
     return YES;
 }
 
--(void)dealloc{
+//-----------------Finalizers----------------------
+-(void)dealloc {
     NSNotificationCenter * notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter removeObserver:self];
 }
 
-/*----------------Notifications--------------*/
+//----------------Notifications--------------------
 
 extern NSString * sendNewRepresentation;
 
@@ -81,17 +83,37 @@ extern NSString * sendNewRepresentation;
     [self addRepresentationWithFunctionArray: aFunctionArray];
 }
 
-/*--------------Delegation-------------*/
+//------------------Delegation---------------------
 
 
-/*--------------Bussines logic-------------*/
+//----------------Graphic logic--------------------
 
--(void) addRepresentationWithFunctionArray: (NSArray *) aFunctionArray{
+/**
+ *  @brief Displays a panel to let the user select a path to export the
+ *          representation as image, and if an error occurs, let the user
+ *          know.
+ */
+-(IBAction)exportPanel:(id)sender{
+    bool IOResult = NO;
+    
     //TODO implement
-    NSLog(@"\n\n%@",aFunctionArray);
+    
+    if(NO == IOResult){
+        NSAlert * alert = [[NSAlert alloc] init];
+        [alert setMessageText:@"Error"];
+        [alert setInformativeText:@"Image couldn't be exported."];
+        [alert addButtonWithTitle:@"ok"];
+        [alert setAlertStyle:NSAlertStyleCritical];
+        [alert runModal];
+        return;
+    }
 }
 
 //https://stackoverflow.com/questions/1640419/open-file-dialog-box
+/**
+ *  @brief Displays a panel to let the user select a path to export the model data,
+ *          and if an error occurs, let the user know.
+ */
 -(IBAction)exportProject:(id)sender{
     bool IOresult;
     NSInteger result;
@@ -123,7 +145,7 @@ extern NSString * sendNewRepresentation;
         if(!IOresult){
             NSAlert * alert = [[NSAlert alloc] init];
             [alert setMessageText:@"Error"];
-            [alert setInformativeText:@"Data couldnt be exported."];
+            [alert setInformativeText:@"Data couldn't be exported."];
             [alert addButtonWithTitle:@"ok"];
             [alert setAlertStyle:NSAlertStyleCritical];
             [alert runModal];
@@ -133,9 +155,12 @@ extern NSString * sendNewRepresentation;
         }
     }
     
-    
 }
 
+/**
+ *  @brief Displays a panel to let the user select a path to import a project,
+ *          and if an error occurs, let the user know.
+ */
 -(IBAction)importProject:(id)sender{
     bool IOresult;
     NSInteger result;
@@ -156,7 +181,7 @@ extern NSString * sendNewRepresentation;
         if(!IOresult){
             NSAlert * alert = [[NSAlert alloc] init];
             [alert setMessageText:@"Error"];
-            [alert setInformativeText:@"Data couldnt be imported."];
+            [alert setInformativeText:@"Data couldn't be imported."];
             [alert addButtonWithTitle:@"ok"];
             [alert setAlertStyle:NSAlertStyleCritical];
             [alert runModal];
@@ -164,7 +189,26 @@ extern NSString * sendNewRepresentation;
         }else{
             [functionTableUIController reloadData];
         }
+    
     }
+}
+
+/**
+ *  @brief Shows the functionTable panel (preferences panel)
+ */
+-(IBAction)showFunctionTablePanel:(id)sender{
+    if(nil == functionTableUIController)
+        functionTableUIController = [[FunctionTableUIController alloc] initWithModel: model];
+    [functionTableUIController showWindow:self];
+}
+
+//----------------Bussines logic-------------------
+
+/**
+ *  @brief Represent a set of functions
+ */
+-(void) addRepresentationWithFunctionArray: (NSArray *) aFunctionArray{
+    NSLog(@"\n\n%@",aFunctionArray);
 }
 
 @end

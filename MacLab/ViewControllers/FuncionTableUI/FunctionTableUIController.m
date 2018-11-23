@@ -14,13 +14,19 @@
 #import "AddFunctionUIController.h"
 #import "FunctionTableUIController.h"
 
-@implementation FunctionTableUIController{
-    
+@interface FunctionTableUIController(){
+    Model * model;
     NSArray * comboBoxDataSource;
+    AddFunctionUIController * addFunctionUIController;
 }
 
-/*----------------------Initializers--------------------*/
+- (BOOL) isSettingsFormCompleted;
+@end
 
+
+@implementation FunctionTableUIController
+
+//----------------Initializers---------------------
 -(id) initWithModel: (Model *) aModel
 {
     if(nil == [super initWithWindowNibName:@"FunctionTableUI"])
@@ -47,42 +53,39 @@
                            selector:@selector(handlFunctionAdded:)
                                name:functionAdded
                              object:nil];
-
     return self;
 }
 
-/**
- * @brief send a notification to the main controller to stop the application if the user closes the window
- */
 -(BOOL) windowShouldClose:(NSWindow *)sender
 {
-    [NSApp terminate:self];
     return YES;
 }
 
 -(void) awakeFromNib{
     RepresentationParameters parameters = [model representationParameters];
-    
     [xminTextField setDoubleValue:parameters.xmin];
-
+    [xmaxTextField setDoubleValue:parameters.xmax];
+    [yminTextField setDoubleValue:parameters.ymin];
+    [ymaxTextField setDoubleValue:parameters.ymax];
 }
 
 - (void) windowDidLoad {
     [super windowDidLoad];
 }
 
+//-----------------Finalizers----------------------
 -(void)dealloc{
     NSNotificationCenter * notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter removeObserver:self];
 }
 
-/*----------------Notifications--------------*/
+//----------------Notifications--------------------
 NSString * sendNewRepresentation = @"sendNewRepresentation";
 extern NSString * functionAdded;
 
 /**
  *  @brief handler for functionAdded notification:
- *              reloads the view
+ *              saves the function in model, and reloads the view
  */
 -(void) handlFunctionAdded:(NSNotification *)aNotification{
     Function * aFunction = nil;
@@ -95,53 +98,53 @@ extern NSString * functionAdded;
     [functionTableView reloadData];
 }
 
-/*--------------Delegation-------------*/
-
+//------------------Delegation---------------------
 /**
- *  @brief enables or disables the add button if the
- *         formulary is completed or not
+ *  @brief Enables or disables the add button if the
+ *         settings formulary is completed or not
  */
 - (void) controlTextDidChange:(NSNotification *)obj{
     BOOL formularyCompleted = [self isSettingsFormCompleted];
     [saveSettingsButton setEnabled: formularyCompleted];
 }
 
+/**
+ *  @brief Is called by the tableView to load each cell.
+ *         It configures each cell with the respective parameters,
+ *         sets the target to self and the action to one of the
+ *         functions bellow.
+ */
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row{
-
+    NSControl * cell = nil;
     NSString * identifier = [tableColumn identifier];
-    NSTableCellView * cell = [tableView makeViewWithIdentifier:identifier owner:nil];
     Function * f = [model getFunctionWithIndex:(int)row];
     
+    cell = [[[tableView makeViewWithIdentifier:identifier owner:nil] subviews] objectAtIndex:0];
+    [cell setTag: row];
+    [cell setTarget:self];
+    
     if([tableColumn isEqual:[tableView tableColumns][0]]){
-        NSTextField * textField = [[cell subviews] objectAtIndex:0];
+        NSTextField * textField = (NSTextField *)cell;
         [textField setStringValue: [f name]];
-        [textField setTag: row];
-        [textField setTarget:self];
         [textField setAction:@selector(tableViewEditNameColumn:)];
     }else if([tableColumn isEqual:[tableView tableColumns][1]]){
-        NSComboBox * comboBox = [[cell subviews] objectAtIndex:0];
+        NSComboBox * comboBox = (NSComboBox *)cell;
         
         [comboBox removeAllItems];
         [comboBox addItemsWithObjectValues:[comboBoxDataSource subarrayWithRange: NSMakeRange(0, 6)] ];
-        
         [comboBox setStringValue:comboBoxDataSource[[f type]]];
-        [comboBox setTag: row];
-        [comboBox setTarget:self];
+
         [comboBox setAction:@selector(tableViewEditTypeColumn:)];
     }else if([tableColumn isEqual:[tableView tableColumns][2]]){
-        NSTextField * textField = [[cell subviews] objectAtIndex:0];
+        NSTextField * textField = (NSTextField *)cell;
         [textField setStringValue: [[NSString alloc]initWithFormat:@"%.2f",[f aValue]]];
-        [textField setTag: row];
-        [textField setTarget:self];
         [textField setAction:@selector(tableViewEditAValueColumn:)];
     }else if([tableColumn isEqual:[tableView tableColumns][3]]){
-        NSTextField * textField = [[cell subviews] objectAtIndex:0];
+        NSTextField * textField = (NSTextField *)cell;
         [textField setStringValue: [[NSString alloc]initWithFormat:@"%.2f",[f bValue]]];
-        [textField setTag: row];
-        [textField setTarget:self];
         [textField setAction:@selector(tableViewEditBValueColumn:)];
     }else if([tableColumn isEqual:[tableView tableColumns][4]]){
-        NSTextField * textField = [[cell subviews] objectAtIndex:0];
+        NSTextField * textField = (NSTextField *)cell;
         if([f type] == PARABOLA){
             [textField setStringValue: [[NSString alloc]initWithFormat:@"%.2f",[f cValue]]];
             [textField setEnabled: YES];
@@ -149,21 +152,20 @@ extern NSString * functionAdded;
             [textField setStringValue: @"-"];
             [textField setEnabled: NO];
         }
-        [textField setTag: row];
-        [textField setTarget:self];
         [textField setAction:@selector(tableViewEditCValueColumn:)];
     }else if([tableColumn isEqual:[tableView tableColumns][5]]){
-        NSColorWell * colorWell = [[cell subviews] objectAtIndex:0];
+        NSColorWell * colorWell = (NSColorWell *)cell;
         [colorWell setColor:[f color]];
-        [colorWell setTag: row];
-        [colorWell setTarget:self];
         [colorWell setAction:@selector(tableViewEditColorColumn:)];
     }
     
     return cell;
 }
 
--(IBAction)tableViewEditNameColumn:(id)sender{
+/**
+ *  @brief The following methods, are the action executed when
+ *          a tableView cell is edited.
+ */-(IBAction)tableViewEditNameColumn:(id)sender{
     NSInteger row;
     Function * f = nil;
     NSTextField * tf = sender;
@@ -249,9 +251,8 @@ extern NSString * functionAdded;
     return [model count];
 }
 
-/*--------------Bussines logic-------------*/
-
-/*
+//----------------Graphic logic--------------------
+/**
  * @brief take the representation parameters and set it on the model
  */
 -(IBAction)setNewRepresentationParameters:(id)sender{
@@ -275,7 +276,9 @@ extern NSString * functionAdded;
     [addFunctionUIController showWindow:self];
 }
 
-
+/**
+ *  @brief removes the selected function from model in tableView.
+ */
 -(IBAction)removeFunction:(id)sender{
     NSInteger row;
     Function * f = nil;
@@ -297,19 +300,20 @@ extern NSString * functionAdded;
 }
 
 /**
- *  @brief take the selected items and send them to the main window
- *          to be represented
+ *  @brief take the selected items on tableView and send them to
+ *          the representation panel to be represented.
  */
 -(IBAction)representSelectedFunctions:(id)sender{
-    NSMutableArray * aFunctionArray = [[NSMutableArray alloc] init];
+    NSMutableArray * aFunctionArray = nil;
     NSIndexSet * indexesOfselectedFunctions = nil;
     NSDictionary * aDictionary = nil;
     NSNotificationCenter * aNotificationCenter = nil;
     
     indexesOfselectedFunctions = [functionTableView selectedRowIndexes];
     
+    aFunctionArray = [[NSMutableArray alloc] init];
     [[functionTableView selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger index, BOOL *stop) {
-       [ aFunctionArray addObject:[model getFunctionWithIndex:(int)index] ];
+       [ aFunctionArray addObject:[self->model getFunctionWithIndex:(int)index] ];
     }];
     
     aNotificationCenter = [NSNotificationCenter defaultCenter];
@@ -320,6 +324,9 @@ extern NSString * functionAdded;
                                      userInfo:aDictionary];
 }
 
+/**
+ * @brief checks the settings formulary is completed and the values are correct.
+ */
 - (BOOL) isSettingsFormCompleted{
     NSNumberFormatter * numberFormatter = [[NSNumberFormatter alloc] init];
     
@@ -335,9 +342,19 @@ extern NSString * functionAdded;
                             && [numberFormatter numberFromString:[yminTextField stringValue]] != nil
                             && [numberFormatter numberFromString:[ymaxTextField stringValue]] != nil);
     
-    return (areAllFilled && areNumberTextFieldsCorrectlyFilled);
+    BOOL areValuesSemanticallyCorrect = (
+                        areNumberTextFieldsCorrectlyFilled //To avoid crash if numbers aren't correctly filled
+                        && [xminTextField doubleValue] < [xmaxTextField doubleValue]
+                        && [yminTextField doubleValue] < [ymaxTextField doubleValue]);
+    
+    
+    return (areAllFilled && areNumberTextFieldsCorrectlyFilled && areValuesSemanticallyCorrect);
 }
 
+//----------------Bussines logic-------------------
+/**
+ * @brief reload tableView to show external changes in model.
+ */
 -(void) reloadData{
     [functionTableView reloadData];
 }

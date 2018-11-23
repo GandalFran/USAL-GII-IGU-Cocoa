@@ -9,14 +9,21 @@
 #import "Function.h"
 #import "Model.h"
 
-@implementation Model{
+@interface Model(){
     int currentID;
     NSMutableArray * modelData;
 }
 
+- (int) getCurrentID;
+- (int) getIndexWithID: (int) aFunctionID;
+
+@end
+
+@implementation Model
+
 @synthesize representationParameters=_representationParameters;
 
-/*----------------------Initializers--------------------*/
+//----------------Initializers---------------------
 
 -(id) init
 {
@@ -33,14 +40,14 @@
     return self;
 }
 
-/*-------------------Bean basics-----------------------*/
+//-------------NSObject hierarchy------------------
 
 -(NSString *) description
 {
     return [[NSString alloc] initWithFormat: @"Model{currentID=%d, data=%@}",currentID,modelData.description];
 }
 
-/*---------------------Bussines logic-------------------*/
+//----------------Bussines logic-------------------
 
 - (int) addFunction: (Function *) aFunction{
     if(nil == aFunction || NULL == aFunction) return -1;
@@ -121,17 +128,19 @@
     return found? i : -1;
 }
 
+//----------------------IO-------------------------
+
 -(bool) exportFile:(NSString *) path{
+    return [NSKeyedArchiver archiveRootObject:modelData toFile:path];
+}
+
+-(bool) importFile:(NSString *) path{
+    NSMutableArray *anArray = nil;
     NSFileManager * fileManager = nil;
     
     fileManager = [NSFileManager defaultManager];
     if (NO == [fileManager fileExistsAtPath:path])
-       [fileManager createFileAtPath:path contents:nil attributes:nil];
-    
-    return [NSKeyedArchiver archiveRootObject:modelData toFile:path];
-}
--(bool) importFile:(NSString *) path{
-    NSMutableArray *anArray = nil;
+        return NO;
     
     anArray = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
     if(nil == anArray)

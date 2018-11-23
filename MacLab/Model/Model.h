@@ -22,6 +22,7 @@ typedef struct{
 
 @property (nonatomic) RepresentationParameters representationParameters;
 
+//----------------Bussines logic-------------------
 - (int) addFunction: (Function *) aFunction;
 - (bool) removeFunctionWithID : (int) aFunctionID;
 - (bool) updateFunction : (Function *) aFunction;
@@ -31,6 +32,7 @@ typedef struct{
 - (NSArray *) allFunctions;
 - (long) count;
 
+//----------------------IO-------------------------
 -(bool) exportFile:(NSString *) path;
 -(bool) importFile:(NSString *) path;
 

@@ -12,7 +12,7 @@
 
 @synthesize ID=_ID, name=_name, color=_color, visible=_visible, type=_type, aValue=_aValue, bValue=_bValue, cValue=_cValue;
 
-/*----------------------Initializers--------------------*/
+//----------------Initializers---------------------
 
 -(id) initWithID : (int) ID
             name : (NSString *) aName
@@ -56,25 +56,8 @@ ExpressionAValue : (double) aValue
            ExpressionBValue:bValue
            ExpressionCValue:cValue];
 }
-/*---------------------En/Decoder-------------------*/
 
-- (void)encodeWithCoder:(NSCoder *)encoder
-{
-    [encoder encodeObject:[self name] forKey:@"name"];
-    [encoder encodeObject:[self color] forKey:@"color"];
-    [encoder encodeObject:[[NSNumber alloc] initWithBool:[self visible]] forKey:@"visible"];
-    [encoder encodeInt64:[self type] forKey:@"type"];
-    [encoder encodeObject:[[NSNumber alloc] initWithDouble:[self aValue]] forKey:@"aValue"];
-    [encoder encodeObject:[[NSNumber alloc] initWithDouble:[self bValue]] forKey:@"bValue"];
-    [encoder encodeObject:[[NSNumber alloc] initWithDouble:[self cValue]] forKey:@"cValue"];
-}
-
-- (id)initWithCoder:(NSCoder *)decoder
-{
-    return [self initWithName:[decoder decodeObjectForKey:@"name"] color:[decoder decodeObjectForKey:@"color"] ExpressionType:(FunctionType)[decoder decodeInt64ForKey:@"type"] ExpressionAValue:[decoder decodeDoubleForKey:@"aValue"] ExpressionBValue:[decoder decodeDoubleForKey:@"bValue"] ExpressionCValue:[decoder decodeDoubleForKey:@"cValue"]];
-}
-
-/*----------------------Bean basics--------------------*/
+//-------------NSObject hierarchy------------------
 
 -(NSString *) description
 {
@@ -111,8 +94,6 @@ ExpressionAValue : (double) aValue
     return f;
 }
 
-
-
 - (nonnull id)copyWithZone:(nullable NSZone *)zone {
     Function * f = nil;
     
@@ -130,8 +111,13 @@ ExpressionAValue : (double) aValue
     return f;
 }
 
-/*---------------------Bussines logic-------------------*/
+//----------------Bussines logic-------------------
 
+/**
+ *  @brief calculates the y value for a x value
+ *  @param aXValue:x value to calculate the respective y value
+ *  @return the y value for the xvalue in the function
+ */
 -(double) calculateYValueWithXValue : (double) aXValue
 {
     double result, a, b, c;
@@ -166,6 +152,9 @@ ExpressionAValue : (double) aValue
     return result;
 }
 
+/**
+ *  @brief returns a string with the expression which defines the function
+ */
 -(NSString *) expressionStringValue{
     NSString * expressionString = nil;
     
@@ -193,6 +182,30 @@ ExpressionAValue : (double) aValue
     }
     
     return expressionString;
+}
+
+
+//----------------------IO-------------------------
+
+- (void)encodeWithCoder:(NSCoder *)encoder
+{
+    [encoder encodeObject:[self name] forKey:@"name"];
+    [encoder encodeObject:[self color] forKey:@"color"];
+    [encoder encodeBool:[self visible] forKey:@"visible"];
+    [encoder encodeInt:[self type] forKey:@"type"];
+    [encoder encodeDouble:[self aValue] forKey:@"aValue"];
+    [encoder encodeDouble:[self bValue] forKey:@"bValue"];
+    [encoder encodeDouble:[self cValue] forKey:@"cValue"];
+}
+
+- (id)initWithCoder:(NSCoder *)decoder
+{
+    return [self initWithName:[decoder decodeObjectForKey:@"name"]
+                        color:[decoder decodeObjectForKey:@"color"]
+               ExpressionType:(FunctionType)[decoder decodeIntForKey:@"type"]
+             ExpressionAValue:[decoder decodeDoubleForKey:@"aValue"]
+             ExpressionBValue:[decoder decodeDoubleForKey:@"bValue"]
+             ExpressionCValue:[decoder decodeDoubleForKey:@"cValue"]];
 }
 
 @end

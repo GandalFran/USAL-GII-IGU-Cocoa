@@ -15,19 +15,19 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PlotRepresentationUIController : NSWindowController <NSWindowDelegate>{
-    
     IBOutlet NSPlotView * plotView;
-    
-    Model * model;
-    FunctionTableUIController * functionTableUIController;
 }
 
-/*----------------Notifications--------------*/
+//----------------Notifications--------------------
 -(void) handleAddRepresentation:(NSNotification *)aNotification;
-/*--------------Bussines logic-------------*/
--(void) addRepresentationWithFunctionArray: (NSArray *) aFunctionArray;
+//----------------Graphic logic--------------------
+-(IBAction)showFunctionTablePanel:(id)sender;
 -(IBAction)exportProject:(id)sender;
 -(IBAction)importProject:(id)sender;
+-(IBAction)exportPanel:(id)sender;
+//----------------Bussines logic-------------------
+-(void) addRepresentationWithFunctionArray: (NSArray *) aFunctionArray;
+
 @end
 
 NS_ASSUME_NONNULL_END

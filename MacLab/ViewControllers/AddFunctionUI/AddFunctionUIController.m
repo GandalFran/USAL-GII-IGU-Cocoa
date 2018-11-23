@@ -12,21 +12,26 @@
 #import "Function.h"
 #import "AddFunctionUIController.h"
 
-
-@implementation AddFunctionUIController{
+@interface AddFunctionUIController(){
     NSArray * comboBoxDataSource;
 }
 
-/*----------------------Initializers--------------------*/
+//----------------Graphic logic--------------------
+- (Function *) takeDataFromFormulary;
+- (BOOL) isFormCompleted;
+- (void) cleanAndDeactivateFields;
+@end
 
+
+@implementation AddFunctionUIController
+
+//----------------Initializers---------------------
 -(id)initWithComboBoxDataSource:(NSArray *) anArray
 {
     if(nil == [super initWithWindowNibName:@"AddFunctionUI"])
         return nil;
-    
-    //Register the combobox datasource
+
     comboBoxDataSource = anArray;
-    
     return self;
 }
 
@@ -64,6 +69,9 @@
     }
 }
 
+/**
+ * @brief clean fileds and load type comboBox with the available function types
+ */
 -(void) awakeFromNib{
     [typeCombobox addItemsWithObjectValues: [comboBoxDataSource subarrayWithRange: NSMakeRange(0, 6)] ] ;
     [self cleanAndDeactivateFields];
@@ -73,10 +81,10 @@
     [super windowDidLoad];
 }
 
-/*----------------Notifications--------------*/
+//----------------Notifications--------------------
 NSString * functionAdded = @"functionAdded";
-/*--------------Delegation-------------*/
 
+//------------------Delegation---------------------
 /**
  *  @brief enables or disables the add button if the
  *         formulary is completed or not
@@ -85,7 +93,6 @@ NSString * functionAdded = @"functionAdded";
     BOOL formularyCompleted = [self isFormCompleted];
     [addButton setEnabled: formularyCompleted];
 }
-
 
 /**
  *  @brief hides or shows the cValue label and textbox
@@ -102,11 +109,11 @@ NSString * functionAdded = @"functionAdded";
     [addButton setEnabled: formularyCompleted];
 }
 
-/*--------------Bussinges logic-------------*/
-
+//----------------Graphic logic--------------------
 /**
  * @brief retrieves the information from the formulary fields and
- *          instances a Function, then add it to the model.
+ *          instances a Function, then posts a notification with
+ *          the Function data and closes the window.
  */
 -(IBAction)sendFunctionDataAndCloseWindow:(id)sender{
     Function * aFunction = nil;
@@ -127,6 +134,9 @@ NSString * functionAdded = @"functionAdded";
     [self close];
 }
 
+/**
+ * @brief retrieves Function data from formulary.
+ */
 -(Function *) takeDataFromFormulary{
     FunctionType aType;
     double aValue, bValue, cValue;
@@ -137,7 +147,7 @@ NSString * functionAdded = @"functionAdded";
     aValue = [aValueTextField doubleValue];
     bValue = [bValueTextField doubleValue];
     cValue = [cValueTextField doubleValue];
-    aColor = [colorColorWell color];
+    aColor = [colorWell color];
     aFunctionName = [nameTextField stringValue];
     aType = (FunctionType) [typeCombobox indexOfSelectedItem];
     
@@ -151,6 +161,10 @@ NSString * functionAdded = @"functionAdded";
     return aFunction;
 }
 
+/**
+ * @brief checks if the function formulary is completed.
+ * @return NO if the formulary isn't completed and YES in other case
+ */
 - (BOOL) isFormCompleted{
     NSNumberFormatter * numberFormatter = [[NSNumberFormatter alloc] init];
     
@@ -170,6 +184,9 @@ NSString * functionAdded = @"functionAdded";
     return (areAllFilled && areNumberTextFieldsCorrectlyFilled);
 }
 
+/**
+ * @brief clean fileds and deactivate add button.
+ */
 -(void) cleanAndDeactivateFields{
     [nameTextField setStringValue:@""];
     [aValueTextField setStringValue:@""];

@@ -32,6 +32,7 @@ typedef enum{COSINE, SINE, EXPONENTIAL, LINE, PARABOLA, HIPERBOLA, NONE_TYPE} Fu
 @property (nonatomic) double bValue;
 @property (nonatomic) double cValue;
 
+//----------------Initializers---------------------
 -(id) initWithID : (int) ID
             name : (NSString *) aName
            color : (NSColor *) aColor
@@ -48,6 +49,7 @@ ExpressionAValue : (double) aValue
  ExpressionBValue : (double) bValue
  ExpressionCValue : (double) cValue;
 
+//----------------Initializers---------------------
 -(double) calculateYValueWithXValue : (double) aXValue;
 -(NSString *) expressionStringValue;
 

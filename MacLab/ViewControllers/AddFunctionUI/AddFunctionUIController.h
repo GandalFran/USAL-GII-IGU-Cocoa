@@ -11,20 +11,19 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AddFunctionUIController : NSWindowController <NSWindowDelegate, NSComboBoxDelegate, NSTextFieldDelegate>{
-    
     IBOutlet NSTextField * nameTextField;
     IBOutlet NSTextField * aValueTextField;
     IBOutlet NSTextField * bValueTextField;
     IBOutlet NSTextField * cValueTextField;
-    IBOutlet NSColorWell * colorColorWell;
+    IBOutlet NSColorWell * colorWell;
     IBOutlet NSComboBox * typeCombobox;
     IBOutlet NSTextField * cValueLabel;
     IBOutlet NSButton * addButton;
 }
 
+//----------------Initializers---------------------
 -(id)initWithComboBoxDataSource:(NSArray *) anArray;
-
-/*--------------Bussines logic-------------*/
+//----------------Graphic logic--------------------
 -(IBAction)sendFunctionDataAndCloseWindow:(id)sender;
 
 @end

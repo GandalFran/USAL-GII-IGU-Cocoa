@@ -13,7 +13,7 @@
                 <outlet property="bValueTextField" destination="hwQ-vl-gnG" id="bLp-xW-ZEl"/>
                 <outlet property="cValueLabel" destination="GC7-sS-O0g" id="1Uz-kv-J3d"/>
                 <outlet property="cValueTextField" destination="b2e-mK-Zr1" id="2bV-ma-xyC"/>
-                <outlet property="colorColorWell" destination="Sgk-fT-crL" id="eNx-E5-nff"/>
+                <outlet property="colorWell" destination="Sgk-fT-crL" id="mwa-uE-x5f"/>
                 <outlet property="nameTextField" destination="IBS-89-bSz" id="nhM-qA-qjd"/>
                 <outlet property="typeCombobox" destination="RhW-Iu-8SU" id="riG-Dt-HpY"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="eSe-EF-d6H"/>

@@ -22,16 +22,12 @@ NS_ASSUME_NONNULL_BEGIN
     IBOutlet NSButton * saveSettingsButton;
     
     IBOutlet NSTableView * functionTableView;
-    
-    Model * model;
-    
-    AddFunctionUIController * addFunctionUIController;
 }
-
+//----------------Initializers---------------------
 -(id) initWithModel: (Model *) aModel;
-/*----------------Notifications--------------*/
+//----------------Notifications--------------------
 -(void) handlFunctionAdded:(NSNotification *)aNotification;
-/*--------------Bussines logic-------------*/
+//----------------Graphic logic--------------------
 -(IBAction)showAddFunctionPanel:(id)sender;
 -(IBAction)removeFunction:(id)sender;
 -(IBAction)removeAllModelElements:(id)sender;
@@ -44,10 +40,10 @@ NS_ASSUME_NONNULL_BEGIN
 -(IBAction)tableViewEditBValueColumn:(id)sender;
 -(IBAction)tableViewEditCValueColumn:(id)sender;
 -(IBAction)tableViewEditColorColumn:(id)sender;
+//----------------Bussines logic-------------------
+-(void) reloadData;
 
 -(IBAction)TEST:(id)sender;
-
--(void) reloadData;
 
 @end
 
