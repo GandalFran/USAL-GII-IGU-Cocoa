@@ -12,15 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef struct{
-    double xmin, xmax, ymin, ymax;
-}RepresentationParameters;
-
-@interface Model : NSObject{
-    RepresentationParameters _representationParameters;
-}
-
-@property (nonatomic) RepresentationParameters representationParameters;
+@interface Model : NSObject
 
 //----------------Bussines logic-------------------
 - (int) addFunction: (Function *) aFunction;

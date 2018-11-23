@@ -24,7 +24,11 @@ NS_ASSUME_NONNULL_BEGIN
     IBOutlet NSTableView * functionTableView;
 }
 //----------------Initializers---------------------
--(id) initWithModel: (Model *) aModel;
+-(id) initWithModel: (Model *) aModel
+          xminValue:(double) xmin
+          xmaxValue:(double) xmax
+          yminValue:(double) ymin
+          ymaxValue:(double) ymax;
 //----------------Notifications--------------------
 -(void) handlFunctionAdded:(NSNotification *)aNotification;
 //----------------Graphic logic--------------------

@@ -16,11 +16,13 @@
 
 @interface FunctionTableUIController(){
     Model * model;
+    double xmin,xmax,ymin,ymax;
     NSArray * comboBoxDataSource;
     AddFunctionUIController * addFunctionUIController;
 }
 
 - (BOOL) isSettingsFormCompleted;
+
 @end
 
 
@@ -28,12 +30,21 @@
 
 //----------------Initializers---------------------
 -(id) initWithModel: (Model *) aModel
+          xminValue:(double) aXmin
+          xmaxValue:(double) aXmax
+          yminValue:(double) aYmin
+          ymaxValue:(double) aYmax;
 {
     if(nil == [super initWithWindowNibName:@"FunctionTableUI"])
         return nil;
     
     //Save model
     model = aModel;
+    //Save settings values
+    xmin = aXmin;
+    xmax = aXmax;
+    ymin = aYmin;
+    ymax = aYmax;
     //Create the combobox datasource
     comboBoxDataSource = [[NSArray alloc] initWithObjects:@"a*cos(b*x)", @"a*sin(b*x)",@"a*x^b",@"a+ x*b",@"a*x^2 + b*x + c",@"a/(b*x)",@"",nil];
     
@@ -62,11 +73,10 @@
 }
 
 -(void) awakeFromNib{
-    RepresentationParameters parameters = [model representationParameters];
-    [xminTextField setDoubleValue:parameters.xmin];
-    [xmaxTextField setDoubleValue:parameters.xmax];
-    [yminTextField setDoubleValue:parameters.ymin];
-    [ymaxTextField setDoubleValue:parameters.ymax];
+    [xminTextField setDoubleValue:xmin];
+    [xmaxTextField setDoubleValue:xmax];
+    [yminTextField setDoubleValue:ymin];
+    [ymaxTextField setDoubleValue:ymax];
 }
 
 - (void) windowDidLoad {
@@ -81,6 +91,7 @@
 
 //----------------Notifications--------------------
 NSString * sendNewRepresentation = @"sendNewRepresentation";
+NSString * sendNewParameters = @"sendNewParameters";
 extern NSString * functionAdded;
 
 /**
@@ -253,18 +264,23 @@ extern NSString * functionAdded;
 
 //----------------Graphic logic--------------------
 /**
- * @brief take the representation parameters and set it on the model
+ * @brief takes the representation parameters and then, posts a notification with it
  */
 -(IBAction)setNewRepresentationParameters:(id)sender{
+    NSNumber * xmin = nil, * xmax = nil, * ymin = nil, * ymax = nil;
+    NSDictionary * notificationInfo = nil;
+    NSNotificationCenter * notificationCenter = [NSNotificationCenter defaultCenter];
     
-    RepresentationParameters new;
+    xmin = [NSNumber numberWithDouble:[xminTextField doubleValue]];
+    xmax = [NSNumber numberWithDouble:[xmaxTextField doubleValue]];
+    ymin = [NSNumber numberWithDouble:[yminTextField doubleValue]];
+    ymax = [NSNumber numberWithDouble:[ymaxTextField doubleValue]];
     
-    new.xmin = [xminTextField doubleValue];
-    new.xmax = [xmaxTextField doubleValue];
-    new.ymin = [yminTextField doubleValue];
-    new.ymax = [ymaxTextField doubleValue];
-    
-    [model setRepresentationParameters:new];
+    notificationInfo = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:xmin,xmax,ymin,ymax,nil]
+                                                   forKeys:[NSArray arrayWithObjects:@"xmin",@"xmax",@"ymin",@"ymax",nil]];
+    [notificationCenter postNotificationName:sendNewParameters
+                                      object:nil
+                                    userInfo:notificationInfo];
 }
 
 /**

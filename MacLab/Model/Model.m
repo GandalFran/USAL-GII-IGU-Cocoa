@@ -21,8 +21,6 @@
 
 @implementation Model
 
-@synthesize representationParameters=_representationParameters;
-
 //----------------Initializers---------------------
 
 -(id) init

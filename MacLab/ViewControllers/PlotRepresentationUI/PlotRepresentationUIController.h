@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 //----------------Notifications--------------------
 -(void) handleAddRepresentation:(NSNotification *)aNotification;
+-(void) handleAddNewParameters:(NSNotification *)aNotification;
 //----------------Graphic logic--------------------
 -(IBAction)showFunctionTablePanel:(id)sender;
 -(IBAction)exportProject:(id)sender;

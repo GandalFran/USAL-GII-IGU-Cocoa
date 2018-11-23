@@ -16,6 +16,7 @@
 
 @interface PlotRepresentationUIController(){
     Model * model;
+    double xmin,xmax,ymin,ymax;
     FunctionTableUIController * functionTableUIController;
 }
 @end
@@ -33,18 +34,20 @@
     model =[[Model alloc] init];
     
     //set default values for xmin, xmax, ymin and ymax
-    RepresentationParameters parameters;
-    parameters.xmin = -10.0;
-    parameters.xmax = 10.0;
-    parameters.ymin = -10.0;
-    parameters.ymax = 10.0;
-    [model setRepresentationParameters:parameters];
+    xmin = -10.0;
+    xmax = 10.0;
+    ymin = -10.0;
+    ymax = 10.0;
     
     //register the handle for terminate app notification
     NSNotificationCenter * notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self
                            selector:@selector(handleAddRepresentation:)
                                name:sendNewRepresentation
+                             object:nil];
+    [notificationCenter addObserver:self
+                           selector:@selector(handleAddNewParameters:)
+                               name:sendNewParameters
                              object:nil];
     
     return self;
@@ -68,6 +71,7 @@
 //----------------Notifications--------------------
 
 extern NSString * sendNewRepresentation;
+extern NSString * sendNewParameters;
 
 /**
  *  @brief handler for the sendNewRepresentation notification:
@@ -81,6 +85,28 @@ extern NSString * sendNewRepresentation;
     aFunctionArray = [aDictionary objectForKey:@"representationArray"];
     
     [self addRepresentationWithFunctionArray: aFunctionArray];
+}
+
+/**
+ *  @brief handler for the sendNewParameters notification:
+ *          sets the values for xmin,xmax,ymin and ymax
+ */
+-(void) handleAddNewParameters:(NSNotification *)aNotification{
+    NSDictionary * aDictionary = nil;
+    NSNumber * aXmin = nil, * aXmax = nil, * aYmin = nil, * aYmax = nil;
+    
+    aDictionary = [aNotification userInfo];
+    aXmin = [aDictionary objectForKey:@"xmin"];
+    aXmax = [aDictionary objectForKey:@"xmax"];
+    aYmin = [aDictionary objectForKey:@"ymin"];
+    aYmax = [aDictionary objectForKey:@"ymax"];
+    
+    xmin = [aXmin doubleValue];
+    xmax = [aXmax doubleValue];
+    ymin = [aYmin doubleValue];
+    ymax = [aYmax doubleValue];
+    
+    NSLog(@"\n\n\n%f %f %f %f",xmin,xmax,ymin,ymax);
 }
 
 //------------------Delegation---------------------
@@ -198,7 +224,11 @@ extern NSString * sendNewRepresentation;
  */
 -(IBAction)showFunctionTablePanel:(id)sender{
     if(nil == functionTableUIController)
-        functionTableUIController = [[FunctionTableUIController alloc] initWithModel: model];
+        functionTableUIController = [[FunctionTableUIController alloc] initWithModel: model
+                                                                           xminValue:xmin
+                                                                           xmaxValue:xmax
+                                                                           yminValue:ymin
+                                                                           ymaxValue:ymax];
     [functionTableUIController showWindow:self];
 }
 
