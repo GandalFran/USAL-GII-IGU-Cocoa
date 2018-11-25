@@ -115,7 +115,7 @@ ExpressionAValue : (double) aValue
 
 /**
  *  @brief calculates the y value for a x value
- *  @param aXValue:x value to calculate the respective y value
+ *  @param aXValue x value to calculate the respective y value
  *  @return the y value for the xvalue in the function
  */
 -(double) calculateYValueWithXValue : (double) aXValue
@@ -184,6 +184,9 @@ ExpressionAValue : (double) aValue
     return expressionString;
 }
 
++ (NSArray *) functionTypeAsStringValues{
+    return [[NSArray alloc] initWithObjects:@"a*cos(b*x)", @"a*sin(b*x)",@"a*x^b",@"a+ x*b",@"a*x^2 + b*x + c",@"a/(b*x)",@"",nil];
+}
 
 //----------------------IO-------------------------
 

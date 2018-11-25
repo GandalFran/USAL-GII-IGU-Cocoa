@@ -12,10 +12,7 @@
 #import "Function.h"
 #import "AddFunctionUIController.h"
 
-@interface AddFunctionUIController(){
-    NSArray * comboBoxDataSource;
-}
-
+@interface AddFunctionUIController()
 //----------------Graphic logic--------------------
 - (Function *) takeDataFromFormulary;
 - (BOOL) isFormCompleted;
@@ -30,8 +27,6 @@
 {
     if(nil == [super initWithWindowNibName:@"AddFunctionUI"])
         return nil;
-
-    comboBoxDataSource = anArray;
     return self;
 }
 
@@ -73,7 +68,7 @@
  * @brief clean fileds and load type comboBox with the available function types
  */
 -(void) awakeFromNib{
-    [typeCombobox addItemsWithObjectValues: [comboBoxDataSource subarrayWithRange: NSMakeRange(0, 6)] ] ;
+    [typeCombobox addItemsWithObjectValues: [[Function functionTypeAsStringValues] subarrayWithRange: NSMakeRange(0, 6)] ] ;
     [self cleanAndDeactivateFields];
 }
 
@@ -192,7 +187,7 @@ NSString * functionAdded = @"functionAdded";
     [aValueTextField setStringValue:@""];
     [bValueTextField setStringValue:@""];
     [cValueTextField setStringValue:@""];
-    [typeCombobox setStringValue:comboBoxDataSource[NONE_TYPE]];
+    [typeCombobox setStringValue:[Function functionTypeAsStringValues][NONE_TYPE]];
     
     [cValueLabel setHidden: YES];
     [cValueTextField setHidden: YES];

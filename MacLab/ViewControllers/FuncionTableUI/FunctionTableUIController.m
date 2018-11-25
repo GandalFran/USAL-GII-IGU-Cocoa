@@ -17,7 +17,6 @@
 @interface FunctionTableUIController(){
     Model * model;
     double xmin,xmax,ymin,ymax;
-    NSArray * comboBoxDataSource;
     AddFunctionUIController * addFunctionUIController;
 }
 
@@ -33,7 +32,7 @@
           xminValue:(double) aXmin
           xmaxValue:(double) aXmax
           yminValue:(double) aYmin
-          ymaxValue:(double) aYmax;
+          ymaxValue:(double) aYmax
 {
     if(nil == [super initWithWindowNibName:@"FunctionTableUI"])
         return nil;
@@ -45,8 +44,6 @@
     xmax = aXmax;
     ymin = aYmin;
     ymax = aYmax;
-    //Create the combobox datasource
-    comboBoxDataSource = [[NSArray alloc] initWithObjects:@"a*cos(b*x)", @"a*sin(b*x)",@"a*x^b",@"a+ x*b",@"a*x^2 + b*x + c",@"a/(b*x)",@"",nil];
     
     return self;
 }
@@ -142,8 +139,8 @@ extern NSString * functionAdded;
         NSComboBox * comboBox = (NSComboBox *)cell;
         
         [comboBox removeAllItems];
-        [comboBox addItemsWithObjectValues:[comboBoxDataSource subarrayWithRange: NSMakeRange(0, 6)] ];
-        [comboBox setStringValue:comboBoxDataSource[[f type]]];
+        [comboBox addItemsWithObjectValues:[[Function functionTypeAsStringValues] subarrayWithRange: NSMakeRange(0, 6)]];
+        [comboBox setStringValue:[Function functionTypeAsStringValues][[f type]]];
 
         [comboBox setAction:@selector(tableViewEditTypeColumn:)];
     }else if([tableColumn isEqual:[tableView tableColumns][2]]){
@@ -288,7 +285,7 @@ extern NSString * functionAdded;
  */
 -(IBAction)showAddFunctionPanel:(id)sender{
     if(nil == addFunctionUIController)
-        addFunctionUIController = [[AddFunctionUIController alloc] initWithComboBoxDataSource:comboBoxDataSource];
+        addFunctionUIController = [[AddFunctionUIController alloc] initWithComboBoxDataSource:[Function functionTypeAsStringValues]];
     [addFunctionUIController showWindow:self];
 }
 

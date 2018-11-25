@@ -49,9 +49,10 @@ ExpressionAValue : (double) aValue
  ExpressionBValue : (double) bValue
  ExpressionCValue : (double) cValue;
 
-//----------------Initializers---------------------
+//----------------Bussines logic-------------------
 -(double) calculateYValueWithXValue : (double) aXValue;
 -(NSString *) expressionStringValue;
++(NSArray *) functionTypeAsStringValues;
 
 @end
 
