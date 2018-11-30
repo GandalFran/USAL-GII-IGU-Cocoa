@@ -7,14 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "NSPlotViewDataSource.h"
 
-@class Model;
 @class NSPlotView;
-@class FunctionTableUIController;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PlotRepresentationUIController : NSWindowController <NSWindowDelegate>{
+@interface PlotRepresentationUIController : NSWindowController <NSWindowDelegate, NSPlotViewDataSource>{
     IBOutlet NSPlotView * plotView;
 }
 
@@ -27,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(IBAction)importProject:(id)sender;
 -(IBAction)exportPanel:(id)sender;
 //----------------Bussines logic-------------------
--(void) addRepresentationWithFunctionArray: (NSArray *) aFunctionArray;
+-(void) refreshRepresentation: (NSDictionary *) aDictionary;
 
 @end
 

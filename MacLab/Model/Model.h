@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Model : NSObject
 
+//------------------Singletone---------------------
++ (Model *) defaultModel;
 //----------------Bussines logic-------------------
 - (int) addFunction: (Function *) aFunction;
 - (bool) removeFunctionWithID : (int) aFunctionID;

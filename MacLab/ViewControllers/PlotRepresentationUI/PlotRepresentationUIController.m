@@ -31,7 +31,7 @@
         return nil;
     
     //Instance model
-    model =[[Model alloc] init];
+    model = [Model defaultModel];
     
     //set default values for xmin, xmax, ymin and ymax
     xmin = -10.0;
@@ -43,7 +43,7 @@
     NSNotificationCenter * notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self
                            selector:@selector(handleAddRepresentation:)
-                               name:sendNewRepresentation
+                               name:representationChanged
                              object:nil];
     [notificationCenter addObserver:self
                            selector:@selector(handleAddNewParameters:)
@@ -70,21 +70,18 @@
 
 //----------------Notifications--------------------
 
-extern NSString * sendNewRepresentation;
+extern NSString * representationChanged;
 extern NSString * sendNewParameters;
 
 /**
- *  @brief handler for the sendNewRepresentation notification:
+ *  @brief handler for the representationChanged notification:
  *          refreshes the representation content
  */
 -(void) handleAddRepresentation:(NSNotification *)aNotification{
-    NSArray * aFunctionArray = nil;
-    NSDictionary * aDictionary = nil;
-    
-    aDictionary = [aNotification userInfo];
-    aFunctionArray = [aDictionary objectForKey:@"representationArray"];
-    
-    [self addRepresentationWithFunctionArray: aFunctionArray];
+    NSDictionary * notificationInfo = nil;
+    notificationInfo = [aNotification userInfo];
+    [self refreshRepresentation: notificationInfo];
+    [plotView setNeedsDisplay:YES];
 }
 
 /**
@@ -107,6 +104,8 @@ extern NSString * sendNewParameters;
     ymax = [aYmax doubleValue];
     
     NSLog(@"\n\n\n%f %f %f %f",xmin,xmax,ymin,ymax);
+    
+    [plotView setNeedsDisplay:YES];
 }
 
 //------------------Delegation---------------------
@@ -224,8 +223,7 @@ extern NSString * sendNewParameters;
  */
 -(IBAction)showFunctionTablePanel:(id)sender{
     if(nil == functionTableUIController)
-        functionTableUIController = [[FunctionTableUIController alloc] initWithModel: model
-                                                                           xminValue:xmin
+        functionTableUIController = [[FunctionTableUIController alloc] initWithXminValue:xmin
                                                                            xmaxValue:xmax
                                                                            yminValue:ymin
                                                                            ymaxValue:ymax];
@@ -237,8 +235,9 @@ extern NSString * sendNewParameters;
 /**
  *  @brief Represent a set of functions
  */
--(void) addRepresentationWithFunctionArray: (NSArray *) aFunctionArray{
-    NSLog(@"\n\n%@",aFunctionArray);
+-(void) refreshRepresentation: (NSDictionary *) aDictionary
+{
+    //take data from model and calculate bezierpath for each function
 }
 
 @end

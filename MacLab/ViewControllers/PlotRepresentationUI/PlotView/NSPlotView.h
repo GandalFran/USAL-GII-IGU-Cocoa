@@ -7,10 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "NSPlotViewDataSource.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NSPlotView : NSView
+@interface NSPlotView :NSView{
+    IBOutlet __weak id <NSPlotViewDataSource> datasource;
+}
 
 @end
 

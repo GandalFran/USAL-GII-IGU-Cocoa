@@ -24,8 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
     IBOutlet NSTableView * functionTableView;
 }
 //----------------Initializers---------------------
--(id) initWithModel: (Model *) aModel
-          xminValue:(double) xmin
+-(id) initWithXminValue:(double) xmin
           xmaxValue:(double) xmax
           yminValue:(double) ymin
           ymaxValue:(double) ymax;

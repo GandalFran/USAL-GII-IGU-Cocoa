@@ -21,6 +21,15 @@
 
 @implementation Model
 
++(Model *) defaultModel{
+    static Model * singleToneModel = nil;
+    
+    if (nil == singleToneModel)
+        singleToneModel = [[Model alloc] init];
+    
+    return singleToneModel;
+}
+
 //----------------Initializers---------------------
 
 -(id) init

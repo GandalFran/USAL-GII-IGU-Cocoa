@@ -15,7 +15,6 @@
 #import "FunctionTableUIController.h"
 
 @interface FunctionTableUIController(){
-    Model * model;
     double xmin,xmax,ymin,ymax;
     AddFunctionUIController * addFunctionUIController;
 }
@@ -28,8 +27,7 @@
 @implementation FunctionTableUIController
 
 //----------------Initializers---------------------
--(id) initWithModel: (Model *) aModel
-          xminValue:(double) aXmin
+-(id) initWithXminValue:(double) aXmin
           xmaxValue:(double) aXmax
           yminValue:(double) aYmin
           ymaxValue:(double) aYmax
@@ -37,8 +35,6 @@
     if(nil == [super initWithWindowNibName:@"FunctionTableUI"])
         return nil;
     
-    //Save model
-    model = aModel;
     //Save settings values
     xmin = aXmin;
     xmax = aXmax;
@@ -66,6 +62,7 @@
 
 -(BOOL) windowShouldClose:(NSWindow *)sender
 {
+    [addFunctionUIController close];
     return YES;
 }
 
@@ -87,7 +84,7 @@
 }
 
 //----------------Notifications--------------------
-NSString * sendNewRepresentation = @"sendNewRepresentation";
+NSString * representationChanged = @"representationChanged";
 NSString * sendNewParameters = @"sendNewParameters";
 extern NSString * functionAdded;
 
@@ -96,8 +93,11 @@ extern NSString * functionAdded;
  *              saves the function in model, and reloads the view
  */
 -(void) handlFunctionAdded:(NSNotification *)aNotification{
+    Model * model = nil;
     Function * aFunction = nil;
     NSDictionary * notificationInfo = nil;
+    
+    model = [Model defaultModel];
     
     notificationInfo = [aNotification userInfo];
     aFunction = [notificationInfo objectForKey:@"function"];
@@ -125,7 +125,12 @@ extern NSString * functionAdded;
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row{
     NSControl * cell = nil;
     NSString * identifier = [tableColumn identifier];
-    Function * f = [model getFunctionWithIndex:(int)row];
+    Function * f = nil;
+    Model * model = nil;
+    
+    
+    model = [Model defaultModel];
+    f = [model getFunctionWithIndex:(int)row];
     
     cell = [[[tableView makeViewWithIdentifier:identifier owner:nil] subviews] objectAtIndex:0];
     [cell setTag: row];
@@ -176,10 +181,13 @@ extern NSString * functionAdded;
  */-(IBAction)tableViewEditNameColumn:(id)sender{
     NSInteger row;
     Function * f = nil;
+    Model * model = nil;
     NSTextField * tf = sender;
+     
     
     row = [tf tag];
     
+    model = [Model defaultModel];
     f = [model getFunctionWithIndex:(int)row];
     [f setName: [tf stringValue] ];
     [model updateFunction:f];
@@ -187,10 +195,12 @@ extern NSString * functionAdded;
 -(IBAction)tableViewEditTypeColumn:(id)sender{
     NSInteger row;
     Function * f = nil;
+    Model * model = nil;
     NSComboBox * cb = sender;
     
     row = [cb tag];
     
+    model = [Model defaultModel];
     f = [model getFunctionWithIndex:(int)row];
     [f setType:(FunctionType)[cb indexOfSelectedItem]];
     if([f type] != PARABOLA)
@@ -205,10 +215,12 @@ extern NSString * functionAdded;
 -(IBAction)tableViewEditAValueColumn:(id)sender{
     NSInteger row;
     Function * f = nil;
+    Model * model = nil;
     NSTextField * tf = sender;
     
     row = [tf tag];
     
+    model = [Model defaultModel];
     f = [model getFunctionWithIndex:(int)row];
     [f setAValue: [tf floatValue] ];
     [model updateFunction:f];
@@ -216,10 +228,12 @@ extern NSString * functionAdded;
 -(IBAction)tableViewEditBValueColumn:(id)sender{
     NSInteger row;
     Function * f = nil;
+    Model * model = nil;
     NSTextField * tf = sender;
     
     row = [tf tag];
     
+    model = [Model defaultModel];
     f = [model getFunctionWithIndex:(int)row];
     [f setBValue: [tf floatValue] ];
     [model updateFunction:f];
@@ -227,10 +241,12 @@ extern NSString * functionAdded;
 -(IBAction)tableViewEditCValueColumn:(id)sender{
     NSInteger row;
     Function * f = nil;
+    Model * model = nil;
     NSTextField * tf = sender;
     
     row = [tf tag];
     
+    model = [Model defaultModel];
     f = [model getFunctionWithIndex:(int)row];
     
     if([f type] == PARABOLA){
@@ -245,10 +261,12 @@ extern NSString * functionAdded;
 -(IBAction)tableViewEditColorColumn:(id)sender{
     NSInteger row;
     Function * f = nil;
+    Model * model = nil;
     NSColorWell * colorWell = sender;
     
     row = [colorWell tag];
     
+    model = [Model defaultModel];
     f = [model getFunctionWithIndex:(int)row];
     [f setColor: [colorWell color] ];
     [model updateFunction:f];
@@ -256,6 +274,7 @@ extern NSString * functionAdded;
 
 -(NSInteger) numberOfRowsInTableView:(NSTableView *)tableView
 {
+    Model * model = [Model defaultModel];
     return [model count];
 }
 
@@ -293,14 +312,25 @@ extern NSString * functionAdded;
  *  @brief removes the selected function from model in tableView.
  */
 -(IBAction)removeFunction:(id)sender{
-    NSInteger row;
-    Function * f = nil;
+    int i;
+    NSMutableArray * aFunctionArray = nil;
+    NSIndexSet * indexesOfselectedFunctions = nil;
+    Model * model = nil;
     
-    row = [functionTableView selectedRow];
-    if(-1 == row) return;
+    model = [Model defaultModel];
+    aFunctionArray = [[NSMutableArray alloc] init];
     
-    f = [model getFunctionWithIndex:(int)row];
-    [model removeFunctionWithID:[f ID]];
+    indexesOfselectedFunctions = [functionTableView selectedRowIndexes];
+    if(nil == indexesOfselectedFunctions)
+        return;
+    
+    [indexesOfselectedFunctions enumerateIndexesUsingBlock:^(NSUInteger index, BOOL *stop) {
+        [ aFunctionArray addObject:[model getFunctionWithIndex:(int)index] ];
+    }];
+    
+    for(i=0; i<[aFunctionArray count]; i++)
+        [model removeFunctionWithID:[aFunctionArray[i] ID]];
+    
     [functionTableView reloadData];
 }
 
@@ -308,6 +338,7 @@ extern NSString * functionAdded;
  *  @brief removes all elements from model
  */
 -(IBAction)removeAllModelElements:(id)sender{
+    Model * model = [Model defaultModel];
     [model removeAllFunctions];
     [functionTableView reloadData];
 }
@@ -317,22 +348,27 @@ extern NSString * functionAdded;
  *          the representation panel to be represented.
  */
 -(IBAction)representSelectedFunctions:(id)sender{
+    Model * model = nil;
     NSMutableArray * aFunctionArray = nil;
     NSIndexSet * indexesOfselectedFunctions = nil;
     NSDictionary * aDictionary = nil;
     NSNotificationCenter * aNotificationCenter = nil;
     
-    indexesOfselectedFunctions = [functionTableView selectedRowIndexes];
-    
+    model = [Model defaultModel];
     aFunctionArray = [[NSMutableArray alloc] init];
-    [[functionTableView selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger index, BOOL *stop) {
-       [ aFunctionArray addObject:[self->model getFunctionWithIndex:(int)index] ];
+    
+    indexesOfselectedFunctions = [functionTableView selectedRowIndexes];
+    if(nil == indexesOfselectedFunctions)
+        return;
+    
+    [indexesOfselectedFunctions enumerateIndexesUsingBlock:^(NSUInteger index, BOOL *stop) {
+       [ aFunctionArray addObject:[model getFunctionWithIndex:(int)index] ];
     }];
     
     aNotificationCenter = [NSNotificationCenter defaultCenter];
     aDictionary = [NSDictionary dictionaryWithObject: aFunctionArray
                                               forKey:@"representationArray"];
-    [aNotificationCenter postNotificationName:sendNewRepresentation
+    [aNotificationCenter postNotificationName:representationChanged
                                        object:self
                                      userInfo:aDictionary];
 }
@@ -374,10 +410,13 @@ extern NSString * functionAdded;
 
 -(IBAction)TEST:(id)sender{
     Function * f = nil;
+    Model * model = nil;
     NSString * name = nil;
     NSColor * color = nil;
     FunctionType type;
     float a,b,c;
+    
+    model = [Model defaultModel];
     
     int i;
     for(i=0; i<20; i++){

@@ -24,6 +24,7 @@
 /* Begin PBXFileReference section */
 		7D0445FA21A597AE00E016BA /* Function.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Function.m; path = Model/Bean/Function.m; sourceTree = SOURCE_ROOT; };
 		7D0445FB21A597AE00E016BA /* Function.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Function.h; path = Model/Bean/Function.h; sourceTree = SOURCE_ROOT; };
+		7D4F02CB21B14A0700F44177 /* NSPlotViewDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSPlotViewDataSource.h; sourceTree = "<group>"; };
 		CD10BFFE2194A1980064ED2E /* MacLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD10C0012194A1980064ED2E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CD10C0022194A1980064ED2E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -65,6 +66,16 @@
 			);
 			name = Bean;
 			path = "New Group";
+			sourceTree = "<group>";
+		};
+		7D4F02CA21B1492300F44177 /* PlotView */ = {
+			isa = PBXGroup;
+			children = (
+				CD1BE93D219B661F002CD188 /* NSPlotView.h */,
+				CD1BE93E219B661F002CD188 /* NSPlotView.m */,
+				7D4F02CB21B14A0700F44177 /* NSPlotViewDataSource.h */,
+			);
+			path = PlotView;
 			sourceTree = "<group>";
 		};
 		CD10BFF52194A1980064ED2E = {
@@ -132,10 +143,9 @@
 		CD26FE0A219710D20031B6F0 /* PlotRepresentationUI */ = {
 			isa = PBXGroup;
 			children = (
+				7D4F02CA21B1492300F44177 /* PlotView */,
 				CD26FE0B219710FC0031B6F0 /* PlotRepresentationUIController.h */,
 				CD26FE0C219710FC0031B6F0 /* PlotRepresentationUIController.m */,
-				CD1BE93D219B661F002CD188 /* NSPlotView.h */,
-				CD1BE93E219B661F002CD188 /* NSPlotView.m */,
 			);
 			path = PlotRepresentationUI;
 			sourceTree = "<group>";
