@@ -32,16 +32,14 @@
 
 @synthesize datasource;
 - (void)setDatasource:(id)aDatasource{
-    if (datasource != aDatasource) {NSLog(@"2asdf");
+    if (datasource != aDatasource){
         datasource = aDatasource;
     }
-    NSLog(@"asdf");
-    if(nil != datasource){NSLog(@"3asdf");
+    if(nil != datasource){
         delegateRespondsTo.numberOfElements = [datasource respondsToSelector:@selector(numberOfElements)];
         delegateRespondsTo.parameters = [datasource respondsToSelector:@selector(parameters)];
         delegateRespondsTo.plotViewDrawElementInRectWithGraphicsContext = [datasource respondsToSelector:@selector(plotView:drawElement:inBoudns:withParameters:withGraphicsContext:)];
     }
-    NSLog(@"%d %d %d",delegateRespondsTo.numberOfElements,delegateRespondsTo.parameters,delegateRespondsTo.plotViewDrawElementInRectWithGraphicsContext);
 }
 
 - (void)drawRect:(NSRect)dirtyRect {
@@ -54,6 +52,7 @@
     
     bounds = [self bounds];
     
+    graphicsContext = [NSGraphicsContext currentContext];
     [[NSColor whiteColor] set];
     [NSBezierPath fillRect:bounds];
     
@@ -66,11 +65,9 @@
     [self drawAxysInBounds:bounds withParameters:p withGraphicsContext:graphicsContext];
     
     if(delegateRespondsTo.plotViewDrawElementInRectWithGraphicsContext){
-        [graphicsContext saveGraphicsState]; //stored for security reasons
         for(element = 0; element<numberOfElements; element++){
-            [datasource plotView:self drawElement:element inBoudns:bounds withParameters:p withGraphicsContext:[NSGraphicsContext currentContext]];
+            [datasource plotView:self drawElement:element inBoudns:bounds withParameters:p withGraphicsContext:graphicsContext];
         }
-        [graphicsContext restoreGraphicsState];
     }
     
 }
@@ -108,17 +105,17 @@
     bezier = [[NSBezierPath alloc] init];
     
     //x axys
-    aPoint.x = parameters.origin.x;
     aPoint.y = 0;
+    aPoint.x = parameters.origin.y;
     [bezier moveToPoint:aPoint];
-    aPoint.y = bounds.size.width;
+    aPoint.x = parameters.size.width;
     [bezier lineToPoint:aPoint];
     
     //y axys
     aPoint.x = 0;
-    aPoint.y = parameters.origin.y;
+    aPoint.y = parameters.origin.x;
     [bezier moveToPoint:aPoint];
-    aPoint.x = bounds.size.height;
+    aPoint.y = parameters.size.height;
     [bezier lineToPoint:aPoint];
     
     [bezier setLineWidth:0.05];
