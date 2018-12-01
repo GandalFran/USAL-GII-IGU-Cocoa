@@ -159,8 +159,9 @@
 }
 
 -(void) drawInBounds:(NSRect) bounds withParameters:(NSRect) parameters withGraphicsContext:(NSGraphicsContext *) aGraphicContext{
-    NSPoint aPoint;
-    float distance;
+    double distance;
+    double lastX, lastY;
+    NSPoint aPoint, anotherPoint;
     NSAffineTransform *tf = nil;
     NSBezierPath * bezier = nil;
     
@@ -179,11 +180,22 @@
         aPoint.y = [self valueAt:aPoint.x];
         [bezier moveToPoint:aPoint];
         
+        lastX = aPoint.x;
+        lastY = aPoint.y;
         while (aPoint.x <= parameters.origin.x + parameters.size.width)
         {
             aPoint.y = [self valueAt:aPoint.x];
-            [bezier lineToPoint:aPoint];
+            
+            if([self type] == HIPERBOLA
+               && (lastY<parameters.origin.y || lastY>(parameters.size.height-parameters.origin.y) ) ){
+                [bezier moveToPoint:aPoint];
+            }else
+                [bezier lineToPoint:aPoint];
+
             aPoint.x += distance;
+            
+            lastX = aPoint.x;
+            lastY = aPoint.y;
         }
         
         [bezier setLineWidth:0.05];
