@@ -361,19 +361,25 @@ extern NSString * functionAdded;
  *  @brief removes the selected function from model in tableView.
  */
 -(IBAction)removeFunction:(id)sender{
+    int i;
     Model * model = nil;
+    NSMutableArray * indexArray = nil;
     NSIndexSet * indexesOfselectedFunctions = nil;
     NSNotificationCenter * aNotificationCenter = nil;
     
-    model = [Model defaultModel];
-    
     indexesOfselectedFunctions = [functionTableView selectedRowIndexes];
-    if(nil == indexesOfselectedFunctions)
+    if(nil == indexesOfselectedFunctions || [indexesOfselectedFunctions count] == 0)
         return;
     
+    indexArray = [[NSMutableArray alloc] init];
     [indexesOfselectedFunctions enumerateIndexesUsingBlock:^(NSUInteger index, BOOL *stop) {
-        [model removeFunctionWithIndex:(int)index];
+        [indexArray addObject: [NSNumber numberWithInt:(int)index]];
     }];
+    
+    model = [Model defaultModel];
+    for(i=(int)([indexArray count]-1); i>=0; i--){
+        [model removeFunctionWithIndex:(int)[indexArray[i] integerValue]];
+    }
     
     [functionTableView reloadData];
     
