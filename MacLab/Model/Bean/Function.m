@@ -11,7 +11,7 @@
 
 @implementation Function
 
-@synthesize ID=_ID, name=_name, color=_color, visible=_visible, type=_type, aValue=_aValue, bValue=_bValue, cValue=_cValue;
+@synthesize name=_name, color=_color, type=_type, aValue=_aValue, bValue=_bValue, cValue=_cValue, visible=_visible;
 
 + (NSArray *) functionTypeAsStringValues{
     return [[NSArray alloc] initWithObjects:@"a*cos(b*x)", @"a*sin(b*x)",@"a*x^b",@"a+ x*b",@"a*x^2 + b*x + c",@"a/(b*x)",@"",nil];
@@ -19,28 +19,24 @@
 
 //----------------Initializers---------------------
 
--(id) initWithID : (int) ID
-            name : (NSString *) aName
-           color : (NSColor *) aColor
-         visible : (bool) aVisible
-    FunctionType : (FunctionType) aType
-ExpressionAValue : (double) aValue
- ExpressionBValue: (double) bValue
- ExpressionCValue: (double) cValue
-{
-    
+-(id) initWithName : (NSString *) aName
+             color : (NSColor *) aColor
+    ExpressionType : (FunctionType) aType
+  ExpressionAValue : (double) aValue
+  ExpressionBValue : (double) bValue
+  ExpressionCValue : (double) cValue
+           visible : (bool) aVisible{
     self = [super init];
     if (!self)
         return nil;
     
-    [self setID: ID];
     [self setName : aName];
     [self setColor : aColor];
-    [self setVisible : aVisible];
     [self setType : aType];
     [self setAValue : aValue];
     [self setBValue : bValue];
     [self setCValue : cValue];
+    [self setVisible: aVisible];
     
     return self;
 }
@@ -52,21 +48,21 @@ ExpressionAValue : (double) aValue
   ExpressionBValue : (double) bValue
    ExpressionCValue: (double) cValue
 {
-    return [self initWithID:0
-                       name:aName
-                      color:aColor
-                    visible:true
-               FunctionType:aType
-           ExpressionAValue:aValue
-           ExpressionBValue:bValue
-           ExpressionCValue:cValue];
+    return [self initWithName:aName
+                        color:aColor
+               ExpressionType:aType
+             ExpressionAValue:aValue
+             ExpressionBValue:bValue
+             ExpressionCValue:cValue
+                      visible:true
+            ];
 }
 
 //-------------NSObject hierarchy------------------
 
 -(NSString *) description
 {
-    return [[NSString alloc] initWithFormat: @"Function{ID=%d, name=%@, color=%@, visbility=%d, type=%d, aValue=%f, bValue=%f, cValue=%f,  }",self.ID,self.name, self.color, self.visible, self.type,self.aValue,self.bValue,self.cValue];
+    return [[NSString alloc] initWithFormat: @"Function{name=%@, color=%@, visbility=%d, type=%d, aValue=%f, bValue=%f, cValue=%f,  }",self.name, self.color, self.visible, self.type,self.aValue,self.bValue,self.cValue];
 }
 
 -(BOOL) isEqual:(id)object
@@ -77,7 +73,14 @@ ExpressionAValue : (double) aValue
         return false;
     }else{
         Function * f = object;
-        return ( [f ID] == self.ID );
+        return ( [[f name] isEqual: [self name]]
+                && [[f color] isEqual:[self color]]
+                && [f type] == [self type]
+                && [f aValue] == [self aValue]
+                && [f bValue] == [self bValue]
+                && [f cValue] == [self cValue]
+                && [f visible] == [self visible]
+                );
     }
 }
 
@@ -87,7 +90,6 @@ ExpressionAValue : (double) aValue
     
     f = [[Function alloc] init];
     
-    [f setID: self.ID];
     [f setName : [self.name copy] ];
     [f setColor : [self.color copy] ];
     [f setVisible : self.visible];
@@ -104,7 +106,6 @@ ExpressionAValue : (double) aValue
     
     f = [[Function alloc] init];
     
-    [f setID: self.ID];
     [f setName : [self.name copy] ];
     [f setColor : [self.color copy] ];
     [f setVisible : self.visible];
@@ -161,33 +162,35 @@ ExpressionAValue : (double) aValue
     NSPoint aPoint;
     float distance;
     NSAffineTransform *tf = nil;
-    NSBezierPath * bezier = [[NSBezierPath alloc] init];
+    NSBezierPath * bezier = nil;
     
-    [aGraphicContext saveGraphicsState];
-    
-    tf = [NSAffineTransform transform];
-    [tf scaleXBy:bounds.size.width/parameters.size.width yBy:bounds.size.height/parameters.size.height];
-    [tf translateXBy: -parameters.origin.x yBy:-parameters.origin.y];
-    
-    [tf concat];
-    
-    distance = parameters.size.width/HOPS;
-    
-    aPoint.x = parameters.origin.x;
-    aPoint.y = [self valueAt:aPoint.x];
-    [bezier moveToPoint:aPoint];
-    
-    while (aPoint.x <= parameters.origin.x + parameters.size.width)
-    {
+    if([self visible]){
+        [aGraphicContext saveGraphicsState];
+        
+        tf = [NSAffineTransform transform];
+        [tf scaleXBy:bounds.size.width/parameters.size.width yBy:bounds.size.height/parameters.size.height];
+        [tf translateXBy: -parameters.origin.x yBy:-parameters.origin.y];
+        [tf concat];
+        
+        bezier = [[NSBezierPath alloc] init];
+        distance = parameters.size.width/HOPS;
+        
+        aPoint.x = parameters.origin.x;
         aPoint.y = [self valueAt:aPoint.x];
-        [bezier lineToPoint:aPoint];
-        aPoint.x += distance;
+        [bezier moveToPoint:aPoint];
+        
+        while (aPoint.x <= parameters.origin.x + parameters.size.width)
+        {
+            aPoint.y = [self valueAt:aPoint.x];
+            [bezier lineToPoint:aPoint];
+            aPoint.x += distance;
+        }
+        
+        [bezier setLineWidth:0.05];
+        [self.color setStroke];
+        [bezier stroke];
+        [aGraphicContext restoreGraphicsState];
     }
-    
-    [bezier setLineWidth:0.05];
-    [self.color setStroke];
-    [bezier stroke];
-    [aGraphicContext restoreGraphicsState];
 }
 
 //----------------------IO-------------------------
@@ -210,7 +213,9 @@ ExpressionAValue : (double) aValue
                ExpressionType:(FunctionType)[decoder decodeIntForKey:@"type"]
              ExpressionAValue:[decoder decodeDoubleForKey:@"aValue"]
              ExpressionBValue:[decoder decodeDoubleForKey:@"bValue"]
-             ExpressionCValue:[decoder decodeDoubleForKey:@"cValue"]];
+             ExpressionCValue:[decoder decodeDoubleForKey:@"cValue"]
+                      visible:[decoder decodeBoolForKey:@"visible"]
+            ];
 }
 
 @end

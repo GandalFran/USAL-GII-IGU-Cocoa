@@ -166,6 +166,10 @@ extern NSString * functionAdded;
         NSColorWell * colorWell = (NSColorWell *)cell;
         [colorWell setColor:[f color]];
         [colorWell setAction:@selector(tableViewEditColorColumn:)];
+    }else if([tableColumn isEqual:[tableView tableColumns][6]]){
+        NSButton * checkBox = (NSButton *)cell;
+        [checkBox setState: ([f visible] ? NSControlStateValueOn:NSControlStateValueOff)];
+        [checkBox setAction:@selector(tableViewEditVisibilityColumn:)];
     }
     
     return cell;
@@ -186,7 +190,7 @@ extern NSString * functionAdded;
     model = [Model defaultModel];
     f = [model getFunctionWithIndex:(int)row];
     [f setName: [tf stringValue] ];
-    [model updateFunction:f];
+     [model updateFunction:f atIndex:(int)row];
      
      //send to reload representation data
      aNotificationCenter = [NSNotificationCenter defaultCenter];
@@ -207,7 +211,7 @@ extern NSString * functionAdded;
     if([f type] != PARABOLA)
         [f setCValue:0];
     
-    [model updateFunction:f];
+    [model updateFunction:f atIndex:(int)row];
     
     //here the data is reloaded because if is selected or deselected the PARABOLA
     //  the c value should be changed
@@ -230,7 +234,7 @@ extern NSString * functionAdded;
     model = [Model defaultModel];
     f = [model getFunctionWithIndex:(int)row];
     [f setAValue: [tf floatValue] ];
-    [model updateFunction:f];
+    [model updateFunction:f atIndex:(int)row];
     
     //send to reload representation data
     aNotificationCenter = [NSNotificationCenter defaultCenter];
@@ -248,7 +252,7 @@ extern NSString * functionAdded;
     model = [Model defaultModel];
     f = [model getFunctionWithIndex:(int)row];
     [f setBValue: [tf floatValue] ];
-    [model updateFunction:f];
+    [model updateFunction:f atIndex:(int)row];
     
     //send to reload representation data
     aNotificationCenter = [NSNotificationCenter defaultCenter];
@@ -268,7 +272,7 @@ extern NSString * functionAdded;
     
     if([f type] == PARABOLA){
         [f setCValue: [tf floatValue] ];
-        [model updateFunction:f];
+        [model updateFunction:f atIndex:(int)row];
     }
     
     //here the data is reloaded because if is selected or deselected the PARABOLA
@@ -291,11 +295,31 @@ extern NSString * functionAdded;
     model = [Model defaultModel];
     f = [model getFunctionWithIndex:(int)row];
     [f setColor: [colorWell color] ];
-    [model updateFunction:f];
+    [model updateFunction:f atIndex:(int)row];
     
     aNotificationCenter = [NSNotificationCenter defaultCenter];
     [aNotificationCenter postNotificationName:representationChanged object:self];
 }
+-(IBAction)tableViewEditVisibilityColumn:(id)sender{
+    NSInteger row;
+    Function * f = nil;
+    Model * model = nil;
+    NSButton * checkBox = sender;
+    NSNotificationCenter * aNotificationCenter = nil;
+    
+    NSLog(@"asdf");
+    
+    row = [checkBox tag];
+    
+    model = [Model defaultModel];
+    f = [model getFunctionWithIndex:(int)row];
+    [f setVisible: ( [checkBox state] == NSControlStateValueOn) ];
+    [model updateFunction:f atIndex:(int)row];
+    
+    aNotificationCenter = [NSNotificationCenter defaultCenter];
+    [aNotificationCenter postNotificationName:representationChanged object:self];
+}
+
 
 -(NSInteger) numberOfRowsInTableView:(NSTableView *)tableView
 {
@@ -337,25 +361,19 @@ extern NSString * functionAdded;
  *  @brief removes the selected function from model in tableView.
  */
 -(IBAction)removeFunction:(id)sender{
-    int i;
     Model * model = nil;
-    NSMutableArray * aFunctionArray = nil;
     NSIndexSet * indexesOfselectedFunctions = nil;
     NSNotificationCenter * aNotificationCenter = nil;
     
     model = [Model defaultModel];
-    aFunctionArray = [[NSMutableArray alloc] init];
     
     indexesOfselectedFunctions = [functionTableView selectedRowIndexes];
     if(nil == indexesOfselectedFunctions)
         return;
     
     [indexesOfselectedFunctions enumerateIndexesUsingBlock:^(NSUInteger index, BOOL *stop) {
-        [ aFunctionArray addObject:[model getFunctionWithIndex:(int)index] ];
+        [model removeFunctionWithIndex:(int)index];
     }];
-    
-    for(i=0; i<[aFunctionArray count]; i++)
-        [model removeFunctionWithID:[aFunctionArray[i] ID]];
     
     [functionTableView reloadData];
     

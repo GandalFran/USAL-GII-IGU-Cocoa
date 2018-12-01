@@ -10,12 +10,8 @@
 #import "Model.h"
 
 @interface Model(){
-    int currentID;
     NSMutableArray * modelData;
 }
-
-- (int) getCurrentID;
-- (int) getIndexWithID: (int) aFunctionID;
 
 @end
 
@@ -38,7 +34,6 @@
     if(!self)
         return nil;
     
-    currentID = 0;
     modelData = [[NSMutableArray alloc] init];
     
     if(!modelData)
@@ -51,50 +46,33 @@
 
 -(NSString *) description
 {
-    return [[NSString alloc] initWithFormat: @"Model{currentID=%d, data=%@}",currentID,modelData.description];
+    return [[NSString alloc] initWithFormat: @"Model{data=%@}",modelData.description];
 }
 
 //----------------Bussines logic-------------------
 
-- (int) addFunction: (Function *) aFunction{
+- (bool) addFunction: (Function *) aFunction{
     if(nil == aFunction || NULL == aFunction) return -1;
-    
-    [aFunction setID:[self getCurrentID]];
     [modelData addObject:aFunction];
-    
-    return [aFunction ID];
+    return true;
 }
 
-- (bool) removeFunctionWithID : (int) aFunctionID{
-    if(0 > aFunctionID || currentID <= aFunctionID) return false;
-    
-    int index = [self getIndexWithID: aFunctionID];
-    if(-1 != index)
-        [modelData removeObjectAtIndex:index];
-    
-    return (-1 != index);
+- (bool) removeFunctionWithIndex : (int) index{
+    if(0 > index || index >= [modelData count]) return false;
+    [modelData removeObjectAtIndex:index];
+    return true;
 }
 
-- (bool) updateFunction : (Function *) aFunction{
+- (bool) updateFunction : (Function *) aFunction atIndex:(int) index{
     if(nil == aFunction || NULL == aFunction) return false;
-    if(0 > [aFunction ID] || currentID <= [aFunction ID]) return false;
+    if(0 > index || index >= [modelData count]) return false;
     
-    int index = [self getIndexWithID: [aFunction ID]];
-    if(-1 != index){
-        [modelData removeObjectAtIndex:index];
-        [modelData insertObject:aFunction atIndex:index];
-    }
+    [modelData removeObjectAtIndex:index];
+    [modelData insertObject:aFunction atIndex:index];
     
     NSLog(@"\n\nUpdated f:%@",aFunction);
     
-    return (-1 != index);
-}
-
-- (Function *) getFunctionWithID : (int) aFunctionID{
-    if(0 > aFunctionID || currentID <= aFunctionID) return false;
-    
-    int index = [self getIndexWithID: aFunctionID];
-    return (-1 == index)? nil : [[modelData objectAtIndex:index] copy];
+    return true;
 }
 
 - (Function *) getFunctionWithIndex : (int) anIndex{
@@ -113,26 +91,6 @@
 
 - (long) count{
     return [modelData count];
-}
-
-- (int) getCurrentID{
-    return currentID++;
-}
-
-- (int) getIndexWithID: (int) aFunctionID
-{
-    int i;
-    bool found;
-    
-    found = false;
-    for(i=0; i<[modelData count]; i++){
-        if([[modelData objectAtIndex:i] ID] == aFunctionID){
-            found = true;
-            break;
-        }
-    }
-    
-    return found? i : -1;
 }
 
 //----------------------IO-------------------------

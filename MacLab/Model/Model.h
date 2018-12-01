@@ -17,10 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 //------------------Singletone---------------------
 + (Model *) defaultModel;
 //----------------Bussines logic-------------------
-- (int) addFunction: (Function *) aFunction;
-- (bool) removeFunctionWithID : (int) aFunctionID;
-- (bool) updateFunction : (Function *) aFunction;
-- (Function *) getFunctionWithID : (int) aFunctionID;
+- (bool) addFunction: (Function *) aFunction;
+- (bool) removeFunctionWithIndex : (int) index;
+- (bool) updateFunction : (Function *) aFunction atIndex:(int)index;
 - (Function *) getFunctionWithIndex : (int) anIndex;
 - (bool) removeAllFunctions;
 - (NSArray *) allFunctions;

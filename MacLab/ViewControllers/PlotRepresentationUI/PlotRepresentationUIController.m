@@ -118,7 +118,7 @@ extern NSString * sendNewParameters;
 
 - (NSInteger) numberOfElements{
     Model * model = [Model defaultModel];
-    return [model count];
+    return [model count] + 1;
 }
 
 - (NSRect) parameters{
@@ -132,13 +132,14 @@ extern NSString * sendNewParameters;
     return p;
 }
 
--  (void) plotView:(NSPlotView *)aPlotView drawElement:(NSInteger) element inRect:(NSRect)bounds withParameters:(NSRect)parameters withGraphicsContext:(NSGraphicsContext *)aGraphicContext{
+-  (void) plotView:(NSPlotView *)aPlotView drawElement:(NSInteger) element inBoudns:(NSRect)bounds withParameters:(NSRect)parameters withGraphicsContext:(NSGraphicsContext *)aGraphicContext{
     Function * f = nil;
     Model * model = [Model defaultModel];
     
-    f = [model getFunctionWithIndex:(int) element];
+    f = [model getFunctionWithIndex:(int)(element-1)];
     [f drawInBounds:bounds withParameters:parameters withGraphicsContext:aGraphicContext];
 }
+
 //----------------Graphic logic--------------------
 
 /**
@@ -147,19 +148,34 @@ extern NSString * sendNewParameters;
  *          know.
  */
 -(IBAction)exportPanel:(id)sender{
-    bool IOResult = NO;
+    bool IOresult;
+    NSInteger result;
+    NSString * path = nil;
+    NSSavePanel * panel = nil;
     
-    //TODO implement
+    panel = [NSSavePanel savePanel];
+    [panel setAllowsOtherFileTypes:NO];
+    [panel setExtensionHidden:YES];
+    [panel setCanCreateDirectories:NO];
+    [panel setAllowedFileTypes:[NSArray arrayWithObject:@"png"]];
+    [panel setTitle:@"Save image"];
+    result = [panel runModal];
     
-    if(NO == IOResult){
-        NSAlert * alert = [[NSAlert alloc] init];
-        [alert setMessageText:@"Error"];
-        [alert setInformativeText:@"Image couldn't be exported."];
-        [alert addButtonWithTitle:@"ok"];
-        [alert setAlertStyle:NSAlertStyleCritical];
-        [alert runModal];
-        return;
+    if (NSModalResponseOK == result) {
+        path = [[panel URL] path];
+        NSLog(@"\n\n%@",path);
+        IOresult = [plotView exportViewToPath: path];
+        if(!IOresult){
+            NSAlert * alert = [[NSAlert alloc] init];
+            [alert setMessageText:@"Error"];
+            [alert setInformativeText:@"Image couldn't be exported."];
+            [alert addButtonWithTitle:@"ok"];
+            [alert setAlertStyle:NSAlertStyleCritical];
+            [alert runModal];
+            return;
+        }
     }
+    
 }
 
 //https://stackoverflow.com/questions/1640419/open-file-dialog-box
@@ -203,8 +219,6 @@ extern NSString * sendNewParameters;
             [alert setAlertStyle:NSAlertStyleCritical];
             [alert runModal];
             return;
-        }else{
-            [functionTableUIController reloadData];
         }
     }
     

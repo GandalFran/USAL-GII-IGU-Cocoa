@@ -15,7 +15,7 @@
 @optional
 - (NSRect) parameters;
 - (NSInteger) numberOfElements;
-- (void) plotView:(NSPlotView *)aPlotView drawElement:(NSInteger) element inRect:(NSRect)bounds withParameters:(NSRect)parameters withGraphicsContext:(NSGraphicsContext *)aGraphicContext;
+- (void) plotView:(NSPlotView *)aPlotView drawElement:(NSInteger) element inBoudns:(NSRect)bounds withParameters:(NSRect)parameters withGraphicsContext:(NSGraphicsContext *)aGraphicContext;
 @end
 
 #endif /* NSPlotViewDataSource_h */

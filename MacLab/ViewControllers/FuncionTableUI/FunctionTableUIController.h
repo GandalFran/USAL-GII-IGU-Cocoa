@@ -42,6 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(IBAction)tableViewEditBValueColumn:(id)sender;
 -(IBAction)tableViewEditCValueColumn:(id)sender;
 -(IBAction)tableViewEditColorColumn:(id)sender;
+-(IBAction)tableViewEditVisibilityColumn:(id)sender;
 //----------------Bussines logic-------------------
 -(void) reloadData;
 
