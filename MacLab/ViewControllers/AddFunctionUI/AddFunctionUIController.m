@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import <Foundation/Foundation.h>
 
+#import "Model.h"
 #import "Function.h"
 #import "AddFunctionUIController.h"
 
@@ -107,23 +108,23 @@ NSString * functionAdded = @"functionAdded";
 //----------------Graphic logic--------------------
 /**
  * @brief retrieves the information from the formulary fields and
- *          instances a Function, then posts a notification with
- *          the Function data and closes the window.
+ *          instances a Function, then stores it into model and
+ *          posts a notification indicating the function has been
+ *          added.
  */
 -(IBAction)sendFunctionDataAndCloseWindow:(id)sender{
+    Model * model = nil;
     Function * aFunction = nil;
-    NSDictionary * notificationInfo = nil;
     NSNotificationCenter * notificationCenter = nil;
     
     //Obtain the Function and add to the model
+    model = [Model defaultModel];
     aFunction = [self takeDataFromFormulary];
+    [model addFunction:aFunction];
+    
     //Throw notification to advise that a function has been aded
-    notificationInfo = [NSDictionary dictionaryWithObject:aFunction
-                                                   forKey:@"function"];
     notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter postNotificationName:functionAdded
-                                      object:self
-                                    userInfo:notificationInfo];
+    [notificationCenter postNotificationName:functionAdded object:self];
     
     [self cleanAndDeactivateFields];
     [self close];

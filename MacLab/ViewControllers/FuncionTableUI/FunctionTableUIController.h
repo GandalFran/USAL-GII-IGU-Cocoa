@@ -34,7 +34,6 @@ NS_ASSUME_NONNULL_BEGIN
 -(IBAction)showAddFunctionPanel:(id)sender;
 -(IBAction)removeFunction:(id)sender;
 -(IBAction)removeAllModelElements:(id)sender;
--(IBAction)representSelectedFunctions:(id)sender;
 -(IBAction)setNewRepresentationParameters:(id)sender;
 
 -(IBAction)tableViewEditNameColumn:(id)sender;

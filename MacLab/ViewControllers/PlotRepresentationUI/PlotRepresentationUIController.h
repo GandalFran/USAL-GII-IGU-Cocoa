@@ -13,20 +13,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PlotRepresentationUIController : NSWindowController <NSWindowDelegate, NSPlotViewDataSource>{
+@interface PlotRepresentationUIController : NSObject <NSWindowDelegate, NSPlotViewDataSource>{
     IBOutlet NSPlotView * plotView;
 }
 
+- (NSInteger) numberOfElements;
+- (void) plotView:(NSPlotView *)aPlotView drawElement:(NSInteger) element inRect:(NSRect)aRect withGraphicsContext:(NSGraphicsContext *)aGraphicContext;
 //----------------Notifications--------------------
--(void) handleAddRepresentation:(NSNotification *)aNotification;
+-(void) handleReloadRepresentation:(NSNotification *)aNotification;
 -(void) handleAddNewParameters:(NSNotification *)aNotification;
 //----------------Graphic logic--------------------
--(IBAction)showFunctionTablePanel:(id)sender;
 -(IBAction)exportProject:(id)sender;
 -(IBAction)importProject:(id)sender;
 -(IBAction)exportPanel:(id)sender;
-//----------------Bussines logic-------------------
--(void) refreshRepresentation: (NSDictionary *) aDictionary;
 
 @end
 

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -18,6 +19,11 @@
             </connections>
         </customObject>
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
+        <customObject id="Dqi-Sc-lox" customClass="PlotRepresentationUIController">
+            <connections>
+                <outlet property="plotView" destination="fNv-lo-4Bp" id="zQU-Cx-GIu"/>
+            </connections>
+        </customObject>
         <menu title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
             <items>
                 <menuItem title="MacLab" id="1Xt-HY-uBw">
@@ -31,11 +37,7 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
-                            <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW">
-                                <connections>
-                                    <action selector="showFunctionTablePanel:" target="hem-EW-vmY" id="WoF-NE-RRF"/>
-                                </connections>
-                            </menuItem>
+                            <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW"/>
                             <menuItem isSeparatorItem="YES" id="wFC-TO-SCJ"/>
                             <menuItem title="Services" id="NMo-om-nkz">
                                 <modifierMask key="keyEquivalentModifierMask"/>
@@ -74,19 +76,19 @@
                         <items>
                             <menuItem title="Open…" keyEquivalent="o" id="IAo-SY-fd9">
                                 <connections>
-                                    <action selector="importProject:" target="hem-EW-vmY" id="cIH-rA-bhP"/>
+                                    <action selector="importProject:" target="Dqi-Sc-lox" id="vue-Et-b0J"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
                             <menuItem title="Save As…" keyEquivalent="S" id="Bw7-FT-i3A">
                                 <connections>
-                                    <action selector="exportProject:" target="hem-EW-vmY" id="1xe-Sx-3ZF"/>
+                                    <action selector="exportProject:" target="Dqi-Sc-lox" id="wpD-O1-NwR"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="aJh-i4-bef"/>
                             <menuItem title="Print…" keyEquivalent="p" id="aTl-1u-JFS">
                                 <connections>
-                                    <action selector="exportPanel:" target="hem-EW-vmY" id="Frk-n5-7Sp"/>
+                                    <action selector="exportPanel:" target="Dqi-Sc-lox" id="WUe-tj-Sl5"/>
                                 </connections>
                             </menuItem>
                         </items>
@@ -156,7 +158,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="159" y="187" width="707" height="477"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="960"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="707" height="477"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -165,21 +167,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="707" height="477"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <connections>
-                            <outlet property="datasource" destination="hem-EW-vmY" id="F1K-zv-R3E"/>
+                            <outlet property="datasource" destination="Dqi-Sc-lox" id="bIN-nm-eik"/>
                         </connections>
                     </customView>
                 </subviews>
             </view>
             <connections>
-                <outlet property="delegate" destination="hem-EW-vmY" id="0C3-Hm-f9e"/>
+                <outlet property="delegate" destination="Dqi-Sc-lox" id="PxH-hp-hZZ"/>
             </connections>
             <point key="canvasLocation" x="329" y="372"/>
         </window>
-        <customObject id="hem-EW-vmY" customClass="PlotRepresentationUIController">
-            <connections>
-                <outlet property="plotView" destination="fNv-lo-4Bp" id="5Oa-GO-SBj"/>
-                <outlet property="window" destination="QvC-M9-y7g" id="tiv-OI-LSO"/>
-            </connections>
-        </customObject>
     </objects>
 </document>

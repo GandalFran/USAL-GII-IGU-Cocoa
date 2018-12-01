@@ -11,10 +11,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NSPlotView :NSView{
-    IBOutlet __weak id <NSPlotViewDataSource> datasource;
-}
+@interface NSPlotView :NSView
 
+@property (nonatomic, weak) id  datasource;
+
+-(void) reloadData;
 @end
 
 NS_ASSUME_NONNULL_END

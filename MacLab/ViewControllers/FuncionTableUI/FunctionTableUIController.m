@@ -62,7 +62,7 @@
 
 -(BOOL) windowShouldClose:(NSWindow *)sender
 {
-    [addFunctionUIController close];
+    [NSApp terminate:self];
     return YES;
 }
 
@@ -93,17 +93,13 @@ extern NSString * functionAdded;
  *              saves the function in model, and reloads the view
  */
 -(void) handlFunctionAdded:(NSNotification *)aNotification{
-    Model * model = nil;
-    Function * aFunction = nil;
-    NSDictionary * notificationInfo = nil;
-    
-    model = [Model defaultModel];
-    
-    notificationInfo = [aNotification userInfo];
-    aFunction = [notificationInfo objectForKey:@"function"];
-    [model addFunction:aFunction];
+    NSNotificationCenter * aNotificationCenter = nil;
     
     [functionTableView reloadData];
+    
+    //send to reload representation data
+    aNotificationCenter = [NSNotificationCenter defaultCenter];
+    [aNotificationCenter postNotificationName:representationChanged object:self];
 }
 
 //------------------Delegation---------------------
@@ -183,20 +179,25 @@ extern NSString * functionAdded;
     Function * f = nil;
     Model * model = nil;
     NSTextField * tf = sender;
+     NSNotificationCenter * aNotificationCenter = nil;
      
-    
     row = [tf tag];
     
     model = [Model defaultModel];
     f = [model getFunctionWithIndex:(int)row];
     [f setName: [tf stringValue] ];
     [model updateFunction:f];
+     
+     //send to reload representation data
+     aNotificationCenter = [NSNotificationCenter defaultCenter];
+     [aNotificationCenter postNotificationName:representationChanged object:self];
 }
 -(IBAction)tableViewEditTypeColumn:(id)sender{
     NSInteger row;
     Function * f = nil;
     Model * model = nil;
     NSComboBox * cb = sender;
+    NSNotificationCenter * aNotificationCenter = nil;
     
     row = [cb tag];
     
@@ -211,12 +212,18 @@ extern NSString * functionAdded;
     //here the data is reloaded because if is selected or deselected the PARABOLA
     //  the c value should be changed
     [functionTableView reloadData];
+    
+    //send to reload representation data
+    aNotificationCenter = [NSNotificationCenter defaultCenter];
+    [aNotificationCenter postNotificationName:representationChanged object:self];
 }
 -(IBAction)tableViewEditAValueColumn:(id)sender{
     NSInteger row;
     Function * f = nil;
     Model * model = nil;
     NSTextField * tf = sender;
+    NSNotificationCenter * aNotificationCenter = nil;
+    
     
     row = [tf tag];
     
@@ -224,12 +231,17 @@ extern NSString * functionAdded;
     f = [model getFunctionWithIndex:(int)row];
     [f setAValue: [tf floatValue] ];
     [model updateFunction:f];
+    
+    //send to reload representation data
+    aNotificationCenter = [NSNotificationCenter defaultCenter];
+    [aNotificationCenter postNotificationName:representationChanged object:self];
 }
 -(IBAction)tableViewEditBValueColumn:(id)sender{
     NSInteger row;
     Function * f = nil;
     Model * model = nil;
     NSTextField * tf = sender;
+    NSNotificationCenter * aNotificationCenter = nil;
     
     row = [tf tag];
     
@@ -237,12 +249,17 @@ extern NSString * functionAdded;
     f = [model getFunctionWithIndex:(int)row];
     [f setBValue: [tf floatValue] ];
     [model updateFunction:f];
+    
+    //send to reload representation data
+    aNotificationCenter = [NSNotificationCenter defaultCenter];
+    [aNotificationCenter postNotificationName:representationChanged object:self];
 }
 -(IBAction)tableViewEditCValueColumn:(id)sender{
     NSInteger row;
     Function * f = nil;
     Model * model = nil;
     NSTextField * tf = sender;
+    NSNotificationCenter * aNotificationCenter = nil;
     
     row = [tf tag];
     
@@ -257,12 +274,17 @@ extern NSString * functionAdded;
     //here the data is reloaded because if is selected or deselected the PARABOLA
     //  the c value has different treatement
     [functionTableView reloadData];
+    
+    //send to reload representation data
+    aNotificationCenter = [NSNotificationCenter defaultCenter];
+    [aNotificationCenter postNotificationName:representationChanged object:self];
 }
 -(IBAction)tableViewEditColorColumn:(id)sender{
     NSInteger row;
     Function * f = nil;
     Model * model = nil;
     NSColorWell * colorWell = sender;
+    NSNotificationCenter * aNotificationCenter = nil;
     
     row = [colorWell tag];
     
@@ -270,6 +292,9 @@ extern NSString * functionAdded;
     f = [model getFunctionWithIndex:(int)row];
     [f setColor: [colorWell color] ];
     [model updateFunction:f];
+    
+    aNotificationCenter = [NSNotificationCenter defaultCenter];
+    [aNotificationCenter postNotificationName:representationChanged object:self];
 }
 
 -(NSInteger) numberOfRowsInTableView:(NSTableView *)tableView
@@ -313,9 +338,10 @@ extern NSString * functionAdded;
  */
 -(IBAction)removeFunction:(id)sender{
     int i;
+    Model * model = nil;
     NSMutableArray * aFunctionArray = nil;
     NSIndexSet * indexesOfselectedFunctions = nil;
-    Model * model = nil;
+    NSNotificationCenter * aNotificationCenter = nil;
     
     model = [Model defaultModel];
     aFunctionArray = [[NSMutableArray alloc] init];
@@ -332,6 +358,10 @@ extern NSString * functionAdded;
         [model removeFunctionWithID:[aFunctionArray[i] ID]];
     
     [functionTableView reloadData];
+    
+    //send to reload representation data
+    aNotificationCenter = [NSNotificationCenter defaultCenter];
+    [aNotificationCenter postNotificationName:representationChanged object:self];
 }
 
 /**
@@ -339,38 +369,14 @@ extern NSString * functionAdded;
  */
 -(IBAction)removeAllModelElements:(id)sender{
     Model * model = [Model defaultModel];
-    [model removeAllFunctions];
-    [functionTableView reloadData];
-}
-
-/**
- *  @brief take the selected items on tableView and send them to
- *          the representation panel to be represented.
- */
--(IBAction)representSelectedFunctions:(id)sender{
-    Model * model = nil;
-    NSMutableArray * aFunctionArray = nil;
-    NSIndexSet * indexesOfselectedFunctions = nil;
-    NSDictionary * aDictionary = nil;
     NSNotificationCenter * aNotificationCenter = nil;
     
-    model = [Model defaultModel];
-    aFunctionArray = [[NSMutableArray alloc] init];
+    [model removeAllFunctions];
+    [functionTableView reloadData];
     
-    indexesOfselectedFunctions = [functionTableView selectedRowIndexes];
-    if(nil == indexesOfselectedFunctions)
-        return;
-    
-    [indexesOfselectedFunctions enumerateIndexesUsingBlock:^(NSUInteger index, BOOL *stop) {
-       [ aFunctionArray addObject:[model getFunctionWithIndex:(int)index] ];
-    }];
-    
+    //send to reload representation data
     aNotificationCenter = [NSNotificationCenter defaultCenter];
-    aDictionary = [NSDictionary dictionaryWithObject: aFunctionArray
-                                              forKey:@"representationArray"];
-    [aNotificationCenter postNotificationName:representationChanged
-                                       object:self
-                                     userInfo:aDictionary];
+    [aNotificationCenter postNotificationName:representationChanged object:self];
 }
 
 /**
@@ -432,6 +438,9 @@ extern NSString * functionAdded;
     }
     
     [functionTableView reloadData];
+    
+    NSNotificationCenter * aNotificationCenter = [NSNotificationCenter defaultCenter];
+    [aNotificationCenter postNotificationName:representationChanged object:self];
 }
 
 @end

@@ -188,6 +188,10 @@ ExpressionAValue : (double) aValue
     return [[NSArray alloc] initWithObjects:@"a*cos(b*x)", @"a*sin(b*x)",@"a*x^b",@"a+ x*b",@"a*x^2 + b*x + c",@"a/(b*x)",@"",nil];
 }
 
+-(void) drawInRect:(NSRect) aRect withGraphicsContext:(NSGraphicsContext *) aGraphicContext{
+    NSLog(@"DRAWING %d",[self ID]);
+}
+
 //----------------------IO-------------------------
 
 - (void)encodeWithCoder:(NSCoder *)encoder

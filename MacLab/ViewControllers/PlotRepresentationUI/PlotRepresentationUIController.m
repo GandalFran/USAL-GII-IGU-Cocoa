@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 #import "Model.h"
+#import "Function.h"
 #import "NSPlotView.h"
 
 #import "FunctionTableUIController.h"
@@ -39,16 +40,24 @@
     ymin = -10.0;
     ymax = 10.0;
     
+    //instance and throw secondary panel
+    functionTableUIController = [[FunctionTableUIController alloc] initWithXminValue:xmin
+                                                                               xmaxValue:xmax
+                                                                               yminValue:ymin
+                                                                               ymaxValue:ymax];
+    [functionTableUIController showWindow:self];
+    
     //register the handle for terminate app notification
     NSNotificationCenter * notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self
-                           selector:@selector(handleAddRepresentation:)
+                           selector:@selector(handleReloadRepresentation:)
                                name:representationChanged
                              object:nil];
     [notificationCenter addObserver:self
                            selector:@selector(handleAddNewParameters:)
                                name:sendNewParameters
                              object:nil];
+    
     
     return self;
 }
@@ -77,11 +86,8 @@ extern NSString * sendNewParameters;
  *  @brief handler for the representationChanged notification:
  *          refreshes the representation content
  */
--(void) handleAddRepresentation:(NSNotification *)aNotification{
-    NSDictionary * notificationInfo = nil;
-    notificationInfo = [aNotification userInfo];
-    [self refreshRepresentation: notificationInfo];
-    [plotView setNeedsDisplay:YES];
+-(void) handleReloadRepresentation:(NSNotification *)aNotification{
+    [plotView reloadData];
 }
 
 /**
@@ -105,12 +111,21 @@ extern NSString * sendNewParameters;
     
     NSLog(@"\n\n\n%f %f %f %f",xmin,xmax,ymin,ymax);
     
-    [plotView setNeedsDisplay:YES];
+    [plotView reloadData];
 }
 
 //------------------Delegation---------------------
-
-
+- (NSInteger) numberOfElements{
+    Model * model = [Model defaultModel];
+    return [model count];
+}
+- (void) plotView:(NSPlotView *)aPlotView drawElement:(NSInteger) element inRect:(NSRect)aRect withGraphicsContext:(NSGraphicsContext *)aGraphicContext{
+    Function * f = nil;
+    Model * model = [Model defaultModel];
+    
+    f = [model getFunctionWithIndex:(int) element];
+    [f drawInRect:aRect withGraphicsContext:aGraphicContext];
+}
 //----------------Graphic logic--------------------
 
 /**
@@ -218,26 +233,5 @@ extern NSString * sendNewParameters;
     }
 }
 
-/**
- *  @brief Shows the functionTable panel (preferences panel)
- */
--(IBAction)showFunctionTablePanel:(id)sender{
-    if(nil == functionTableUIController)
-        functionTableUIController = [[FunctionTableUIController alloc] initWithXminValue:xmin
-                                                                           xmaxValue:xmax
-                                                                           yminValue:ymin
-                                                                           ymaxValue:ymax];
-    [functionTableUIController showWindow:self];
-}
-
-//----------------Bussines logic-------------------
-
-/**
- *  @brief Represent a set of functions
- */
--(void) refreshRepresentation: (NSDictionary *) aDictionary
-{
-    //take data from model and calculate bezierpath for each function
-}
 
 @end

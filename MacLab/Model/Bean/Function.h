@@ -53,6 +53,7 @@ ExpressionAValue : (double) aValue
 -(double) calculateYValueWithXValue : (double) aXValue;
 -(NSString *) expressionStringValue;
 +(NSArray *) functionTypeAsStringValues;
+-(void) drawInRect:(NSRect) aRect withGraphicsContext:(NSGraphicsContext *) aGraphicContext;
 
 @end
 

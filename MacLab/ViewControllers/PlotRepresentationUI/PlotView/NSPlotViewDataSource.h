@@ -9,12 +9,12 @@
 #ifndef NSPlotViewDataSource_h
 #define NSPlotViewDataSource_h
 
+@class NSPlotView;
+
 @protocol NSPlotViewDataSource <NSObject>
-
 @optional
-- (void)calculate;
-//meter metodos
+- (NSInteger) numberOfElements;
+- (void) plotView:(NSPlotView *)aPlotView drawElement:(NSInteger) element inRect:(NSRect)aRect withGraphicsContext:(NSGraphicsContext *)aGraphicContext;
 @end
-
 
 #endif /* NSPlotViewDataSource_h */
