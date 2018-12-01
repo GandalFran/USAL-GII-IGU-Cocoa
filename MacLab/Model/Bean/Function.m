@@ -7,10 +7,15 @@
 //
 
 #import "Function.h"
+#define HOPS 500
 
 @implementation Function
 
 @synthesize ID=_ID, name=_name, color=_color, visible=_visible, type=_type, aValue=_aValue, bValue=_bValue, cValue=_cValue;
+
++ (NSArray *) functionTypeAsStringValues{
+    return [[NSArray alloc] initWithObjects:@"a*cos(b*x)", @"a*sin(b*x)",@"a*x^b",@"a+ x*b",@"a*x^2 + b*x + c",@"a/(b*x)",@"",nil];
+}
 
 //----------------Initializers---------------------
 
@@ -115,10 +120,10 @@ ExpressionAValue : (double) aValue
 
 /**
  *  @brief calculates the y value for a x value
- *  @param aXValue x value to calculate the respective y value
+ *  @param x value to calculate the respective y value
  *  @return the y value for the xvalue in the function
  */
--(double) calculateYValueWithXValue : (double) aXValue
+-(double) valueAt : (double) x
 {
     double result, a, b, c;
     
@@ -128,22 +133,22 @@ ExpressionAValue : (double) aValue
     
     switch(self.type){
         case COSINE:
-            result =  a * cos( b * aXValue );
+            result =  a * cos( b * x );
             break;
         case SINE:
-            result = a * sin( b * aXValue );
+            result = a * sin( b * x );
             break;
         case EXPONENTIAL:
-            result = a * pow(aXValue,b);
+            result = a * pow(x,b);
             break;
         case LINE:
-            result = a + (b * aXValue);
+            result = a + (b * x);
             break;
         case PARABOLA:
-            result =  (a*aXValue*aXValue) + (b*aXValue) + c;
+            result =  (a*x*x) + (b*x) + c;
             break;
         case HIPERBOLA:
-            result = a / (b * aXValue);
+            result = a / (b * x);
             break;
         default:
             result = 0;
@@ -152,44 +157,37 @@ ExpressionAValue : (double) aValue
     return result;
 }
 
-/**
- *  @brief returns a string with the expression which defines the function
- */
--(NSString *) expressionStringValue{
-    NSString * expressionString = nil;
+-(void) drawInBounds:(NSRect) bounds withParameters:(NSRect) parameters withGraphicsContext:(NSGraphicsContext *) aGraphicContext{
+    NSPoint aPoint;
+    float distance;
+    NSAffineTransform *tf = nil;
+    NSBezierPath * bezier = [[NSBezierPath alloc] init];
     
-    switch([self type]){
-        case COSINE:
-            expressionString =  [[NSString alloc] initWithFormat:@"%.2f*cos(%.2f*x)",[self aValue],[self bValue]];
-            break;
-        case SINE:
-            expressionString =  [[NSString alloc] initWithFormat:@"%.2f*sin(%.2f*x)",[self aValue],[self bValue]];
-            break;
-        case EXPONENTIAL:
-            expressionString =  [[NSString alloc] initWithFormat:@"%.2f*x^%.2f",[self aValue],[self bValue]];
-            break;
-        case LINE:
-            expressionString =  [[NSString alloc] initWithFormat:@"%.2f*x + %.2f",[self aValue],[self bValue]];
-            break;
-        case PARABOLA:
-            expressionString =  [[NSString alloc] initWithFormat:@"%.2f*x^2 + %.2f*x + %.2f)",[self aValue],[self bValue],[self cValue]];
-            break;
-        case HIPERBOLA:
-            expressionString =  [[NSString alloc] initWithFormat:@"%.2f*/(%.2f*x)",[self aValue],[self bValue]];
-            break;
-        default:
-            expressionString = nil;
+    [aGraphicContext saveGraphicsState];
+    
+    tf = [NSAffineTransform transform];
+    [tf scaleXBy:bounds.size.width/parameters.size.width yBy:bounds.size.height/parameters.size.height];
+    [tf translateXBy: -parameters.origin.x yBy:-parameters.origin.y];
+    
+    [tf concat];
+    
+    distance = parameters.size.width/HOPS;
+    
+    aPoint.x = parameters.origin.x;
+    aPoint.y = [self valueAt:aPoint.x];
+    [bezier moveToPoint:aPoint];
+    
+    while (aPoint.x <= parameters.origin.x + parameters.size.width)
+    {
+        aPoint.y = [self valueAt:aPoint.x];
+        [bezier lineToPoint:aPoint];
+        aPoint.x += distance;
     }
     
-    return expressionString;
-}
-
-+ (NSArray *) functionTypeAsStringValues{
-    return [[NSArray alloc] initWithObjects:@"a*cos(b*x)", @"a*sin(b*x)",@"a*x^b",@"a+ x*b",@"a*x^2 + b*x + c",@"a/(b*x)",@"",nil];
-}
-
--(void) drawInRect:(NSRect) aRect withGraphicsContext:(NSGraphicsContext *) aGraphicContext{
-    NSLog(@"DRAWING %d",[self ID]);
+    [bezier setLineWidth:0.05];
+    [self.color setStroke];
+    [bezier stroke];
+    [aGraphicContext restoreGraphicsState];
 }
 
 //----------------------IO-------------------------

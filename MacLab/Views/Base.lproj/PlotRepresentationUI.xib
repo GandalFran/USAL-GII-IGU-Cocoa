@@ -21,7 +21,7 @@
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
         <customObject id="Dqi-Sc-lox" customClass="PlotRepresentationUIController">
             <connections>
-                <outlet property="plotView" destination="fNv-lo-4Bp" id="zQU-Cx-GIu"/>
+                <outlet property="plotView" destination="5IA-ac-dmo" id="kL6-rU-Rhe"/>
             </connections>
         </customObject>
         <menu title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
@@ -163,11 +163,11 @@
                 <rect key="frame" x="0.0" y="0.0" width="707" height="477"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fNv-lo-4Bp" customClass="NSPlotView">
+                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5IA-ac-dmo" customClass="NSPlotView">
                         <rect key="frame" x="0.0" y="0.0" width="707" height="477"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <connections>
-                            <outlet property="datasource" destination="Dqi-Sc-lox" id="bIN-nm-eik"/>
+                            <outlet property="datasource" destination="Dqi-Sc-lox" id="1CO-iK-puI"/>
                         </connections>
                     </customView>
                 </subviews>
@@ -175,7 +175,7 @@
             <connections>
                 <outlet property="delegate" destination="Dqi-Sc-lox" id="PxH-hp-hZZ"/>
             </connections>
-            <point key="canvasLocation" x="329" y="372"/>
+            <point key="canvasLocation" x="328.5" y="371.5"/>
         </window>
     </objects>
 </document>

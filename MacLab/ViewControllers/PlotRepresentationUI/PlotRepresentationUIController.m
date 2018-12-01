@@ -115,16 +115,29 @@ extern NSString * sendNewParameters;
 }
 
 //------------------Delegation---------------------
+
 - (NSInteger) numberOfElements{
     Model * model = [Model defaultModel];
     return [model count];
 }
-- (void) plotView:(NSPlotView *)aPlotView drawElement:(NSInteger) element inRect:(NSRect)aRect withGraphicsContext:(NSGraphicsContext *)aGraphicContext{
+
+- (NSRect) parameters{
+    NSRect p;
+    
+    p.origin.x = xmin;
+    p.origin.y = ymin;
+    p.size.width = xmax - xmin;
+    p.size.height = ymax - ymin;
+    
+    return p;
+}
+
+-  (void) plotView:(NSPlotView *)aPlotView drawElement:(NSInteger) element inRect:(NSRect)bounds withParameters:(NSRect)parameters withGraphicsContext:(NSGraphicsContext *)aGraphicContext{
     Function * f = nil;
     Model * model = [Model defaultModel];
     
     f = [model getFunctionWithIndex:(int) element];
-    [f drawInRect:aRect withGraphicsContext:aGraphicContext];
+    [f drawInBounds:bounds withParameters:parameters withGraphicsContext:aGraphicContext];
 }
 //----------------Graphic logic--------------------
 

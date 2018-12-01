@@ -17,8 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
     IBOutlet NSPlotView * plotView;
 }
 
-- (NSInteger) numberOfElements;
-- (void) plotView:(NSPlotView *)aPlotView drawElement:(NSInteger) element inRect:(NSRect)aRect withGraphicsContext:(NSGraphicsContext *)aGraphicContext;
 //----------------Notifications--------------------
 -(void) handleReloadRepresentation:(NSNotification *)aNotification;
 -(void) handleAddNewParameters:(NSNotification *)aNotification;

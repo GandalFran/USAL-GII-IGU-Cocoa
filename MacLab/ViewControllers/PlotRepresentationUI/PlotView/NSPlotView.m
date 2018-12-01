@@ -10,6 +10,7 @@
 
 @interface NSPlotView(){
     struct{
+        unsigned int parameters;
         unsigned int numberOfElements;
         unsigned int plotViewDrawElementInRectWithGraphicsContext;
     } delegateRespondsTo;
@@ -18,8 +19,6 @@
 @end
 
 @implementation NSPlotView
-
-@synthesize datasource;
 
 -(id) initWithCoder:(NSCoder *)decoder
 {
@@ -30,52 +29,66 @@
     return self;
 }
 
+@synthesize datasource;
 - (void)setDatasource:(id)aDatasource{
-    if (datasource != aDatasource) {
+    if (datasource != aDatasource) {NSLog(@"2asdf");
         datasource = aDatasource;
     }
-    if(nil != datasource){
+    NSLog(@"asdf");
+    if(nil != datasource){NSLog(@"3asdf");
         delegateRespondsTo.numberOfElements = [datasource respondsToSelector:@selector(numberOfElements)];
-        delegateRespondsTo.plotViewDrawElementInRectWithGraphicsContext = [datasource respondsToSelector:@selector(plotView:drawElement:inRect:withGraphicsContext:)];
+        delegateRespondsTo.parameters = [datasource respondsToSelector:@selector(parameters)];
+        delegateRespondsTo.plotViewDrawElementInRectWithGraphicsContext = [datasource respondsToSelector:@selector(plotView:drawElement:inRect:withParameters:withGraphicsContext:)];
     }
+    NSLog(@"%d %d %d",delegateRespondsTo.numberOfElements,delegateRespondsTo.parameters,delegateRespondsTo.plotViewDrawElementInRectWithGraphicsContext);
 }
 
 - (void)drawRect:(NSRect)dirtyRect {
+    int element;
+    NSRect bounds, parameters;
+    NSInteger numberOfElements = 0;
+    NSGraphicsContext * graphicsContext = nil;
+    
     [super drawRect:dirtyRect];
     
-    NSRect bounds = [self bounds];
+    bounds = [self bounds];
+    
     [[NSColor whiteColor] set];
     [NSBezierPath fillRect:bounds];
     
-    int element;
-    NSInteger numberOfElements = 0;
-
+    
+    if(delegateRespondsTo.parameters)
+        parameters = [datasource parameters];
+    
     if(delegateRespondsTo.numberOfElements)
         numberOfElements = [datasource numberOfElements];
+    
     if(delegateRespondsTo.plotViewDrawElementInRectWithGraphicsContext){
+        [graphicsContext saveGraphicsState]; //stored for security reasons
         for(element = 0; element<numberOfElements; element++){
-            [datasource plotView:self drawElement:element inRect:bounds withGraphicsContext:[NSGraphicsContext currentContext]];
+            [datasource plotView:self drawElement:element inRect:bounds withParameters:parameters withGraphicsContext:[NSGraphicsContext currentContext]];
         }
+        [graphicsContext restoreGraphicsState];
     }
     
-    // Drawing code here.
-    //deletage drawing code in controller : args-> nsRect with bacround and NSGrahicContext (currentContext)
-        //in the controller method
-            //foeach funcion draw in crect with graptic context
-                //calculs of each function in the power point
-    
-    NSInteger ox,oy;
-    float width, height;
-    
-    ox = bounds.origin.x;
-    oy = bounds.origin.y;
-    width = bounds.size.width;
-    height = bounds.size.height;
 }
 
 -(void) reloadData{
-    NSLog(@"reloading data");
     [self setNeedsDisplay:YES];
+}
+
+//https://mountandcode.wordpress.com/2010/12/08/export-nsview-to-png/
+-(BOOL) exportViewToPath:(NSString *) path{
+    NSData * binaryData = nil;
+    NSBitmapImageRep * bitmapImage = nil;
+    
+    [self lockFocus];
+    bitmapImage = [self bitmapImageRepForCachingDisplayInRect:[self bounds]];
+    [self cacheDisplayInRect:[self bounds] toBitmapImageRep:bitmapImage];
+    [self unlockFocus];
+    
+    binaryData = [bitmapImage representationUsingType:NSPNGFileType properties:nil];
+    return [binaryData writeToFile:path atomically:NO];
 }
 
 

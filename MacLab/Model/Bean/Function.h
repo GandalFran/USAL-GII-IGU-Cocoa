@@ -32,6 +32,8 @@ typedef enum{COSINE, SINE, EXPONENTIAL, LINE, PARABOLA, HIPERBOLA, NONE_TYPE} Fu
 @property (nonatomic) double bValue;
 @property (nonatomic) double cValue;
 
++(NSArray *) functionTypeAsStringValues;
+
 //----------------Initializers---------------------
 -(id) initWithID : (int) ID
             name : (NSString *) aName
@@ -50,10 +52,8 @@ ExpressionAValue : (double) aValue
  ExpressionCValue : (double) cValue;
 
 //----------------Bussines logic-------------------
--(double) calculateYValueWithXValue : (double) aXValue;
--(NSString *) expressionStringValue;
-+(NSArray *) functionTypeAsStringValues;
--(void) drawInRect:(NSRect) aRect withGraphicsContext:(NSGraphicsContext *) aGraphicContext;
+-(double) valueAt : (double) x;
+-(void) drawInBounds:(NSRect) bounds withParameters:(NSRect) parameters withGraphicsContext:(NSGraphicsContext *) aGraphicContext;
 
 @end
 

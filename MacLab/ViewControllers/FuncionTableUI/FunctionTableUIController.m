@@ -425,13 +425,13 @@ extern NSString * functionAdded;
     model = [Model defaultModel];
     
     int i;
-    for(i=0; i<20; i++){
+    for(i=0; i<5; i++){
         name = [[NSString alloc] initWithFormat: @"FunctionNumber%d",i];
         type = arc4random_uniform(6);
         color = [NSColor colorWithRed: ((float)arc4random_uniform(100))/100 green:((float)arc4random_uniform(100))/100 blue:((float)arc4random_uniform(100))/100 alpha:1.0];
-        a = ((float)arc4random_uniform(10000))/100;
-        b = ((float)arc4random_uniform(10000))/100;
-        c = ((float)arc4random_uniform(10000))/100;
+        a = ((float)arc4random_uniform(100))/10;
+        b = ((float)arc4random_uniform(100))/10;
+        c = ((float)arc4random_uniform(100))/10;
         
         f = [[Function alloc] initWithName:name color:color ExpressionType:type ExpressionAValue:a ExpressionBValue:b ExpressionCValue:c];
         [model addFunction: f];
