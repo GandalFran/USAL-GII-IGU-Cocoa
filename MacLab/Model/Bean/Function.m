@@ -142,7 +142,6 @@
             break;
         case EXPONENTIAL:
             result = a* pow(x,b);
-            NSLog(@"a:%f x:%f b:%f pow(x,b):%f result:%f",a,x,b,pow(x,b),result);
             break;
         case LINE:
             result = a + (b * x);
@@ -178,8 +177,14 @@
         bezier = [[NSBezierPath alloc] init];
         distance = parameters.size.width/HOPS;
         
-        aPoint.x = parameters.origin.x;
-        aPoint.y = [self valueAt:aPoint.x];
+        if([self type] == EXPONENTIAL && parameters.origin.x<0 && ([self bValue] - (int)[self bValue])!=0){
+            aPoint.x = 0;
+            aPoint.y = [self valueAt:0];
+        }else{
+            aPoint.x = parameters.origin.x;
+            aPoint.y = [self valueAt:aPoint.x];
+        }
+        
         [bezier moveToPoint:aPoint];
         
         lastY = aPoint.y;
@@ -187,10 +192,9 @@
         {
             aPoint.y = [self valueAt:aPoint.x];
             
-            if([self type] == HIPERBOLA
-               && (lastY<parameters.origin.y || lastY>(parameters.size.height-parameters.origin.y) ) ){
+            if([self type] == HIPERBOLA && ( lastY<parameters.origin.y || lastY>(parameters.size.height-parameters.origin.y) ) )
                 [bezier moveToPoint:aPoint];
-            }else
+            else
                 [bezier lineToPoint:aPoint];
 
             aPoint.x += distance;

@@ -109,8 +109,6 @@ extern NSString * sendNewParameters;
     ymin = [aYmin doubleValue];
     ymax = [aYmax doubleValue];
     
-    NSLog(@"\n\n\n%f %f %f %f",xmin,xmax,ymin,ymax);
-    
     [plotView reloadData];
 }
 
@@ -163,7 +161,6 @@ extern NSString * sendNewParameters;
     
     if (NSModalResponseOK == result) {
         path = [[panel URL] path];
-        NSLog(@"\n\n%@",path);
         IOresult = [plotView exportViewToPath: path];
         if(!IOresult){
             NSAlert * alert = [[NSAlert alloc] init];
@@ -209,7 +206,6 @@ extern NSString * sendNewParameters;
     
     if (NSModalResponseOK == result) {
         path = [[panel URL] path];
-        NSLog(@"\n\n%@",path);
         IOresult = [model exportFile: path];
         if(!IOresult){
             NSAlert * alert = [[NSAlert alloc] init];
@@ -243,7 +239,6 @@ extern NSString * sendNewParameters;
     if (NSModalResponseOK == result) {
         
         path = [[panel URL] path];
-        NSLog(@"\n\n%@",path);
         IOresult = [model importFile: path];
         if(!IOresult){
             NSAlert * alert = [[NSAlert alloc] init];

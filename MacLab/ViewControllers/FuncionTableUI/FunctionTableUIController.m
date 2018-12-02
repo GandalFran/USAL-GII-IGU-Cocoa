@@ -252,8 +252,6 @@ extern NSString * functionAdded;
     NSNotificationCenter * aNotificationCenter = nil;
     
     row = [tf tag];
-    NSLog(@"HOLA ANTES DE PROBAR");
-    NSLog(@"asdf asdf %lf",[tf doubleValue]);
     model = [Model defaultModel];
     f = [model getFunctionWithIndex:(int)row];
     [f setBValue: [tf doubleValue] ];
