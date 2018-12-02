@@ -8,6 +8,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="FunctionTableUIController">
             <connections>
+                <outlet property="formatter" destination="80a-xE-T8b" id="Ndb-ll-un3"/>
                 <outlet property="functionTableView" destination="CV5-hl-ihM" id="LeM-Hg-Aff"/>
                 <outlet property="saveSettingsButton" destination="cLi-tX-jW6" id="u8R-3j-uYb"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="V6w-BN-IVg"/>
@@ -434,7 +435,7 @@
             </connections>
             <point key="canvasLocation" x="407" y="193.5"/>
         </window>
-        <numberFormatter formatterBehavior="custom10_4" positiveFormat="############,#########" negativeFormat="-############,#########" numberStyle="decimal" generatesDecimalNumbers="YES" alwaysShowsDecimalSeparator="YES" usesGroupingSeparator="NO" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="80a-xE-T8b"/>
+        <numberFormatter formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="80a-xE-T8b"/>
     </objects>
     <resources>
         <image name="NSAddTemplate" width="11" height="11"/>

@@ -6,6 +6,7 @@
 //  Copyright © 2018 GandalFran. All rights reserved.
 //
 
+#import <math.h>
 #import "Function.h"
 #define HOPS 500
 
@@ -140,7 +141,8 @@
             result = a * sin( b * x );
             break;
         case EXPONENTIAL:
-            result = a * pow(x,b);
+            result = a* pow(x,b);
+            NSLog(@"a:%f x:%f b:%f pow(x,b):%f result:%f",a,x,b,pow(x,b),result);
             break;
         case LINE:
             result = a + (b * x);
@@ -160,8 +162,8 @@
 
 -(void) drawInBounds:(NSRect) bounds withParameters:(NSRect) parameters withGraphicsContext:(NSGraphicsContext *) aGraphicContext{
     double distance;
-    double lastX, lastY;
-    NSPoint aPoint, anotherPoint;
+    double lastY;
+    NSPoint aPoint;
     NSAffineTransform *tf = nil;
     NSBezierPath * bezier = nil;
     
@@ -180,7 +182,6 @@
         aPoint.y = [self valueAt:aPoint.x];
         [bezier moveToPoint:aPoint];
         
-        lastX = aPoint.x;
         lastY = aPoint.y;
         while (aPoint.x <= parameters.origin.x + parameters.size.width)
         {
@@ -193,8 +194,6 @@
                 [bezier lineToPoint:aPoint];
 
             aPoint.x += distance;
-            
-            lastX = aPoint.x;
             lastY = aPoint.y;
         }
         

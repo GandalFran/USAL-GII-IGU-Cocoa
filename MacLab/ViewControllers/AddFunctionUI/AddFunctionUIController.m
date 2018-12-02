@@ -24,7 +24,7 @@
 @implementation AddFunctionUIController
 
 //----------------Initializers---------------------
--(id)initWithComboBoxDataSource:(NSArray *) anArray
+-(id)init
 {
     if(nil == [super initWithWindowNibName:@"AddFunctionUI"])
         return nil;

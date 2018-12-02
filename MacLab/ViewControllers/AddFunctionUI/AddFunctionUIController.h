@@ -21,8 +21,6 @@ NS_ASSUME_NONNULL_BEGIN
     IBOutlet NSButton * addButton;
 }
 
-//----------------Initializers---------------------
--(id)initWithComboBoxDataSource:(NSArray *) anArray;
 //----------------Graphic logic--------------------
 -(IBAction)sendFunctionDataAndCloseWindow:(id)sender;
 

@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
     IBOutlet NSTextField * ymaxTextField;
     IBOutlet NSButton * saveSettingsButton;
     
+    IBOutlet NSNumberFormatter * formatter;
+    
     IBOutlet NSTableView * functionTableView;
 }
 //----------------Initializers---------------------

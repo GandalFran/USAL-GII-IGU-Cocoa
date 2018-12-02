@@ -146,18 +146,22 @@ extern NSString * functionAdded;
         [comboBox setAction:@selector(tableViewEditTypeColumn:)];
     }else if([tableColumn isEqual:[tableView tableColumns][2]]){
         NSTextField * textField = (NSTextField *)cell;
-        [textField setStringValue: [[NSString alloc]initWithFormat:@"%.2f",[f aValue]]];
+        [textField setFormatter:formatter];
+        [textField setDoubleValue:[f aValue]];
         [textField setAction:@selector(tableViewEditAValueColumn:)];
     }else if([tableColumn isEqual:[tableView tableColumns][3]]){
         NSTextField * textField = (NSTextField *)cell;
-        [textField setStringValue: [[NSString alloc]initWithFormat:@"%.2f",[f bValue]]];
+        [textField setFormatter:formatter];
+        [textField setDoubleValue:[f bValue]];
         [textField setAction:@selector(tableViewEditBValueColumn:)];
     }else if([tableColumn isEqual:[tableView tableColumns][4]]){
         NSTextField * textField = (NSTextField *)cell;
         if([f type] == PARABOLA){
-            [textField setStringValue: [[NSString alloc]initWithFormat:@"%.2f",[f cValue]]];
+            [textField setFormatter:formatter];
+            [textField setDoubleValue:[f cValue]];
             [textField setEnabled: YES];
         }else{
+            [textField setFormatter:nil];
             [textField setStringValue: @"-"];
             [textField setEnabled: NO];
         }
@@ -183,18 +187,14 @@ extern NSString * functionAdded;
     Function * f = nil;
     Model * model = nil;
     NSTextField * tf = sender;
-     NSNotificationCenter * aNotificationCenter = nil;
      
     row = [tf tag];
     
     model = [Model defaultModel];
     f = [model getFunctionWithIndex:(int)row];
     [f setName: [tf stringValue] ];
-     [model updateFunction:f atIndex:(int)row];
-     
-     //send to reload representation data
-     aNotificationCenter = [NSNotificationCenter defaultCenter];
-     [aNotificationCenter postNotificationName:representationChanged object:self];
+    [model updateFunction:f atIndex:(int)row];
+
 }
 -(IBAction)tableViewEditTypeColumn:(id)sender{
     NSInteger row;
@@ -217,9 +217,11 @@ extern NSString * functionAdded;
     //  the c value should be changed
     [functionTableView reloadData];
     
-    //send to reload representation data
-    aNotificationCenter = [NSNotificationCenter defaultCenter];
-    [aNotificationCenter postNotificationName:representationChanged object:self];
+    if([f visible] == true){
+        //send to reload representation data
+        aNotificationCenter = [NSNotificationCenter defaultCenter];
+        [aNotificationCenter postNotificationName:representationChanged object:self];
+    }
 }
 -(IBAction)tableViewEditAValueColumn:(id)sender{
     NSInteger row;
@@ -233,12 +235,14 @@ extern NSString * functionAdded;
     
     model = [Model defaultModel];
     f = [model getFunctionWithIndex:(int)row];
-    [f setAValue: [tf floatValue] ];
+    [f setAValue: [tf doubleValue] ];
     [model updateFunction:f atIndex:(int)row];
     
-    //send to reload representation data
-    aNotificationCenter = [NSNotificationCenter defaultCenter];
-    [aNotificationCenter postNotificationName:representationChanged object:self];
+    if([f visible] == true){
+        //send to reload representation data
+        aNotificationCenter = [NSNotificationCenter defaultCenter];
+        [aNotificationCenter postNotificationName:representationChanged object:self];
+    }
 }
 -(IBAction)tableViewEditBValueColumn:(id)sender{
     NSInteger row;
@@ -248,15 +252,18 @@ extern NSString * functionAdded;
     NSNotificationCenter * aNotificationCenter = nil;
     
     row = [tf tag];
-    
+    NSLog(@"HOLA ANTES DE PROBAR");
+    NSLog(@"asdf asdf %lf",[tf doubleValue]);
     model = [Model defaultModel];
     f = [model getFunctionWithIndex:(int)row];
-    [f setBValue: [tf floatValue] ];
+    [f setBValue: [tf doubleValue] ];
     [model updateFunction:f atIndex:(int)row];
     
-    //send to reload representation data
-    aNotificationCenter = [NSNotificationCenter defaultCenter];
-    [aNotificationCenter postNotificationName:representationChanged object:self];
+    if([f visible] == true){
+        //send to reload representation data
+        aNotificationCenter = [NSNotificationCenter defaultCenter];
+        [aNotificationCenter postNotificationName:representationChanged object:self];
+    }
 }
 -(IBAction)tableViewEditCValueColumn:(id)sender{
     NSInteger row;
@@ -271,17 +278,19 @@ extern NSString * functionAdded;
     f = [model getFunctionWithIndex:(int)row];
     
     if([f type] == PARABOLA){
-        [f setCValue: [tf floatValue] ];
+        [f setCValue: [tf doubleValue] ];
         [model updateFunction:f atIndex:(int)row];
+        
+        if([f visible] == true){
+            //send to reload representation data
+            aNotificationCenter = [NSNotificationCenter defaultCenter];
+            [aNotificationCenter postNotificationName:representationChanged object:self];
+        }
     }
     
     //here the data is reloaded because if is selected or deselected the PARABOLA
     //  the c value has different treatement
     [functionTableView reloadData];
-    
-    //send to reload representation data
-    aNotificationCenter = [NSNotificationCenter defaultCenter];
-    [aNotificationCenter postNotificationName:representationChanged object:self];
 }
 -(IBAction)tableViewEditColorColumn:(id)sender{
     NSInteger row;
@@ -297,8 +306,11 @@ extern NSString * functionAdded;
     [f setColor: [colorWell color] ];
     [model updateFunction:f atIndex:(int)row];
     
-    aNotificationCenter = [NSNotificationCenter defaultCenter];
-    [aNotificationCenter postNotificationName:representationChanged object:self];
+    if([f visible] == true){
+        //send to reload representation data
+        aNotificationCenter = [NSNotificationCenter defaultCenter];
+        [aNotificationCenter postNotificationName:representationChanged object:self];
+    }
 }
 -(IBAction)tableViewEditVisibilityColumn:(id)sender{
     NSInteger row;
@@ -306,8 +318,6 @@ extern NSString * functionAdded;
     Model * model = nil;
     NSButton * checkBox = sender;
     NSNotificationCenter * aNotificationCenter = nil;
-    
-    NSLog(@"asdf");
     
     row = [checkBox tag];
     
@@ -353,7 +363,7 @@ extern NSString * functionAdded;
  */
 -(IBAction)showAddFunctionPanel:(id)sender{
     if(nil == addFunctionUIController)
-        addFunctionUIController = [[AddFunctionUIController alloc] initWithComboBoxDataSource:[Function functionTypeAsStringValues]];
+        addFunctionUIController = [[AddFunctionUIController alloc] init];
     [addFunctionUIController showWindow:self];
 }
 
@@ -414,7 +424,6 @@ extern NSString * functionAdded;
                          && [[yminTextField stringValue] length] != 0
                          && [[ymaxTextField stringValue] length] != 0);
     
-    //TODO improve the validation of numbers
     BOOL areNumberTextFieldsCorrectlyFilled = (
                             [numberFormatter numberFromString:[xminTextField stringValue]] != nil
                             && [numberFormatter numberFromString:[xmaxTextField stringValue]] != nil
@@ -453,9 +462,9 @@ extern NSString * functionAdded;
         name = [[NSString alloc] initWithFormat: @"FunctionNumber%d",i];
         type = arc4random_uniform(6);
         color = [NSColor colorWithRed: ((float)arc4random_uniform(100))/100 green:((float)arc4random_uniform(100))/100 blue:((float)arc4random_uniform(100))/100 alpha:1.0];
-        a = ((float)arc4random_uniform(100))/10;
-        b = ((float)arc4random_uniform(100))/10;
-        c = ((float)arc4random_uniform(100))/10;
+        a = ((double)arc4random_uniform(100))/10;
+        b = ((double)arc4random_uniform(100))/10;
+        c = ((double)arc4random_uniform(100))/10;
         
         f = [[Function alloc] initWithName:name color:color ExpressionType:type ExpressionAValue:a ExpressionBValue:b ExpressionCValue:c];
         [model addFunction: f];

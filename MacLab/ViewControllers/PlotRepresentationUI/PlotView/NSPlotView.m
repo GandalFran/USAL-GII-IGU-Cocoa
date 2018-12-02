@@ -106,16 +106,16 @@
     
     //x axys
     aPoint.y = 0;
-    aPoint.x = parameters.origin.y;
+    aPoint.x = parameters.origin.x;
     [bezier moveToPoint:aPoint];
-    aPoint.x = parameters.size.width;
+    aPoint.x = parameters.origin.x + parameters.size.width;
     [bezier lineToPoint:aPoint];
     
     //y axys
     aPoint.x = 0;
-    aPoint.y = parameters.origin.x;
+    aPoint.y = parameters.origin.y;
     [bezier moveToPoint:aPoint];
-    aPoint.y = parameters.size.height;
+    aPoint.y = parameters.origin.y + parameters.size.height;
     [bezier lineToPoint:aPoint];
     
     [bezier setLineWidth:0.05];

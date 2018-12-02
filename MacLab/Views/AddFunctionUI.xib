@@ -174,7 +174,7 @@
             </connections>
             <point key="canvasLocation" x="-423" y="-157"/>
         </window>
-        <numberFormatter formatterBehavior="custom10_4" positiveFormat="############,#########" negativeFormat="-############,#########" numberStyle="decimal" generatesDecimalNumbers="YES" alwaysShowsDecimalSeparator="YES" usesGroupingSeparator="NO" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="uSR-yR-2hY"/>
+        <numberFormatter formatterBehavior="custom10_4" positiveFormat="############.#########" negativeFormat="-############.#########" numberStyle="decimal" generatesDecimalNumbers="YES" alwaysShowsDecimalSeparator="YES" usesGroupingSeparator="NO" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="uSR-yR-2hY"/>
     </objects>
     <resources>
         <image name="NSAddTemplate" width="11" height="11"/>
