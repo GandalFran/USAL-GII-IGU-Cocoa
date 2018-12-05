@@ -21,6 +21,7 @@
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
         <customObject id="Dqi-Sc-lox" customClass="PlotRepresentationUIController">
             <connections>
+                <outlet property="coordinatesLabel" destination="UG8-0n-7cP" id="JmP-M1-nx7"/>
                 <outlet property="plotView" destination="5IA-ac-dmo" id="kL6-rU-Rhe"/>
             </connections>
         </customObject>
@@ -135,10 +136,10 @@
                                     <action selector="performMiniaturize:" target="-1" id="VwT-WD-YPe"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Zoom" id="R4o-n2-Eq4">
+                            <menuItem title="reset zoom" id="R4o-n2-Eq4">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="performZoom:" target="-1" id="DIl-cC-cCs"/>
+                                    <action selector="resetZoom:" target="Dqi-Sc-lox" id="iyN-f8-9C5"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="eu3-7i-yIM"/>
@@ -164,12 +165,22 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5IA-ac-dmo" customClass="NSPlotView">
-                        <rect key="frame" x="0.0" y="0.0" width="707" height="477"/>
+                        <rect key="frame" x="0.0" y="20" width="707" height="457"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <connections>
                             <outlet property="datasource" destination="Dqi-Sc-lox" id="1CO-iK-puI"/>
+                            <outlet property="mouseEventsDelegate" destination="Dqi-Sc-lox" id="9kT-d3-E9S"/>
                         </connections>
                     </customView>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UG8-0n-7cP">
+                        <rect key="frame" x="279" y="0.0" width="148" height="17"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="X:Y:" id="Kl7-cY-neD">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
             </view>
             <connections>

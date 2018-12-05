@@ -177,7 +177,7 @@
         bezier = [[NSBezierPath alloc] init];
         distance = parameters.size.width/HOPS;
         
-        if([self type] == EXPONENTIAL && parameters.origin.x<0 && ([self bValue] - (int)[self bValue])!=0){
+        if([self type] == EXPONENTIAL && parameters.origin.x<0 && fmod(([self bValue] - (int)[self bValue]),2.0)!=0){
             aPoint.x = 0;
             aPoint.y = [self valueAt:0];
         }else{

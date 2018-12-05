@@ -16,8 +16,6 @@
 #import "PlotRepresentationUIController.h"
 
 @interface PlotRepresentationUIController(){
-    Model * model;
-    double xmin,xmax,ymin,ymax;
     FunctionTableUIController * functionTableUIController;
 }
 @end
@@ -31,20 +29,11 @@
     if(nil == self)
         return nil;
     
-    //Instance model
-    model = [Model defaultModel];
-    
-    //set default values for xmin, xmax, ymin and ymax
-    xmin = -10.0;
-    xmax = 10.0;
-    ymin = -10.0;
-    ymax = 10.0;
-    
     //instance and throw secondary panel
-    functionTableUIController = [[FunctionTableUIController alloc] initWithXminValue:xmin
-                                                                               xmaxValue:xmax
-                                                                               yminValue:ymin
-                                                                               ymaxValue:ymax];
+    functionTableUIController = [[FunctionTableUIController alloc] initWithXminValue:-10.0
+                                                                               xmaxValue:10.0
+                                                                               yminValue:-10.0
+                                                                               ymaxValue:10.0];
     [functionTableUIController showWindow:self];
     
     //register the handle for terminate app notification
@@ -57,6 +46,9 @@
                            selector:@selector(handleAddNewParameters:)
                                name:sendNewParameters
                              object:nil];
+    
+    //set hidden the corrdinates label
+    [coordinatesLabel setHidden:YES];
     
     
     return self;
@@ -95,6 +87,7 @@ extern NSString * sendNewParameters;
  *          sets the values for xmin,xmax,ymin and ymax
  */
 -(void) handleAddNewParameters:(NSNotification *)aNotification{
+    NSRect parameters;
     NSDictionary * aDictionary = nil;
     NSNumber * aXmin = nil, * aXmax = nil, * aYmin = nil, * aYmax = nil;
     
@@ -104,12 +97,12 @@ extern NSString * sendNewParameters;
     aYmin = [aDictionary objectForKey:@"ymin"];
     aYmax = [aDictionary objectForKey:@"ymax"];
     
-    xmin = [aXmin doubleValue];
-    xmax = [aXmax doubleValue];
-    ymin = [aYmin doubleValue];
-    ymax = [aYmax doubleValue];
+    parameters.origin.x = [aXmin doubleValue];
+    parameters.origin.y = [aYmin doubleValue];
+    parameters.size.width = [aXmax doubleValue] - [aXmin doubleValue];
+    parameters.size.height = [aYmax doubleValue] - [aYmin doubleValue];
     
-    [plotView reloadData];
+    [plotView setParameters: parameters];
 }
 
 //------------------Delegation---------------------
@@ -119,23 +112,22 @@ extern NSString * sendNewParameters;
     return [model count] + 1;
 }
 
-- (NSRect) parameters{
-    NSRect p;
-    
-    p.origin.x = xmin;
-    p.origin.y = ymin;
-    p.size.width = xmax - xmin;
-    p.size.height = ymax - ymin;
-    
-    return p;
-}
-
 -  (void) plotView:(NSPlotView *)aPlotView drawElement:(NSInteger) element inBoudns:(NSRect)bounds withParameters:(NSRect)parameters withGraphicsContext:(NSGraphicsContext *)aGraphicContext{
     Function * f = nil;
     Model * model = [Model defaultModel];
     
     f = [model getFunctionWithIndex:(int)(element-1)];
     [f drawInBounds:bounds withParameters:parameters withGraphicsContext:aGraphicContext];
+}
+
+-(void)mouseEnteredInPlotView:(NSPlotView *) plotView{
+    [coordinatesLabel setHidden:NO];
+}
+-(void)mouseMovedIntPlotView:(NSPlotView *) plotView AtX:(double)x Y:(double)y{
+    [coordinatesLabel setStringValue:[[NSString alloc] initWithFormat:@"X:%.2f Y:%.2f",x,y] ];
+}
+-(void)mouseExitedInPlotView:(NSPlotView *) plotView{
+    [coordinatesLabel setHidden:YES];
 }
 
 //----------------Graphic logic--------------------
@@ -185,6 +177,7 @@ extern NSString * sendNewParameters;
     NSInteger result;
     NSString * path = nil;
     NSSavePanel * panel = nil;
+    Model * model = [Model defaultModel];
     
     if([model count] == 0){
         NSAlert * alert = [[NSAlert alloc] init];
@@ -229,6 +222,7 @@ extern NSString * sendNewParameters;
     NSInteger result;
     NSString * path = nil;
     NSOpenPanel * panel = nil;
+    Model * model = [Model defaultModel];
     
     panel = [NSOpenPanel openPanel];
     [panel setAllowedFileTypes:[NSArray arrayWithObject:@"bin"]];
@@ -253,6 +247,10 @@ extern NSString * sendNewParameters;
         }
     
     }
+}
+
+-(IBAction)resetZoom:(id)sender{
+    [plotView resetZoom];
 }
 
 

@@ -42,6 +42,7 @@
 		CD26FE0F219711A10031B6F0 /* AddFunctionUI.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddFunctionUI.xib; sourceTree = "<group>"; };
 		CD26FE11219711B40031B6F0 /* AddFunctionUIController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddFunctionUIController.h; sourceTree = "<group>"; };
 		CD26FE12219711B40031B6F0 /* AddFunctionUIController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddFunctionUIController.m; sourceTree = "<group>"; };
+		CDAD255821B880CE00A0509E /* NSPlotViewMouseEventsDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSPlotViewMouseEventsDelegate.h; sourceTree = "<group>"; };
 		CDAE1540219AEEB900935252 /* FunctionTableUIController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FunctionTableUIController.h; sourceTree = "<group>"; };
 		CDAE1541219AEEB900935252 /* FunctionTableUIController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FunctionTableUIController.m; sourceTree = "<group>"; };
 		CDAE1543219AEEEB00935252 /* FunctionTableUI.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FunctionTableUI.xib; sourceTree = "<group>"; };
@@ -74,6 +75,7 @@
 				CD1BE93D219B661F002CD188 /* NSPlotView.h */,
 				CD1BE93E219B661F002CD188 /* NSPlotView.m */,
 				7D4F02CB21B14A0700F44177 /* NSPlotViewDataSource.h */,
+				CDAD255821B880CE00A0509E /* NSPlotViewMouseEventsDelegate.h */,
 			);
 			path = PlotView;
 			sourceTree = "<group>";

@@ -8,13 +8,15 @@
 
 #import <Cocoa/Cocoa.h>
 #import "NSPlotViewDataSource.h"
+#import "NSPlotViewMouseEventsDelegate.h"
 
 @class NSPlotView;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PlotRepresentationUIController : NSObject <NSWindowDelegate, NSPlotViewDataSource>{
+@interface PlotRepresentationUIController : NSObject <NSWindowDelegate, NSPlotViewDataSource, NSPlotViewMouseEventsDelegate>{
     IBOutlet NSPlotView * plotView;
+    IBOutlet NSTextField * coordinatesLabel;
 }
 
 //----------------Notifications--------------------
@@ -24,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(IBAction)exportProject:(id)sender;
 -(IBAction)importProject:(id)sender;
 -(IBAction)exportPanel:(id)sender;
+-(IBAction)resetZoom:(id)sender;
 
 @end
 

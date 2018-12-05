@@ -10,10 +10,18 @@
 
 @interface NSPlotView(){
     struct{
-        unsigned int parameters;
         unsigned int numberOfElements;
         unsigned int plotViewDrawElementInRectWithGraphicsContext;
-    } delegateRespondsTo;
+    } datasourceRespondsTo;
+    struct{
+        unsigned int mouseEntered;
+        unsigned int mouseMovedAtXY;
+        unsigned int mouseExited;
+    }mouseEventsDelegateRespondsTo;
+    bool isZoomActive;
+    NSRect parameters, zoomParameters;
+    NSPoint mouseDownPoint, mouseUpPoint;
+    NSTrackingArea * trackingArea;
 }
 
 -(void)drawAxysInBounds:(NSRect)boudns withParameters:(NSRect)parameters withGraphicsContext:(NSGraphicsContext*)aGraphicsContext;
@@ -27,19 +35,45 @@
     if(nil == self)
         return self;
     
+    isZoomActive = NO;
+    parameters.origin.x = parameters.origin.y = -10;
+    zoomParameters.origin.x = zoomParameters.origin.y = -10;
+    parameters.size.width = parameters.size.height = 20;
+    parameters.size.width = parameters.size.height = 20;
+
+    
     return self;
 }
 
-@synthesize datasource;
+@synthesize datasource, mouseEventsDelegate;
+
 - (void)setDatasource:(id)aDatasource{
     if (datasource != aDatasource){
         datasource = aDatasource;
     }
     if(nil != datasource){
-        delegateRespondsTo.numberOfElements = [datasource respondsToSelector:@selector(numberOfElements)];
-        delegateRespondsTo.parameters = [datasource respondsToSelector:@selector(parameters)];
-        delegateRespondsTo.plotViewDrawElementInRectWithGraphicsContext = [datasource respondsToSelector:@selector(plotView:drawElement:inBoudns:withParameters:withGraphicsContext:)];
+        datasourceRespondsTo.numberOfElements = [datasource respondsToSelector:@selector(numberOfElements)];
+        datasourceRespondsTo.plotViewDrawElementInRectWithGraphicsContext = [datasource respondsToSelector:@selector(plotView:drawElement:inBoudns:withParameters:withGraphicsContext:)];
     }
+
+}
+
+-(void)setMouseEventsDelegate:(id<NSPlotViewMouseEventsDelegate>)aDelegate{
+    if (mouseEventsDelegate != aDelegate){
+        mouseEventsDelegate = aDelegate;
+    }
+    if(nil != mouseEventsDelegate){
+        NSLog(@"hola");
+        mouseEventsDelegateRespondsTo.mouseEntered = [mouseEventsDelegate respondsToSelector:@selector(mouseEnteredInPlotView:)];
+        mouseEventsDelegateRespondsTo.mouseExited = [mouseEventsDelegate respondsToSelector:@selector(mouseEnteredInPlotView:)];
+        mouseEventsDelegateRespondsTo.mouseMovedAtXY = [mouseEventsDelegate respondsToSelector:@selector(mouseMovedIntPlotView:AtX:Y:)];
+    }
+}
+
+-(void) setParameters:(NSRect) p{
+    isZoomActive = NO;
+    parameters = p;
+    [self setNeedsDisplay:YES];
 }
 
 - (void)drawRect:(NSRect)dirtyRect {
@@ -56,15 +90,14 @@
     [[NSColor whiteColor] set];
     [NSBezierPath fillRect:bounds];
     
-    if(delegateRespondsTo.parameters)
-        p = [datasource parameters];
+    p = (isZoomActive == YES) ? zoomParameters : parameters;
     
-    if(delegateRespondsTo.numberOfElements)
+    if(datasourceRespondsTo.numberOfElements)
         numberOfElements = [datasource numberOfElements];
 
     [self drawAxysInBounds:bounds withParameters:p withGraphicsContext:graphicsContext];
     
-    if(delegateRespondsTo.plotViewDrawElementInRectWithGraphicsContext){
+    if(datasourceRespondsTo.plotViewDrawElementInRectWithGraphicsContext){
         for(element = 0; element<numberOfElements; element++){
             [datasource plotView:self drawElement:element inBoudns:bounds withParameters:p withGraphicsContext:graphicsContext];
         }
@@ -75,6 +108,12 @@
 -(void) reloadData{
     [self setNeedsDisplay:YES];
 }
+
+-(void) resetZoom{
+    isZoomActive = NO;
+    [self setNeedsDisplay:YES];
+}
+
 
 //https://mountandcode.wordpress.com/2010/12/08/export-nsview-to-png/
 -(BOOL) exportViewToPath:(NSString *) path{
@@ -123,6 +162,98 @@
     [bezier stroke];
     
     [aGraphicsContext restoreGraphicsState];
+}
+
+//----------------Mouse event--------------------
+
+-(BOOL) acceptsFirstResponder{
+    return YES;
+}
+
+//https://stackoverflow.com/questions/11188034/mouseentered-and-mouseexited-not-called-in-nsimageview-subclass
+//https://stackoverflow.com/questions/7543684/mousemoved-not-called
+-(void)updateTrackingAreas
+{
+    [super updateTrackingAreas];
+    if(trackingArea != nil) {
+        [self removeTrackingArea:trackingArea];
+        trackingArea = nil;
+    }
+    
+    int opts = (NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveAlways);
+    trackingArea = [ [NSTrackingArea alloc] initWithRect:[self bounds]
+                                                 options:opts
+                                                   owner:self
+                                                userInfo:nil];
+    [self addTrackingArea:trackingArea];
+}
+-(void) mouseDown:(NSEvent *)event{
+    mouseDownPoint = [self convertPoint:[event locationInWindow] fromView:nil];
+}
+
+-(void) mouseUp:(NSEvent *)event{
+    NSLog(@"asdf");
+    
+    NSRect p;
+    NSAffineTransform * tf = nil;
+    double nXmin, nXmax, nYmin, nYmax;
+    
+    mouseUpPoint = [self convertPoint:[event locationInWindow] fromView:nil];
+    if(mouseUpPoint.x == mouseDownPoint.x || mouseUpPoint.y == mouseDownPoint.y){
+        //if the start and end of some dimension are the same exit because isn't any zoom
+        return;
+    }
+    p = (isZoomActive) ? zoomParameters : parameters;
+    
+    tf = [NSAffineTransform transform];
+    [tf scaleXBy:self.bounds.size.width/p.size.width yBy:self.bounds.size.height/p.size.height];
+    [tf translateXBy: -p.origin.x yBy:-p.origin.y];
+    [tf invert];
+    mouseDownPoint = [tf transformPoint:mouseDownPoint];
+    mouseUpPoint = [tf transformPoint:mouseUpPoint];
+    
+    nXmin = (mouseDownPoint.x < mouseUpPoint.x) ? mouseDownPoint.x : mouseUpPoint.x;
+    nXmax = (mouseDownPoint.x > mouseUpPoint.x) ? mouseDownPoint.x : mouseUpPoint.x;
+    nYmin = (mouseDownPoint.y < mouseUpPoint.y) ? mouseDownPoint.y : mouseUpPoint.y;
+    nYmax = (mouseDownPoint.y > mouseUpPoint.y) ? mouseDownPoint.y : mouseUpPoint.y;
+    
+    zoomParameters.origin.x = nXmin;
+    zoomParameters.origin.y = nYmin;
+    zoomParameters.size.width = nXmax - nXmin;
+    zoomParameters.size.height = nYmax - nYmin;
+    
+    isZoomActive = YES;
+    
+    [self setNeedsDisplay:YES];
+}
+
+-(void) mouseEntered:(NSEvent *)event{
+    if(mouseEventsDelegateRespondsTo.mouseEntered)
+        [mouseEventsDelegate mouseEnteredInPlotView:self];
+}
+
+-(void)mouseMoved:(NSEvent *)event{
+    NSPoint aPoint;
+    NSRect p;
+    NSAffineTransform * tf = nil;
+    if(mouseEventsDelegateRespondsTo.mouseMovedAtXY){
+        aPoint = [self convertPoint:[event locationInWindow] fromView:nil];
+        
+        p = (isZoomActive) ? zoomParameters : parameters;
+        
+        tf = [NSAffineTransform transform];
+        [tf scaleXBy:self.bounds.size.width/p.size.width yBy:self.bounds.size.height/p.size.height];
+        [tf translateXBy: -p.origin.x yBy:-p.origin.y];
+        [tf invert];
+        aPoint = [tf transformPoint:aPoint];
+        
+        [mouseEventsDelegate mouseMovedIntPlotView:self AtX:aPoint.x Y:aPoint.y];
+    }
+}
+
+-(void)mouseExited:(NSEvent *)event{
+    if(mouseEventsDelegateRespondsTo.mouseExited)
+        [mouseEventsDelegate mouseExitedInPlotView:self];
 }
 
 

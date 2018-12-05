@@ -15,7 +15,7 @@
 #import "FunctionTableUIController.h"
 
 @interface FunctionTableUIController(){
-    double xmin,xmax,ymin,ymax;
+    double afnxmin,afnxmax,afnymin,afnymax;
     AddFunctionUIController * addFunctionUIController;
 }
 
@@ -35,11 +35,11 @@
     if(nil == [super initWithWindowNibName:@"FunctionTableUI"])
         return nil;
     
-    //Save settings values
-    xmin = aXmin;
-    xmax = aXmax;
-    ymin = aYmin;
-    ymax = aYmax;
+    //Save settings values to put them on textfields when awake from nib
+    afnxmin = aXmin;
+    afnxmax = aXmax;
+    afnymin = aYmin;
+    afnymax = aYmax;
     
     return self;
 }
@@ -67,10 +67,10 @@
 }
 
 -(void) awakeFromNib{
-    [xminTextField setDoubleValue:xmin];
-    [xmaxTextField setDoubleValue:xmax];
-    [yminTextField setDoubleValue:ymin];
-    [ymaxTextField setDoubleValue:ymax];
+    [xminTextField setDoubleValue:afnxmin];
+    [xmaxTextField setDoubleValue:afnxmax];
+    [yminTextField setDoubleValue:afnymin];
+    [ymaxTextField setDoubleValue:afnymax];
 }
 
 - (void) windowDidLoad {
