@@ -50,7 +50,7 @@
     NSModalResponse response;
     
     alert = [[NSAlert alloc] init];
-    [alert setMessageText:@"Atention"];
+    [alert setMessageText:@"Warning"];
     [alert setInformativeText:@"If you close this window, the function data will be losed."];
     [alert addButtonWithTitle:@"yes"];
     [alert addButtonWithTitle:@"no"];
@@ -170,7 +170,6 @@ NSString * functionAdded = @"functionAdded";
                         && ([[cValueTextField stringValue] length] != 0 || [cValueTextField isHidden] == YES)
                         && [typeCombobox selectedTag] != -1);
     
-    //TODO improve the validation of numbers
     BOOL areNumberTextFieldsCorrectlyFilled = (
         [numberFormatter numberFromString:[aValueTextField stringValue]] != nil
         && [numberFormatter numberFromString:[bValueTextField stringValue]] != nil

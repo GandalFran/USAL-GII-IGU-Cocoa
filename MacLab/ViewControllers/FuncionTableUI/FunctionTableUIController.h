@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(void) handlFunctionAdded:(NSNotification *)aNotification;
 //----------------Graphic logic--------------------
 -(IBAction)showAddFunctionPanel:(id)sender;
--(IBAction)removeFunction:(id)sender;
+-(IBAction)removeFunctions:(id)sender;
 -(IBAction)removeAllModelElements:(id)sender;
 -(IBAction)setNewRepresentationParameters:(id)sender;
 
@@ -48,7 +48,6 @@ NS_ASSUME_NONNULL_BEGIN
 //----------------Bussines logic-------------------
 -(void) reloadData;
 
--(IBAction)TEST:(id)sender;
 
 @end
 

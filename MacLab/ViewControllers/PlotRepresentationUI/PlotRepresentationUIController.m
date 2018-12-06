@@ -116,7 +116,7 @@ extern NSString * sendNewParameters;
     Function * f = nil;
     Model * model = [Model defaultModel];
     
-    f = [model getFunctionWithIndex:(int)(element-1)];
+    f = [model getFunctionAtIndex:(int)(element-1)];
     [f drawInBounds:bounds withParameters:parameters withGraphicsContext:aGraphicContext];
 }
 
@@ -167,10 +167,10 @@ extern NSString * sendNewParameters;
     
 }
 
-//https://stackoverflow.com/questions/1640419/open-file-dialog-box
 /**
  *  @brief Displays a panel to let the user select a path to export the model data,
  *          and if an error occurs, let the user know.
+ *  @see https://stackoverflow.com/questions/1640419/open-file-dialog-box
  */
 -(IBAction)exportProject:(id)sender{
     bool IOresult;
@@ -243,6 +243,7 @@ extern NSString * sendNewParameters;
             [alert runModal];
             return;
         }else{
+            [plotView reloadData];
             [functionTableUIController reloadData];
         }
     

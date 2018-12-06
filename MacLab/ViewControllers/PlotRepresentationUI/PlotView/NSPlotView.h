@@ -12,14 +12,21 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NSPlotView :NSView
+@interface NSPlotView :NSView{
+    IBOutlet __weak id<NSPlotViewDataSource> _datasource;
+    IBOutlet __weak id<NSPlotViewMouseEventsDelegate>  _mouseEventsDelegate;
+}
 
-@property (nonatomic, weak) IBOutlet id<NSPlotViewDataSource>  datasource;
+//------------------Delegation---------------------
+@property (nonatomic, weak) IBOutlet id<NSPlotViewDataSource> datasource;
 @property (nonatomic, weak) IBOutlet id<NSPlotViewMouseEventsDelegate>  mouseEventsDelegate;
 
+//----------------Bussines logic-------------------
+-(void) setParameters:(NSRect) parameters;
 -(void) reloadData;
 -(void) resetZoom;
--(void) setParameters:(NSRect) parameters;
+
+//----------------------IO-------------------------
 -(BOOL) exportViewToPath:(NSString *) path;
 
 @end

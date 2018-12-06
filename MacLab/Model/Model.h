@@ -18,11 +18,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (Model *) defaultModel;
 //----------------Bussines logic-------------------
 - (bool) addFunction: (Function *) aFunction;
-- (bool) removeFunctionWithIndex : (int) index;
+- (bool) removeFunctionAtIndex : (int) index;
 - (bool) updateFunction : (Function *) aFunction atIndex:(int)index;
-- (Function *) getFunctionWithIndex : (int) anIndex;
+- (Function *) getFunctionAtIndex : (int) anIndex;
 - (bool) removeAllFunctions;
-- (NSArray *) allFunctions;
 - (long) count;
 
 //----------------------IO-------------------------

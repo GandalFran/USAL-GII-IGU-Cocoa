@@ -18,9 +18,7 @@
     double afnxmin,afnxmax,afnymin,afnymax;
     AddFunctionUIController * addFunctionUIController;
 }
-
 - (BOOL) isSettingsFormCompleted;
-
 @end
 
 
@@ -126,7 +124,7 @@ extern NSString * functionAdded;
     
     
     model = [Model defaultModel];
-    f = [model getFunctionWithIndex:(int)row];
+    f = [model getFunctionAtIndex:(int)row];
     
     cell = [[[tableView makeViewWithIdentifier:identifier owner:nil] subviews] objectAtIndex:0];
     [cell setTag: row];
@@ -191,7 +189,7 @@ extern NSString * functionAdded;
     row = [tf tag];
     
     model = [Model defaultModel];
-    f = [model getFunctionWithIndex:(int)row];
+    f = [model getFunctionAtIndex:(int)row];
     [f setName: [tf stringValue] ];
     [model updateFunction:f atIndex:(int)row];
 
@@ -206,7 +204,7 @@ extern NSString * functionAdded;
     row = [cb tag];
     
     model = [Model defaultModel];
-    f = [model getFunctionWithIndex:(int)row];
+    f = [model getFunctionAtIndex:(int)row];
     [f setType:(FunctionType)[cb indexOfSelectedItem]];
     if([f type] != PARABOLA)
         [f setCValue:0];
@@ -234,7 +232,7 @@ extern NSString * functionAdded;
     row = [tf tag];
     
     model = [Model defaultModel];
-    f = [model getFunctionWithIndex:(int)row];
+    f = [model getFunctionAtIndex:(int)row];
     [f setAValue: [tf doubleValue] ];
     [model updateFunction:f atIndex:(int)row];
     
@@ -253,7 +251,7 @@ extern NSString * functionAdded;
     
     row = [tf tag];
     model = [Model defaultModel];
-    f = [model getFunctionWithIndex:(int)row];
+    f = [model getFunctionAtIndex:(int)row];
     [f setBValue: [tf doubleValue] ];
     [model updateFunction:f atIndex:(int)row];
     
@@ -273,7 +271,7 @@ extern NSString * functionAdded;
     row = [tf tag];
     
     model = [Model defaultModel];
-    f = [model getFunctionWithIndex:(int)row];
+    f = [model getFunctionAtIndex:(int)row];
     
     if([f type] == PARABOLA){
         [f setCValue: [tf doubleValue] ];
@@ -300,7 +298,7 @@ extern NSString * functionAdded;
     row = [colorWell tag];
     
     model = [Model defaultModel];
-    f = [model getFunctionWithIndex:(int)row];
+    f = [model getFunctionAtIndex:(int)row];
     [f setColor: [colorWell color] ];
     [model updateFunction:f atIndex:(int)row];
     
@@ -320,7 +318,7 @@ extern NSString * functionAdded;
     row = [checkBox tag];
     
     model = [Model defaultModel];
-    f = [model getFunctionWithIndex:(int)row];
+    f = [model getFunctionAtIndex:(int)row];
     [f setVisible: ( [checkBox state] == NSControlStateValueOn) ];
     [model updateFunction:f atIndex:(int)row];
     
@@ -366,9 +364,9 @@ extern NSString * functionAdded;
 }
 
 /**
- *  @brief removes the selected function from model in tableView.
+ *  @brief removes the selected functions from model in tableView.
  */
--(IBAction)removeFunction:(id)sender{
+-(IBAction)removeFunctions:(id)sender{
     int i;
     Model * model = nil;
     NSMutableArray * indexArray = nil;
@@ -386,7 +384,7 @@ extern NSString * functionAdded;
     
     model = [Model defaultModel];
     for(i=(int)([indexArray count]-1); i>=0; i--){
-        [model removeFunctionWithIndex:(int)[indexArray[i] integerValue]];
+        [model removeFunctionAtIndex:(int)[indexArray[i] integerValue]];
     }
     
     [functionTableView reloadData];
@@ -443,35 +441,6 @@ extern NSString * functionAdded;
  */
 -(void) reloadData{
     [functionTableView reloadData];
-}
-
--(IBAction)TEST:(id)sender{
-    Function * f = nil;
-    Model * model = nil;
-    NSString * name = nil;
-    NSColor * color = nil;
-    FunctionType type;
-    float a,b,c;
-    
-    model = [Model defaultModel];
-    
-    int i;
-    for(i=0; i<5; i++){
-        name = [[NSString alloc] initWithFormat: @"FunctionNumber%d",i];
-        type = arc4random_uniform(6);
-        color = [NSColor colorWithRed: ((float)arc4random_uniform(100))/100 green:((float)arc4random_uniform(100))/100 blue:((float)arc4random_uniform(100))/100 alpha:1.0];
-        a = ((double)arc4random_uniform(100))/10;
-        b = ((double)arc4random_uniform(100))/10;
-        c = ((double)arc4random_uniform(100))/10;
-        
-        f = [[Function alloc] initWithName:name color:color ExpressionType:type ExpressionAValue:a ExpressionBValue:b ExpressionCValue:c];
-        [model addFunction: f];
-    }
-    
-    [functionTableView reloadData];
-    
-    NSNotificationCenter * aNotificationCenter = [NSNotificationCenter defaultCenter];
-    [aNotificationCenter postNotificationName:representationChanged object:self];
 }
 
 @end

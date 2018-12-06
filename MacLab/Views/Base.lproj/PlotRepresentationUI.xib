@@ -175,7 +175,7 @@
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UG8-0n-7cP">
                         <rect key="frame" x="279" y="0.0" width="148" height="17"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" title="X:Y:" id="Kl7-cY-neD">
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="X:Y:" id="Kl7-cY-neD">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

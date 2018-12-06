@@ -63,7 +63,7 @@
 
 -(NSString *) description
 {
-    return [[NSString alloc] initWithFormat: @"Function{name=%@, color=%@, visbility=%d, type=%d, aValue=%f, bValue=%f, cValue=%f,  }",self.name, self.color, self.visible, self.type,self.aValue,self.bValue,self.cValue];
+    return [[NSString alloc] initWithFormat: @"Function{name=%@, color=NSColor{%@}, visbility=%d, type=%d, aValue=%f, bValue=%f, cValue=%f,  }",self.name, self.color, self.visible, self.type,self.aValue,self.bValue,self.cValue];
 }
 
 -(BOOL) isEqual:(id)object

@@ -50,7 +50,6 @@ typedef enum{COSINE, SINE, EXPONENTIAL, LINE, PARABOLA, HIPERBOLA, NONE_TYPE} Fu
   ExpressionCValue : (double) cValue;
 
 //----------------Bussines logic-------------------
-
 -(double) valueAt : (double) x;
 -(void) drawInBounds:(NSRect) bounds withParameters:(NSRect) parameters withGraphicsContext:(NSGraphicsContext *) aGraphicContext;
 

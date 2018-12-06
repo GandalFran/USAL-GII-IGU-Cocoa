@@ -136,7 +136,7 @@
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
                                     <connections>
-                                        <action selector="setNewRepresentationParameters:" target="-2" id="tmo-Dt-nyF"/>
+                                        <action selector="setNewRepresentationParameters:" target="-2" id="yCd-ef-hEJ"/>
                                     </connections>
                                 </button>
                             </subviews>
@@ -157,7 +157,7 @@
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
                                     <connections>
-                                        <action selector="removeFunction:" target="-2" id="WkR-SQ-xff"/>
+                                        <action selector="removeFunctions:" target="-2" id="m16-Sl-wvS"/>
                                     </connections>
                                 </button>
                                 <button toolTip="add function" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1cU-XS-bBd">
@@ -168,18 +168,7 @@
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
                                     <connections>
-                                        <action selector="showAddFunctionPanel:" target="-2" id="CVV-Tu-NAZ"/>
-                                    </connections>
-                                </button>
-                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A3i-CW-beE">
-                                    <rect key="frame" x="405" y="375" width="73" height="32"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES"/>
-                                    <buttonCell key="cell" type="push" title="TEST" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="eFP-d3-laP">
-                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <action selector="TEST:" target="-2" id="Qmu-rJ-Da9"/>
+                                        <action selector="showAddFunctionPanel:" target="-2" id="zpf-gh-B7v"/>
                                     </connections>
                                 </button>
                                 <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="26" horizontalPageScroll="10" verticalLineScroll="26" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nf9-aV-Z1u">
@@ -422,7 +411,7 @@
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
                                     <connections>
-                                        <action selector="removeAllModelElements:" target="-2" id="RUO-MP-Nt9"/>
+                                        <action selector="removeAllModelElements:" target="-2" id="RjC-P4-5SW"/>
                                     </connections>
                                 </button>
                             </subviews>

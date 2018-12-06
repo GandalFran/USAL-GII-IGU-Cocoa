@@ -57,7 +57,7 @@
     return true;
 }
 
-- (bool) removeFunctionWithIndex : (int) index{
+- (bool) removeFunctionAtIndex : (int) index{
     if(0 > index || index >= [modelData count]) return false;
     [modelData removeObjectAtIndex:index];
     return true;
@@ -70,23 +70,17 @@
     [modelData removeObjectAtIndex:index];
     [modelData insertObject:aFunction atIndex:index];
     
-    NSLog(@"\n\nUpdated f:%@",aFunction);
-    
     return true;
 }
 
-- (Function *) getFunctionWithIndex : (int) anIndex{
+- (Function *) getFunctionAtIndex : (int) anIndex{
     if(0 > anIndex || [modelData count]<=anIndex) return nil;
-    return modelData[anIndex];
+    return [modelData[anIndex] copy];
 }
 
 - (bool) removeAllFunctions{
     [modelData removeAllObjects];
     return true;
-}
-
-- (NSArray *) allFunctions{
-    return [modelData copy];
 }
 
 - (long) count{

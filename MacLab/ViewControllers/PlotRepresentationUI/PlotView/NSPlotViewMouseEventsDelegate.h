@@ -8,13 +8,22 @@
 
 #ifndef NSPlotViewMouseEventsDelegate_h
 #define NSPlotViewMouseEventsDelegate_h
+
 @class NSPlotView;
 
 @protocol NSPlotViewMouseEventsDelegate <NSObject>
 @optional
-
+/**
+ *  @brief advises that the mouse has entered in view plotView
+ */
 -(void)mouseEnteredInPlotView:(NSPlotView *) plotView;
+/**
+ *  @brief advises that the mouse is over the point x,y
+ */
 -(void)mouseMovedIntPlotView:(NSPlotView *) plotView AtX:(double)x Y:(double)y;
+/**
+ *  @brief advises that the mouse has leaved the view plotView
+ */
 -(void)mouseExitedInPlotView:(NSPlotView *) plotView;
 @end
 

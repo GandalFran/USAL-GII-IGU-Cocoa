@@ -13,7 +13,13 @@
 
 @protocol NSPlotViewDataSource <NSObject>
 @optional
+/**
+ *  @brief requests for the number of elements to represent
+ */
 - (NSInteger) numberOfElements;
+/**
+ *  @brief asks that the element in the element index be represented.
+ */
 - (void) plotView:(NSPlotView *)aPlotView drawElement:(NSInteger) element inBoudns:(NSRect)bounds withParameters:(NSRect)parameters withGraphicsContext:(NSGraphicsContext *)aGraphicContext;
 @end
 
