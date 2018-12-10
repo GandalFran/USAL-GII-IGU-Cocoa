@@ -424,7 +424,7 @@
             </connections>
             <point key="canvasLocation" x="407" y="193.5"/>
         </window>
-        <numberFormatter formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="80a-xE-T8b"/>
+        <numberFormatter formatterBehavior="custom10_4" positiveFormat="##############,##" negativeFormat="-##############,##" numberStyle="decimal" generatesDecimalNumbers="YES" alwaysShowsDecimalSeparator="YES" usesGroupingSeparator="NO" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="80a-xE-T8b"/>
     </objects>
     <resources>
         <image name="NSAddTemplate" width="11" height="11"/>

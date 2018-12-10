@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AddFunctionUIController : NSWindowController <NSWindowDelegate, NSComboBoxDelegate, NSTextFieldDelegate>{
+@interface AddFunctionUIController : NSWindowController <NSComboBoxDelegate, NSTextFieldDelegate>{
     IBOutlet NSTextField * nameTextField;
     IBOutlet NSTextField * aValueTextField;
     IBOutlet NSTextField * bValueTextField;
